@@ -1,1 +1,0 @@
-enum QuestionStatus { open, closed}
