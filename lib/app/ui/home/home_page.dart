@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  SharedPreferences? _prefs;
+  SharedPreferences? prefs;
   String? auth;
 
   @override
@@ -32,9 +32,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _loadUser() async {
-    _prefs = await SharedPreferences.getInstance();
-    // logger.d(_prefs.getKeys());
-    auth = _prefs?.getString('Authorization');
+    prefs = await SharedPreferences.getInstance();
+    // logger.d(prefs.getKeys());
+    auth = prefs?.getString('Authorization');
   }
 
   @override
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Container(height: displayWidth / 10),
-                HomePageFragment(auth),
+                HomePageFragment(prefs, auth),
               ],
             ),
           ),
@@ -79,9 +79,10 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomePageFragment extends ConsumerWidget {
+  final SharedPreferences? prefs;
   final String? auth;
 
-  const HomePageFragment(this.auth, {Key? key}) : super(key: key);
+  const HomePageFragment(this.prefs, this.auth, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -226,6 +227,16 @@ class HomePageFragment extends ConsumerWidget {
                       },
                     ),
                 ],
+              ),
+              Container(
+                height: 30,
+              ),
+              // logout button
+              ElevatedButton(
+                onPressed: () {
+                  prefs?.clear();  // logout
+                },
+                child: const Text('로그아웃 하실 수 있습니다.'),
               ),
             ],
           );

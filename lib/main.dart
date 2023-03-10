@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.cyan[900],
         scaffoldBackgroundColor: Colors.lightBlue[50],
         buttonTheme: ButtonThemeData(
-          buttonColor: Colors.cyan[10],
+          buttonColor: Colors.cyan[100],
         ),
         textTheme: TextTheme(
           bodyLarge: TextStyle(fontSize: displayWidth / 23),

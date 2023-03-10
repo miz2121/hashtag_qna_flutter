@@ -6,8 +6,10 @@ class QuestionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Text('질문 글 조회'),
+      body: SafeArea(
+        child: Container(
+          child: Text('질문 글 조회'),
+        ),
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/data/repository/home_repository.dart';
 
-import '../../data/model/home.dart';
 
 final homeViewModelProvider =
     StateNotifierProvider<HomeViewModel, HomeRepository>(

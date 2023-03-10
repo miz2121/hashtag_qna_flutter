@@ -11,8 +11,10 @@ class CreatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Text('해시태그를 만드시겠습니까?'),
+      body: SafeArea(
+        child: Container(
+          child: Text('해시태그를 만드시겠습니까?'),
+        ),
       ),
     );
   }
