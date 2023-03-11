@@ -10,6 +10,5 @@ class HomeViewModel extends StateNotifier<HomeRepository>{
   HomeViewModel(super.state);
 
   final HomeRepository _homeRepository = HomeRepository();
-
   HomeRepository get homeRepository => _homeRepository;
 }

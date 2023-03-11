@@ -12,35 +12,31 @@ var logger = Logger(
   printer: PrettyPrinter(methodCount: 0),
 );
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   final String? auth;
 
   const HomePage({Key? key, this.auth}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  SharedPreferences? prefs;
-  String? auth;
+class _HomePageState extends ConsumerState<HomePage> {
+  String? token;
 
   @override
-  void initState() {
-    super.initState();
-    _loadUser();
-  }
-
-  void _loadUser() async {
-    prefs = await SharedPreferences.getInstance();
-    // logger.d(prefs.getKeys());
-    auth = prefs?.getString('Authorization');
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final provider = ref.watch(homeViewModelProvider.notifier);
+    provider.homeRepository.localDataSource.loadUser();
+    token = provider.homeRepository.localDataSource.token;
   }
 
   @override
   Widget build(BuildContext context) {
     double displayWidth = MediaQuery.of(context).size.width;
     double buttonFontSize = displayWidth / 15;
+    final provider = ref.watch(homeViewModelProvider.notifier);
 
     return Scaffold(
       body: SafeArea(
@@ -52,8 +48,8 @@ class _HomePageState extends State<HomePage> {
                 Container(height: displayWidth / 10),
                 TextButton(
                   onPressed: () {
-                    // logger.d(auth);
-                    if (auth == null) {
+                    provider.homeRepository.localDataSource.loadUser();
+                    if (provider.homeRepository.localDataSource.token == null) {
                       Navigator.pushNamed(context, '/login');
                     } else {
                       Navigator.pushNamed(context, '/create');
@@ -68,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Container(height: displayWidth / 10),
-                HomePageFragment(prefs, auth),
+                const HomePageFragment(),
               ],
             ),
           ),
@@ -79,10 +75,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomePageFragment extends ConsumerWidget {
-  final SharedPreferences? prefs;
-  final String? auth;
-
-  const HomePageFragment(this.prefs, this.auth, {Key? key}) : super(key: key);
+  const HomePageFragment({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -168,7 +161,9 @@ class HomePageFragment extends ConsumerWidget {
                       ),
                     ),
                     onTap: () {
-                      if (auth == null) {
+                      provider.homeRepository.localDataSource.loadUser();
+                      if (provider.homeRepository.localDataSource.token ==
+                          null) {
                         Navigator.pushNamed(context, '/login');
                       } else {
                         Navigator.pushNamed(context, '/question');
@@ -219,7 +214,9 @@ class HomePageFragment extends ConsumerWidget {
                         ),
                       ),
                       onTap: () {
-                        if (auth == null) {
+                        provider.homeRepository.localDataSource.loadUser();
+                        if (provider.homeRepository.localDataSource.token ==
+                            null) {
                           Navigator.pushNamed(context, '/login');
                         } else {
                           Navigator.pushNamed(context, '/questions_by_hashtag');
@@ -234,7 +231,22 @@ class HomePageFragment extends ConsumerWidget {
               // logout button
               ElevatedButton(
                 onPressed: () {
-                  prefs?.clear();  // logout
+                  // 이미 로그아웃 된 상태라면
+                  if (provider.homeRepository.localDataSource.token == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("로그아웃 상태입니다."),
+                      ),
+                    );
+                  } else {
+                    // logout
+                    provider.homeRepository.localDataSource.clearPref();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("로그아웃 되었습니다."),
+                      ),
+                    );
+                  }
                 },
                 child: const Text('로그아웃 하실 수 있습니다.'),
               ),

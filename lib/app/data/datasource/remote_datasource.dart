@@ -10,11 +10,11 @@ var logger = Logger(
 );
 
 class RemoteDatasource {
-  String api = "http://10.0.2.2:8080";
+  String address = "http://10.0.2.2:8080";
 
   Future<Map<String, dynamic>> getHomeQuestions() async {
-    Uri uri = Uri.parse("$api/home");
-    logger.d("$api/home");
+    Uri uri = Uri.parse("$address/home");
+    logger.d("$address/home");
     final response = await (http.get(uri));
     // logger.d("response.statusCode: ", response.statusCode);
     if (response.statusCode == 200) {
@@ -28,8 +28,8 @@ class RemoteDatasource {
     }
   }
 
-  Future<http.Response> postRequestLogin(String email, String password) async {
-    var uri = Uri.parse("$api/login");
+  Future<Map<String, String>> postRequestLogin(String email, String password) async {
+    var uri = Uri.parse("$address/login");
     var message = {"email" : email, "pwd" : password};
     var response = await http.post(
         uri,
@@ -40,21 +40,16 @@ class RemoteDatasource {
         encoding: Encoding.getByName("utf-8"),
         body: jsonEncode(message)
     );
-    // "Content-Type": "application/x-www-form-urlencoded",
-    // "Accept": "application/json"
-    // "Content-Type": "application/json"
-    // encoding: Encoding.getByName("utf-8")
-
-    logger.d(jsonDecode(utf8.decode(response.bodyBytes)));
+    // logger.d("response.headers", response.headers);
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      logger.d(jsonDecode(utf8.decode(response.bodyBytes)));
+      logger.d("response.headers", response.headers);
+      return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
       throw Exception("Error on server");
     }
-    return jsonDecode(utf8.decode(response.bodyBytes));
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/login/login_viewmodel.dart';
-import 'package:http/src/response.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 var logger = Logger(
   printer: PrettyPrinter(methodCount: 0),
@@ -19,14 +19,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
+  SharedPreferences? prefs;
+  String? token;
 
   void _postRequestLogin(LoginViewModel provider) async {
+    prefs = await SharedPreferences.getInstance();
     final form = formKey.currentState;
     if (form!.validate()) {
       form.save();
-      logger.d("Form is valid Email: $_email, password: $_password");
-
-      await provider.loginRepository.postRequestLogin(_email, _password);
+      Map<String, String> map =
+          await provider.loginRepository.postRequestLogin(_email, _password);
+      token = map['authorization']?.replaceAll("Bearer ", "");
+      // logger.d("token: $token");
+      prefs?.setString("token", token!);
     }
   }
 
@@ -69,7 +74,44 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     onSaved: (value) => _password = value!,
                   ),
                   ElevatedButton(
-                    onPressed: () => _postRequestLogin(provider),
+                    onPressed: () {
+                      _postRequestLogin(provider);
+                      provider.loginRepository.localDataSource.loadUser();
+                      if (provider.loginRepository.localDataSource.token == ' ') {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("확인해 주세요."),
+                                content: const Text("로그인 정보가 정확하지 않습니다."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: const Text("확인"),
+                                  )
+                                ],
+                              );
+                            });
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("로그인 성공"),
+                                content: const Text("홈 화면으로 이동합니다."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context, '/home', (route) => false),
+                                    child: const Text("확인"),
+                                  )
+                                ],
+                              );
+                            });
+                      }
+                    },
                     child: const Text('로그인 합니다.'),
                   ),
                 ],
