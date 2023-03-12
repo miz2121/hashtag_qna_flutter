@@ -22,17 +22,24 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   SharedPreferences? prefs;
   String? token;
 
-  void _postRequestLogin(LoginViewModel provider) async {
-    prefs = await SharedPreferences.getInstance();
+  Future<Map<String, String>?> _postRequestLogin(LoginViewModel provider) async {
     final form = formKey.currentState;
+    Map<String, String> map = {};
     if (form!.validate()) {
       form.save();
-      Map<String, String> map =
-          await provider.loginRepository.postRequestLogin(_email, _password);
+      map = await provider.postRequestLogin(_email, _password);
       token = map['authorization']?.replaceAll("Bearer ", "");
-      // logger.d("token: $token");
-      prefs?.setString("token", token!);
+      _saveToken(provider, token);
     }
+    return map;
+  }
+
+  void _loadUser(LoginViewModel provider){
+    provider.loadUser();
+  }
+
+  void _saveToken(LoginViewModel provider, String? token) {
+    provider.saveToken(token);
   }
 
   @override
@@ -52,7 +59,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '로그인 하셔야 합니다.\n입력해 주세요.',
+                    '로그인 페이지 입니다.\n입력해 주세요.',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: buttonFontSize,
@@ -73,11 +80,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         value!.isEmpty ? 'Password can not be empty' : null,
                     onSaved: (value) => _password = value!,
                   ),
+                  Container(height: 30),
                   ElevatedButton(
-                    onPressed: () {
-                      _postRequestLogin(provider);
-                      provider.loginRepository.localDataSource.loadUser();
-                      if (provider.loginRepository.localDataSource.token == ' ') {
+                    onPressed: () async {
+                      var headers = await _postRequestLogin(provider);
+                      if (!mounted) return;
+                      _loadUser(provider);
+                      if (headers == null) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {

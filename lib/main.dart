@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/join/join_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/questions_by_hashtag_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/login': (BuildContext context) => const LoginPage(),
         '/question': (BuildContext context) => const QuestionPage(),
         '/questions_by_hashtag' : (BuildContext context) => const QuestionsByHashtag(),
+        '/join': (BuildContext context) => const JoinPage(),
       },
       theme: ThemeData(
         primaryColor: Colors.cyan[900],

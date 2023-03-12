@@ -1,13 +1,13 @@
 import 'package:hashtag_qna_flutter/app/data/datasource/local_datasource.dart';
 import 'package:hashtag_qna_flutter/app/data/datasource/remote_datasource.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginRepository {
-  final LocalDataSource _localDataSource = LocalDataSource();
+class JoinRepository {
   final RemoteDatasource _remoteDatasource = RemoteDatasource();
+  final LocalDataSource _localDataSource = LocalDataSource();
 
-  Future<Map<String, String>> postRequestLogin(String email, String password) {
-    return _remoteDatasource.postRequestLogin(email, password);
+  Future<Map<String, String>> postRequestJoin(
+      String email, String password, String nickname) {
+    return _remoteDatasource.postRequestJoin(email, password, nickname);
   }
 
   void loadUser() {
@@ -19,8 +19,4 @@ class LoginRepository {
   }
 
   get token => _localDataSource.token;
-
-  void saveToken(String? token) {
-    _localDataSource.saveToken(token);
-  }
 }

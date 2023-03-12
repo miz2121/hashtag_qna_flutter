@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hashtag_qna_flutter/app/data/model/home.dart';
+import 'package:hashtag_qna_flutter/app/data/model/memberInfo.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_viewmodel.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:logger/logger.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 var logger = Logger(
   printer: PrettyPrinter(methodCount: 0),
@@ -25,19 +23,32 @@ class _HomePageState extends ConsumerState<HomePage> {
   String? token;
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
     final provider = ref.watch(homeViewModelProvider.notifier);
-    provider.homeRepository.localDataSource.loadUser();
-    token = provider.homeRepository.localDataSource.token;
+    _loadUser(provider);
+    token = _getToken(provider);
   }
+
+  void _loadUser(HomeViewModel provider) => provider.loadUser();
+
+  String? _getToken(HomeViewModel provider) => provider.token;
+
+  Future<Map<String, dynamic>> _getMemberInfoMaps(
+      HomeViewModel provider) async {
+    var map = await provider.getMemberInfoMaps();
+    return map;
+  }
+
+  MemberInfo? _getMemberInfo(HomeViewModel provider) =>
+      provider.getMemberInfo();
 
   @override
   Widget build(BuildContext context) {
     double displayWidth = MediaQuery.of(context).size.width;
     double buttonFontSize = displayWidth / 15;
     final provider = ref.watch(homeViewModelProvider.notifier);
-
+    logger.d("_getToken(provider): ${_getToken(provider)}");
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -46,10 +57,61 @@ class _HomePageState extends ConsumerState<HomePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(height: displayWidth / 10),
+
+                // 정보를 가져와 없으면 닉네임을 안띄울거고
+                (_getToken(provider) == null)
+                    ? InkWell(
+                        onTap: () => Navigator.pushNamed(context, '/login'),
+                        child: Container(
+                          margin: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(80),
+                            border: Border.all(
+                              color: Colors.cyan,
+                              width: 2,
+                            ),
+                          ),
+                          child: const Text('로그인 정보가 없습니다.'),
+                        ),
+                      )
+                    : // 정보를 가져와 있으면 닉네임을 띄울거임.
+                    InkWell(
+                        onTap: () {},
+                        child: FutureBuilder<Map<String, dynamic>>(
+                            future: _getMemberInfoMaps(provider),
+                            builder: (_, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error = ${snapshot.error}');
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Text("Loading");
+                              }
+                              if (snapshot.data!.isEmpty) {
+                                return Container();
+                              } else {
+                                return Container(
+                                  margin: const EdgeInsets.all(5),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(80),
+                                    border: Border.all(
+                                      color: Colors.cyan,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: Text(
+                                      '${_getMemberInfo(provider)!.nickname}님께서 로그인 중입니다.'),
+                                );
+                              }
+                            }),
+                      ),
                 TextButton(
                   onPressed: () {
-                    provider.homeRepository.localDataSource.loadUser();
-                    if (provider.homeRepository.localDataSource.token == null) {
+                    _loadUser(provider);
+                    if (_getToken(provider) == null) {
                       Navigator.pushNamed(context, '/login');
                     } else {
                       Navigator.pushNamed(context, '/create');
@@ -74,16 +136,34 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 }
 
-class HomePageFragment extends ConsumerWidget {
+class HomePageFragment extends ConsumerStatefulWidget {
   const HomePageFragment({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomePageFragment> createState() => _HomePageFragmentState();
+}
+
+class _HomePageFragmentState extends ConsumerState<HomePageFragment> {
+  Future<Map<String, dynamic>> _getHomeQuestions(HomeViewModel provider) =>
+      provider.getHomeQuestions();
+
+  void _loadUser(HomeViewModel provider) => provider.loadUser();
+
+  void _clearPref(HomeViewModel provider) => provider.clearPref();
+
+  String? _getToken(HomeViewModel provider) => provider.token;
+
+  MemberInfo _clearMemberInfo(HomeViewModel provider) {
+    return provider.clearMemberInfo();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final provider = ref.watch(homeViewModelProvider.notifier);
     List<int> hashtagColorList = [100, 200, 300];
 
     return FutureBuilder<Map<String, dynamic>>(
-      future: provider.homeRepository.getHomeQuestions(),
+      future: _getHomeQuestions(provider),
       builder: (_, snapshot) {
         if (snapshot.hasError) {
           return Text('Error = ${snapshot.error}');
@@ -161,9 +241,8 @@ class HomePageFragment extends ConsumerWidget {
                       ),
                     ),
                     onTap: () {
-                      provider.homeRepository.localDataSource.loadUser();
-                      if (provider.homeRepository.localDataSource.token ==
-                          null) {
+                      _loadUser(provider);
+                      if (_getToken(provider) == null) {
                         Navigator.pushNamed(context, '/login');
                       } else {
                         Navigator.pushNamed(context, '/question');
@@ -214,9 +293,8 @@ class HomePageFragment extends ConsumerWidget {
                         ),
                       ),
                       onTap: () {
-                        provider.homeRepository.localDataSource.loadUser();
-                        if (provider.homeRepository.localDataSource.token ==
-                            null) {
+                        _loadUser(provider);
+                        if (_getToken(provider) == null) {
                           Navigator.pushNamed(context, '/login');
                         } else {
                           Navigator.pushNamed(context, '/questions_by_hashtag');
@@ -231,8 +309,18 @@ class HomePageFragment extends ConsumerWidget {
               // logout button
               ElevatedButton(
                 onPressed: () {
+                  Navigator.pushNamed(context, '/join');
+                },
+                child: const Text('회원가입 하실 수 있습니다.'),
+              ),
+              Container(
+                height: 10,
+              ),
+              // logout button
+              ElevatedButton(
+                onPressed: () {
                   // 이미 로그아웃 된 상태라면
-                  if (provider.homeRepository.localDataSource.token == null) {
+                  if (_getToken(provider) == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("로그아웃 상태입니다."),
@@ -240,12 +328,13 @@ class HomePageFragment extends ConsumerWidget {
                     );
                   } else {
                     // logout
-                    provider.homeRepository.localDataSource.clearPref();
+                    _clearPref(provider);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("로그아웃 되었습니다."),
                       ),
                     );
+                    setState(() {});
                   }
                 },
                 child: const Text('로그아웃 하실 수 있습니다.'),
