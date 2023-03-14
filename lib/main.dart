@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hashtag_qna_flutter/app/ui/create/create_second_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/join/join_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/questions_by_hashtag_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import 'app/ui/create/create_page.dart';
+import 'app/ui/create/create_first_page.dart';
 import 'app/ui/login/login_page.dart';
 
 void main() {
@@ -31,7 +32,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (BuildContext context) => const StartPage(),
         '/home': (BuildContext context) => const  HomePage(),
-        '/create': (BuildContext context) => const CreatePage(),
+        '/create_first': (BuildContext context) => const CreateFirstPage(),
+        '/create_second': (BuildContext context) => const CreateSecondPage(),
         '/login': (BuildContext context) => const LoginPage(),
         '/question': (BuildContext context) => const QuestionPage(),
         '/questions_by_hashtag' : (BuildContext context) => const QuestionsByHashtag(),

@@ -87,4 +87,16 @@ class RemoteDatasource {
       throw Exception("Error on server");
     }
   }
+
+  Future<List<dynamic>> getHashtags() async {
+    Uri uri = Uri.parse("$address/hashtags");
+    final response = await http.get(uri);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(utf8.decode(response.bodyBytes));
+      return data;
+    } else {
+      logger.e('ERROR: ${response.statusCode}');
+      throw Exception("Error on server");
+    }
+  }
 }
