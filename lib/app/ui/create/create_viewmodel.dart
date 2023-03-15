@@ -15,4 +15,6 @@ class CreateViewModel extends StateNotifier<CreateRepository> {
   }
 
   List<bool> isHashtagChecked = [];
+
+  List<int> hashtagColorList = [100, 200, 300];
 }

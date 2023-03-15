@@ -23,7 +23,6 @@ class _CreateFirstPageState extends ConsumerState<CreateFirstPage> {
   Widget build(BuildContext context) {
     double displayWidth = MediaQuery.of(context).size.width;
     double buttonFontSize = displayWidth / 15;
-    List<int> hashtagColorList = [100, 200, 300];
     final provider = ref.watch(createViewModelProvider.notifier);
 
     void checkHashtagNamesEmpty(snapshot) {
@@ -98,7 +97,7 @@ class _CreateFirstPageState extends ConsumerState<CreateFirstPage> {
                                     const EdgeInsets.fromLTRB(10, 5, 10, 5),
                                 decoration: BoxDecoration(
                                   color:
-                                      Colors.cyan[hashtagColorList[index % 3]],
+                                      Colors.cyan[provider.hashtagColorList[index % 3]],
                                   borderRadius: BorderRadius.circular(80),
                                   border: Border.all(
                                     color: Colors.cyan,
