@@ -18,7 +18,7 @@ class LocalDataSource {
 
   SharedPreferences? prefs;
 
-  void loadUser() async {
+  Future<void> loadUser() async {
     prefs = await SharedPreferences.getInstance();
     _token = prefs?.getString('token');
     _memberInfo = MemberInfo(

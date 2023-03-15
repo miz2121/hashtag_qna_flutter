@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/create/create_second_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/create/create_third_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/join/join_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/home': (BuildContext context) => const  HomePage(),
         '/create_first': (BuildContext context) => const CreateFirstPage(),
         '/create_second': (BuildContext context) => const CreateSecondPage(),
+        '/create_third': (BuildContext context) => const CreateThirdPage(),
         '/login': (BuildContext context) => const LoginPage(),
         '/question': (BuildContext context) => const QuestionPage(),
         '/questions_by_hashtag' : (BuildContext context) => const QuestionsByHashtag(),
