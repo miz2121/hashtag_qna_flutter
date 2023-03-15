@@ -11,9 +11,7 @@ var logger = Logger(
 );
 
 class HomePage extends ConsumerStatefulWidget {
-  final String? auth;
-
-  const HomePage({Key? key, this.auth}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   ConsumerState<HomePage> createState() => _HomePageState();
@@ -77,7 +75,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                       )
                     : // 정보를 가져와 있으면 닉네임을 띄울거임.
                     InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          // 해야 할 것. 회원 정보 관련된 페이지로 보내야 함.
+                        },
                         child: FutureBuilder<Map<String, dynamic>>(
                             future: _getMemberInfoMaps(provider),
                             builder: (_, snapshot) {
@@ -114,7 +114,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     if (_getToken(provider) == null) {
                       Navigator.pushNamed(context, '/login');
                     } else {
-                      Navigator.pushNamed(context, '/create');
+                      Navigator.pushNamed(context, '/create_first');
                     }
                   },
                   child: Text(
@@ -313,9 +313,7 @@ class _HomePageFragmentState extends ConsumerState<HomePageFragment> {
                 },
                 child: const Text('회원가입 하실 수 있습니다.'),
               ),
-              Container(
-                height: 10,
-              ),
+              Container(height: 10),
               // logout button
               ElevatedButton(
                 onPressed: () {
@@ -338,6 +336,31 @@ class _HomePageFragmentState extends ConsumerState<HomePageFragment> {
                   }
                 },
                 child: const Text('로그아웃 하실 수 있습니다.'),
+              ),
+              Container(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  // 이미 로그아웃 된 상태라면
+                  if (_getToken(provider) == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("로그아웃 상태입니다."),
+                      ),
+                    );
+                  } else {
+                    // logout
+                    _clearPref(provider);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("계정이 비활성화 되었습니다."),
+                      ),
+                    );
+                    setState(() {
+                      // 해야 할 것. 비활성화 기능 넣어야 함.
+                    });
+                  }
+                },
+                child: const Text('회원 비활성화...하실 수도 있습니다.'),
               ),
             ],
           );
