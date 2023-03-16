@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
@@ -18,66 +19,63 @@ class QuestionPage extends ConsumerStatefulWidget {
 }
 
 class _QuestionPageState extends ConsumerState<QuestionPage> {
-  late Widget _form;
-  // final TextEditingController _controller = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  late final GlobalKey<FormState> formKey;
   String _comment = '';
-  Future _init = Future(() => null);
+  double displayWidth = 0;
+  double buttonFontSize = 0;
+  int id = 0;
 
   @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
+  didChangeDependencies() {
     super.didChangeDependencies();
-    final id = (ModalRoute.of(context)!.settings.arguments as Map)['id'];
-    final provider = ref.watch(questionViewModelProvider.notifier);
-    _init = provider.getQuestionMaps(id);
+    formKey = GlobalKey<FormState>();
+    displayWidth = MediaQuery.of(context).size.width;
+    buttonFontSize = displayWidth / 15;
+    id = (ModalRoute.of(context)!.settings.arguments as Map)['id'];
+  }
+
+  List<Icon> _printStar(AsyncSnapshot<dynamic> snapshot, int i) {
+    List<Icon> star = [];
+    int rating = 0;
+    switch (snapshot.data!["answerDtos"][i]["rating"]) {
+      case "1":
+        rating = 1;
+        break;
+      case "2":
+        rating = 2;
+        break;
+      case "3":
+        rating = 3;
+        break;
+      case "4":
+        rating = 4;
+        break;
+      case "5":
+        rating = 5;
+        break;
+    }
+    for (int s = 0; s < rating; s++) {
+      star.add(const Icon(Icons.star));
+    }
+    if (star.length < 6) {
+      while (star.length != 5) {
+        star.add(const Icon(Icons.star_border));
+      }
+    }
+    return star;
   }
 
   @override
   Widget build(BuildContext context) {
-    // final provider = ref.watch(questionViewModelProvider.notifier);
-    // var id = (ModalRoute.of(context)!.settings.arguments as Map)['id'];
-    double displayWidth = MediaQuery.of(context).size.width;
-    double buttonFontSize = displayWidth / 15;
-
-    List<Icon> _printStar(AsyncSnapshot<dynamic> snapshot, int i) {
-      List<Icon> star = [];
-      int rating = 0;
-      switch (snapshot.data!["answerDtos"][i]["rating"]) {
-        case "1":
-          rating = 1;
-          break;
-        case "2":
-          rating = 2;
-          break;
-        case "3":
-          rating = 3;
-          break;
-        case "4":
-          rating = 4;
-          break;
-        case "5":
-          rating = 5;
-          break;
-      }
-      for (int s = 0; s < rating; s++) {
-        star.add(const Icon(Icons.star));
-      }
-      if (star.length < 6) {
-        while (star.length != 5) {
-          star.add(const Icon(Icons.star_border));
-        }
-      }
-      return star;
-    }
+    final provider = ref.watch(questionViewModelProvider.notifier);
 
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: FutureBuilder<dynamic>(
-                future: _init,
+      body: Form(
+        key: formKey,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: FutureBuilder<Map<String, dynamic>>(
+                future: provider.getQuestionMaps(id),
                 builder: (_, snapshot) {
                   if (snapshot.hasError) {
                     return Text('Error = ${snapshot.error}');
@@ -122,7 +120,7 @@ class _QuestionPageState extends ConsumerState<QuestionPage> {
                                 ),
                                 Container(height: 15),
                                 Text(
-                                  DateFormat('yyy년 MM월 dd일 a:h시 mm분').format(
+                                  DateFormat('yy년 MM월 dd일 a:h시 mm분').format(
                                       DateTime.parse(snapshot
                                           .data!["questionDto"]["date"])),
                                 ),
@@ -194,7 +192,7 @@ class _QuestionPageState extends ConsumerState<QuestionPage> {
                                             ),
                                             Text(
                                               DateFormat(
-                                                      'yyy년 MM월 dd일 a:h시 mm분')
+                                                      'yy년 MM월 dd일 a:h시 mm분')
                                                   .format(DateTime.parse(
                                                       snapshot.data![
                                                               "quCommentDtos"]
@@ -228,7 +226,6 @@ class _QuestionPageState extends ConsumerState<QuestionPage> {
                                             CrossAxisAlignment.stretch,
                                         children: [
                                           TextFormField(
-                                            // controller: _controller,
                                             maxLines: 3,
                                             decoration: const InputDecoration(
                                               labelText: '댓글을 입력해 주세요',
@@ -311,7 +308,7 @@ class _QuestionPageState extends ConsumerState<QuestionPage> {
                                             Container(height: 15),
                                             Text(
                                               DateFormat(
-                                                      'yyy년 MM월 dd일 a:h시 mm분')
+                                                      'yy년 MM월 dd일 a:h시 mm분')
                                                   .format(DateTime.parse(
                                                       snapshot.data![
                                                               "answerDtos"][i]
@@ -392,7 +389,7 @@ class _QuestionPageState extends ConsumerState<QuestionPage> {
                                                         ),
                                                         Text(
                                                           DateFormat(
-                                                                  'yyy년 MM월 dd일 a:h시 mm분')
+                                                                  'yy년 MM월 dd일 a:h시 mm분')
                                                               .format(DateTime.parse(
                                                                   snapshot.data![
                                                                           "anCommentDtos"][i]
