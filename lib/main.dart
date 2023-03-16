@@ -5,7 +5,7 @@ import 'package:hashtag_qna_flutter/app/ui/create/create_third_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/join/join_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
-import 'package:hashtag_qna_flutter/app/ui/question/questions_by_hashtag_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/question_list/questions_by_hashtag_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'app/ui/create/create_first_page.dart';

@@ -141,4 +141,20 @@ class RemoteDatasource {
       throw Exception("Error on server");
     }
   }
+
+  Future<Map<String, dynamic>> getQuestion(String? token, int id) async {
+    Uri uri = Uri.parse("$address/questions/$id");
+    var headers = {"Authorization": "Bearer $token"};
+    final response = await (http.get(uri, headers: headers));
+    // logger.d("response.statusCode: ", response.statusCode);
+    if (response.statusCode == 200) {
+      // OK
+      var data = jsonDecode(utf8.decode(response.bodyBytes));
+      // logger.d("data is: ", data);
+      return data;
+    } else {
+      logger.e('ERROR: ${response.statusCode}');
+      throw Exception("Error on server");
+    }
+  }
 }

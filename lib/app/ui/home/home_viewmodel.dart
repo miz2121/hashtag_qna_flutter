@@ -15,12 +15,12 @@ class HomeViewModel extends StateNotifier<HomeRepository> {
     return _homeRepository.getHomeQuestions();
   }
 
-  Future<Map<String, dynamic>> getMemberInfoMaps() {
-    return _homeRepository.getMemberInfoMaps();
+  Future<Map<String, dynamic>> getMemberInfoMaps() async{
+    return await _homeRepository.getMemberInfoMaps();
   }
 
-  void loadUser() {
-    _homeRepository.loadUser();
+  Future<void> loadUser() async {
+    await _homeRepository.loadUser();
   }
 
   void clearPref() {
@@ -29,10 +29,6 @@ class HomeViewModel extends StateNotifier<HomeRepository> {
 
   get token => _homeRepository.token;
 
-  getMemberInfo() => _homeRepository.getMemberInfo();
+  getMemberInfo()  =>  _homeRepository.getMemberInfo();
 
-  MemberInfo clearMemberInfo() {
-    _homeRepository.saveMemberInfo('', '', 0, 0, 0, 0);
-    return getMemberInfo();
-  }
 }

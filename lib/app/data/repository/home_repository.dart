@@ -24,8 +24,8 @@ class HomeRepository {
     return info;
   }
 
-  void loadUser() {
-    _localDataSource.loadUser();
+  Future<void> loadUser() async {
+    await _localDataSource.loadUser();
   }
 
   void clearPref() {

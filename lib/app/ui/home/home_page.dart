@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -147,15 +149,10 @@ class _HomePageFragmentState extends ConsumerState<HomePageFragment> {
   Future<Map<String, dynamic>> _getHomeQuestions(HomeViewModel provider) =>
       provider.getHomeQuestions();
 
-  void _loadUser(HomeViewModel provider) => provider.loadUser();
+  Future<void> _loadUser(HomeViewModel provider) async =>
+      await provider.loadUser();
 
   void _clearPref(HomeViewModel provider) => provider.clearPref();
-
-  String? _getToken(HomeViewModel provider) => provider.token;
-
-  MemberInfo _clearMemberInfo(HomeViewModel provider) {
-    return provider.clearMemberInfo();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -240,12 +237,17 @@ class _HomePageFragmentState extends ConsumerState<HomePageFragment> {
                         ],
                       ),
                     ),
-                    onTap: () {
-                      _loadUser(provider);
-                      if (_getToken(provider) == null) {
+                    onTap: () async {
+                      await _loadUser(provider);
+                      if (!mounted) return;
+                      if (provider.token == null) {
                         Navigator.pushNamed(context, '/login');
                       } else {
-                        Navigator.pushNamed(context, '/question');
+                        logger.d(
+                            "Entering the question page, token is: ${provider.token}");
+                        Navigator.pushNamed(context, '/question', arguments: {
+                          'id': snapshot.data!['questionListDtos'][index]['id']
+                        });
                       }
                     },
                   );
@@ -254,9 +256,19 @@ class _HomePageFragmentState extends ConsumerState<HomePageFragment> {
               //
               // boards
               //
-              Container(
-                height: 30,
+              TextButton(
+                onPressed: () async {
+                  // 해야 할 것. 전체 질문글 목록 받아와야 함.
+                  await _loadUser(provider);
+                  if (provider.token == null) {
+                    // 해야 할 것. 토큰에 따라 다른 동작
+                  } else {
+                    // 해야 할 것. 토큰에 따라 다른 동작
+                  }
+                },
+                child: const Text('>>질문글 더 보기'),
               ),
+              Container(height: 30),
               //
               //
               // hashtags
@@ -292,9 +304,10 @@ class _HomePageFragmentState extends ConsumerState<HomePageFragment> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      onTap: () {
-                        _loadUser(provider);
-                        if (_getToken(provider) == null) {
+                      onTap: () async {
+                        await _loadUser(provider);
+                        if (!mounted) return;
+                        if (provider.token == null) {
                           Navigator.pushNamed(context, '/login');
                         } else {
                           Navigator.pushNamed(context, '/questions_by_hashtag');
@@ -318,7 +331,7 @@ class _HomePageFragmentState extends ConsumerState<HomePageFragment> {
               ElevatedButton(
                 onPressed: () {
                   // 이미 로그아웃 된 상태라면
-                  if (_getToken(provider) == null) {
+                  if (provider.token == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("로그아웃 상태입니다."),
@@ -326,13 +339,14 @@ class _HomePageFragmentState extends ConsumerState<HomePageFragment> {
                     );
                   } else {
                     // logout
-                    _clearPref(provider);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("로그아웃 되었습니다."),
-                      ),
-                    );
-                    setState(() {});
+                    setState(() {
+                      _clearPref(provider);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("로그아웃 되었습니다."),
+                        ),
+                      );
+                    });
                   }
                 },
                 child: const Text('로그아웃 하실 수 있습니다.'),
@@ -341,7 +355,7 @@ class _HomePageFragmentState extends ConsumerState<HomePageFragment> {
               ElevatedButton(
                 onPressed: () {
                   // 이미 로그아웃 된 상태라면
-                  if (_getToken(provider) == null) {
+                  if (provider.token == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("로그아웃 상태입니다."),
