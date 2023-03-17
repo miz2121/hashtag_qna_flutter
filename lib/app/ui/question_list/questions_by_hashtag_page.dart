@@ -5,11 +5,9 @@ class QuestionsByHashtag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
-        child: Container(
-          child: Text('해시태그로 조회한 게시글 목록'),
-        ),
+        child: Text('해시태그로 조회한 게시글 목록'),
       ),
     );
   }

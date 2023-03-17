@@ -6,13 +6,7 @@ class MemberInfoDtos {
   int? commentCount;
   int? hashtagCount;
 
-  MemberInfoDtos(
-      {this.nickname,
-        this.email,
-        this.questionCount,
-        this.answerCount,
-        this.commentCount,
-        this.hashtagCount});
+  MemberInfoDtos({this.nickname, this.email, this.questionCount, this.answerCount, this.commentCount, this.hashtagCount});
 
   MemberInfoDtos.fromJson(Map<String, dynamic> json) {
     nickname = json['nickname'] as String;
@@ -24,7 +18,7 @@ class MemberInfoDtos {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = {};
     data['nickname'] = nickname;
     data['email'] = email;
     data['questionCount'] = questionCount;

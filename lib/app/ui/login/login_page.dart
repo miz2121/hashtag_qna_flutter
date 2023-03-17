@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/login/login_viewmodel.dart';
-import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-var logger = Logger(
-  printer: PrettyPrinter(methodCount: 0),
-);
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -27,14 +22,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     Map<String, String> map = {};
     if (form!.validate()) {
       form.save();
-      map = await provider.postRequestLogin(_email, _password);
+      map = await provider.postLogin(_email, _password);
       token = map['authorization']?.replaceAll("Bearer ", "");
       _saveToken(provider, token);
     }
     return map;
   }
 
-  void _loadUser(LoginViewModel provider){
+  void _loadUser(LoginViewModel provider) {
     provider.loadUser();
   }
 
@@ -69,15 +64,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   Container(height: 30),
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Email'),
-                    validator: (value) =>
-                        value!.isEmpty ? 'Email can not be empty' : null,
+                    validator: (value) => value!.isEmpty ? 'Email can not be empty' : null,
                     onSaved: (value) => _email = value!,
                   ),
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Password'),
                     obscureText: true,
-                    validator: (value) =>
-                        value!.isEmpty ? 'Password can not be empty' : null,
+                    validator: (value) => value!.isEmpty ? 'Password can not be empty' : null,
                     onSaved: (value) => _password = value!,
                   ),
                   Container(height: 30),
@@ -95,8 +88,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 content: const Text("로그인 정보가 정확하지 않습니다."),
                                 actions: [
                                   TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
+                                    onPressed: () => Navigator.of(context).pop(),
                                     child: const Text("확인"),
                                   )
                                 ],
@@ -111,9 +103,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 content: const Text("홈 화면으로 이동합니다."),
                                 actions: [
                                   TextButton(
-                                    onPressed: () =>
-                                        Navigator.pushNamedAndRemoveUntil(
-                                            context, '/home', (route) => false),
+                                    onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false),
                                     child: const Text("확인"),
                                   )
                                 ],

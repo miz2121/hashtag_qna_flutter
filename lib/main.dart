@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hashtag_qna_flutter/app/ui/create/create_second_page.dart';
-import 'package:hashtag_qna_flutter/app/ui/create/create_third_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/create/create_second/create_second_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/create/create_third/create_third_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/join/join_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question_list/questions_by_hashtag_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import 'app/ui/create/create_first_page.dart';
+import 'app/ui/create/create_first/create_first_page.dart';
 import 'app/ui/login/login_page.dart';
 
 void main() {
@@ -32,26 +32,25 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (BuildContext context) => const StartPage(),
-        '/home': (BuildContext context) => const  HomePage(),
+        '/home': (BuildContext context) => const HomePage(),
         '/create_first': (BuildContext context) => const CreateFirstPage(),
         '/create_second': (BuildContext context) => const CreateSecondPage(),
         '/create_third': (BuildContext context) => const CreateThirdPage(),
         '/login': (BuildContext context) => const LoginPage(),
         '/question': (BuildContext context) => const QuestionPage(),
-        '/questions_by_hashtag' : (BuildContext context) => const QuestionsByHashtag(),
+        '/questions_by_hashtag': (BuildContext context) => const QuestionsByHashtag(),
         '/join': (BuildContext context) => const JoinPage(),
       },
       theme: ThemeData(
-        primaryColor: Colors.cyan[900],
-        scaffoldBackgroundColor: Colors.lightBlue[50],
-        buttonTheme: ButtonThemeData(
-          buttonColor: Colors.cyan[100],
-        ),
-        textTheme: TextTheme(
-          bodyLarge: TextStyle(fontSize: displayWidth / 23),
-          bodyMedium: TextStyle(fontSize: displayWidth / 29),
-        )
-      ),
+          primaryColor: Colors.cyan[900],
+          scaffoldBackgroundColor: Colors.lightBlue[50],
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.cyan[100],
+          ),
+          textTheme: TextTheme(
+            bodyLarge: TextStyle(fontSize: displayWidth / 23),
+            bodyMedium: TextStyle(fontSize: displayWidth / 29),
+          )),
     );
   }
 }
@@ -67,8 +66,9 @@ class StartPage extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: TextButton(
-            onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                context, '/home', (route) => false),
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+            },
             child: Text(
               '해시태그 QnA 게시판\n서비스를 시작합니다.',
               style: TextStyle(

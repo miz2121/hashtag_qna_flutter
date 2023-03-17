@@ -1,27 +1,18 @@
-import 'package:hashtag_qna_flutter/app/data/model/memberInfo.dart';
-import 'package:hashtag_qna_flutter/app/data/model/memberInfoDtos.dart';
-import 'package:logger/logger.dart';
+import 'package:hashtag_qna_flutter/app/data/model/member_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-var logger = Logger(
-  printer: PrettyPrinter(methodCount: 0),
-);
 
 class LocalDataSource {
   String? _token;
 
   String? get token => _token;
 
-  MemberInfo? _memberInfo;
-
-  MemberInfo? get memberInfo => _memberInfo;
-
   SharedPreferences? prefs;
 
-  Future<void> loadUser() async {
+  /// return memberInfo
+  Future<MemberInfo> loadUser() async {
     prefs = await SharedPreferences.getInstance();
     _token = prefs?.getString('token');
-    _memberInfo = MemberInfo(
+    return MemberInfo(
       prefs?.getString('nickname'),
       prefs?.getString('email'),
       prefs?.getInt('questionCount'),
@@ -36,7 +27,7 @@ class LocalDataSource {
     _token = null;
   }
 
-  void saveMemberInfo(
+  Future<void> saveMemberInfo(
     String nickname,
     String email,
     int questionCount,

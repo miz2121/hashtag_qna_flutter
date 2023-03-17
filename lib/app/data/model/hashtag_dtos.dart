@@ -8,8 +8,8 @@ class HashtagDtos {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['hashtagName'] = this.hashtagName;
+    final Map<String, dynamic> data = {};
+    data['hashtagName'] = hashtagName;
     return data;
   }
 }

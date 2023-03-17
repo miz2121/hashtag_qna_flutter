@@ -1,10 +1,6 @@
 import 'package:hashtag_qna_flutter/app/data/datasource/local_datasource.dart';
 import 'package:hashtag_qna_flutter/app/data/datasource/remote_datasource.dart';
-import 'package:logger/logger.dart';
-
-var logger = Logger(
-  printer: PrettyPrinter(methodCount: 0),
-);
+import 'package:hashtag_qna_flutter/app/data/model/member_info.dart';
 
 class HomeRepository {
   final LocalDataSource _localDataSource = LocalDataSource();
@@ -14,18 +10,15 @@ class HomeRepository {
     return _remoteDatasource.getHomeQuestions();
   }
 
-  Future<Map<String, dynamic>> getMemberInfoMaps() async {
-    loadUser();
-    Map<String, dynamic> info =
-        await _remoteDatasource.getMemberInfoMaps(token);
+  Future<Map<String, dynamic>> getMemberInfoMaps(String token) async {
+    Map<String, dynamic> info = await _remoteDatasource.getMemberInfoMaps(token);
 
-    saveMemberInfo(info['nickname'], info['email'], info['questionCount'],
-        info['answerCount'], info['commentCount'], info['hashtagCount']);
+    await saveMemberInfo(info['nickname'], info['email'], info['questionCount'], info['answerCount'], info['commentCount'], info['hashtagCount']);
     return info;
   }
 
-  Future<void> loadUser() async {
-    await _localDataSource.loadUser();
+  Future<MemberInfo> loadUser() async {
+    return await _localDataSource.loadUser();
   }
 
   void clearPref() {
@@ -34,15 +27,15 @@ class HomeRepository {
 
   get token => _localDataSource.token;
 
-  void saveMemberInfo(
+  Future<void> saveMemberInfo(
     String nickname,
     String email,
     int questionCount,
     int answerCount,
     int commentCount,
     int hashtagCount,
-  ) {
-    _localDataSource.saveMemberInfo(
+  ) async {
+    await _localDataSource.saveMemberInfo(
       nickname,
       email,
       questionCount,
@@ -51,6 +44,4 @@ class HomeRepository {
       hashtagCount,
     );
   }
-
-  getMemberInfo() => _localDataSource.memberInfo;
 }
