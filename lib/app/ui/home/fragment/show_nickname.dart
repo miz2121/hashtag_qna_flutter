@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_viewmodel.dart';
 
 class ShowNickname extends ConsumerStatefulWidget {
-  ShowNickname({
+  const ShowNickname({
     super.key,
     this.token,
     required this.provider,
   });
-  String? token;
+  final String? token;
   final HomeViewModel provider;
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/join/join_viewmodel.dart';
+import 'package:sizer/sizer.dart';
 
 class JoinPage extends ConsumerStatefulWidget {
   const JoinPage({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class _JoinPageState extends ConsumerState<JoinPage> {
   String _email = '';
   String _password = '';
   String _nickname = '';
+  late JoinViewModel provider;
 
   bool _validate() {
     final form = formKey.currentState;
@@ -33,11 +35,19 @@ class _JoinPageState extends ConsumerState<JoinPage> {
   void _join(JoinViewModel provider) => provider.postJoin(_email, _password, _nickname);
 
   @override
-  Widget build(BuildContext context) {
-    double displayWidth = MediaQuery.of(context).size.width;
-    double buttonFontSize = displayWidth / 15;
-    final provider = ref.watch(joinViewModelProvider.notifier);
+  void initState() {
+    super.initState();
+    provider = ref.read(joinViewModelProvider.notifier);
+  }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    provider = ref.watch(joinViewModelProvider.notifier);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -50,7 +60,7 @@ class _JoinPageState extends ConsumerState<JoinPage> {
                     '회원가입 도와드리겠습니다.\n입력해 주세요.',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: buttonFontSize,
+                      fontSize: 100.w / 15,
                       color: Colors.cyan[700],
                     ),
                   ),

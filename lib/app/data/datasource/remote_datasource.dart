@@ -119,7 +119,6 @@ class RemoteDatasource {
     if (response.statusCode == 200) {
       // OK
       var data = jsonDecode(utf8.decode(response.bodyBytes));
-      // logger.d("data is: ", data);
       return data;
     } else {
       logger.e('ERROR: ${response.statusCode}');

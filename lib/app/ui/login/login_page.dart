@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/login/login_viewmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   String _password = '';
   SharedPreferences? prefs;
   String? token;
+  late LoginViewModel provider;
 
   Future<Map<String, String>?> _postRequestLogin(LoginViewModel provider) async {
     final form = formKey.currentState;
@@ -38,11 +40,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    double displayWidth = MediaQuery.of(context).size.width;
-    double buttonFontSize = displayWidth / 15;
-    final provider = ref.watch(loginViewModelProvider.notifier);
+  void initState() {
+    super.initState();
+    provider = ref.read(loginViewModelProvider.notifier);
+  }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    provider = ref.watch(loginViewModelProvider.notifier);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -57,7 +67,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     '로그인 페이지 입니다.\n입력해 주세요.',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: buttonFontSize,
+                      fontSize: 100.w / 15,
                       color: Colors.cyan[700],
                     ),
                   ),

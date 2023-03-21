@@ -1,31 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sizer/sizer.dart';
 
 class AnswerBody extends StatelessWidget {
   const AnswerBody({
     super.key,
     required this.snapshot,
-    required this.displayWidth,
-    required this.buttonFontSize,
     required this.i,
   });
 
   final AsyncSnapshot<Map<String, dynamic>> snapshot;
-  final double displayWidth;
-  final double buttonFontSize;
   final int i;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: displayWidth * (9 / 10),
+      width: 100.w * (9 / 10),
       child: Column(
         children: [
           Row(
             children: [
               const Icon(Icons.subdirectory_arrow_right),
               Container(
-                width: displayWidth * (8.1 / 10),
+                width: 100.w * (8.1 / 10),
                 margin: const EdgeInsets.all(5),
                 padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                 decoration: BoxDecoration(
@@ -43,7 +40,7 @@ class AnswerBody extends StatelessWidget {
                       '답변',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: buttonFontSize,
+                        fontSize: 100.w / 15,
                         color: Colors.cyan[700],
                       ),
                     ),
@@ -77,7 +74,7 @@ class AnswerBody extends StatelessWidget {
                             children: [
                               const Icon(Icons.subdirectory_arrow_right),
                               Container(
-                                width: displayWidth * (6.8 / 10),
+                                width: 100.w * (6.8 / 10),
                                 padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),

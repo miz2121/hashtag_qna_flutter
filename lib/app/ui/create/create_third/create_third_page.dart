@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/create/create_viewmodel.dart';
 import 'package:hashtag_qna_flutter/app/util/component/hashtag.dart';
+import 'package:sizer/sizer.dart';
 
 class CreateThirdPage extends ConsumerStatefulWidget {
   const CreateThirdPage({Key? key}) : super(key: key);
@@ -14,21 +15,32 @@ class _CreateThirdPageState extends ConsumerState<CreateThirdPage> {
   final formKey = GlobalKey<FormState>();
   String _title = '';
   String _content = '';
+  List<String> existHashtags = [];
+  List<String> newHashtags = [];
+  List<String> myHashtags = [];
+  late CreateViewModel provider;
 
   Future<void> _postWriteQuestion(CreateViewModel provider, String title, String content, List<String> existHashtags, List<String> newHashtags) async {
     await provider.postWriteQuestion(title, content, existHashtags, newHashtags);
   }
 
   @override
+  void initState() {
+    super.initState();
+    provider = ref.read(createViewModelProvider.notifier);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    existHashtags = (ModalRoute.of(context)!.settings.arguments as Map)['existHashtag'];
+    newHashtags = (ModalRoute.of(context)!.settings.arguments as Map)['newHashtag'];
+    myHashtags = existHashtags + newHashtags;
+    provider = ref.watch(createViewModelProvider.notifier);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var existHashtags = (ModalRoute.of(context)!.settings.arguments as Map)['existHashtag'];
-    var newHashtags = (ModalRoute.of(context)!.settings.arguments as Map)['newHashtag'];
-    List<String> myHashtags = existHashtags + newHashtags;
-
-    final provider = ref.watch(createViewModelProvider.notifier);
-    double displayWidth = MediaQuery.of(context).size.width;
-    double buttonFontSize = displayWidth / 15;
-
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -41,13 +53,13 @@ class _CreateThirdPageState extends ConsumerState<CreateThirdPage> {
                     '제목과 내용을 작성해 주세요.\n아래의 해시태그와 함께\n글이 작성 됩니다.',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: buttonFontSize,
+                      fontSize: 100.w / 15,
                       color: Colors.cyan[700],
                     ),
                   ),
                   Container(height: 15),
                   Container(
-                    width: displayWidth * (9 / 10),
+                    width: 100.w * (9 / 10),
                     margin: const EdgeInsets.all(5),
                     padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                     decoration: BoxDecoration(
@@ -70,7 +82,7 @@ class _CreateThirdPageState extends ConsumerState<CreateThirdPage> {
                   ),
                   Container(height: 10),
                   Container(
-                    width: displayWidth * (9 / 10),
+                    width: 100.w * (9 / 10),
                     margin: const EdgeInsets.all(5),
                     padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                     decoration: BoxDecoration(

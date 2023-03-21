@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sizer/sizer.dart';
 
 class QuComment extends StatelessWidget {
   const QuComment({
     super.key,
-    required this.displayWidth,
     required this.index,
     required this.snapshot,
   });
 
-  final double displayWidth;
   final int index;
   final AsyncSnapshot<Map<String, dynamic>> snapshot;
 
@@ -22,7 +21,7 @@ class QuComment extends StatelessWidget {
           children: [
             const Icon(Icons.subdirectory_arrow_right),
             Container(
-              width: displayWidth * (7.7 / 10),
+              width: 100.w * (7.7 / 10),
               padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),

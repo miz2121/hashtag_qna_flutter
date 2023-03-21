@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/create/create_second/create_second_page.dart';
 import 'package:hashtag_qna_flutter/app/util/utility.dart';
+import 'package:sizer/sizer.dart';
 
 class AddHashtagButton extends StatefulWidget {
-  AddHashtagButton({
+  const AddHashtagButton({
     super.key,
-    required this.displayWidth,
-    required this.buttonFontSize,
-    required this.buttonSize,
     required this.createdFormLists,
     required this.createdHashtagNameList,
   });
 
-  final double displayWidth;
-  final double buttonFontSize;
-  final double buttonSize;
-  List<Widget> createdFormLists;
-  List<String> createdHashtagNameList;
+  final List<Widget> createdFormLists;
+  final List<String> createdHashtagNameList;
 
   @override
   State<AddHashtagButton> createState() => _AddHashtagButtonState();
 }
 
 class _AddHashtagButtonState extends State<AddHashtagButton> {
+  double buttonSize = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    buttonSize = 100.w / 8;
+  }
+
   @override
   Widget build(BuildContext context) {
     CreateSecondPageState? parent = context.findAncestorStateOfType<CreateSecondPageState>();
@@ -43,9 +46,9 @@ class _AddHashtagButtonState extends State<AddHashtagButton> {
           children: [
             Text(
               '해시태그 추가하기',
-              style: TextStyle(fontSize: widget.buttonFontSize / 1.3),
+              style: TextStyle(fontSize: (100.w / 15) / 1.3),
             ),
-            Icon(Icons.add_circle, color: Colors.lightBlue, size: widget.buttonSize),
+            Icon(Icons.add_circle, color: Colors.lightBlue, size: buttonSize),
           ],
         ),
       ),
@@ -58,7 +61,7 @@ class _AddHashtagButtonState extends State<AddHashtagButton> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: widget.displayWidth * (7 / 10),
+                  width: 100.w * (7 / 10),
                   child: TextFormField(
                       decoration: const InputDecoration(
                         labelText: '해시태그 이름을 입력해 주세요.',
@@ -74,7 +77,7 @@ class _AddHashtagButtonState extends State<AddHashtagButton> {
                   child: Icon(
                     Icons.delete_forever,
                     color: Colors.lightBlue,
-                    size: widget.buttonSize * 0.9,
+                    size: buttonSize * 0.9,
                   ),
                   onTap: () {
                     parent.setState(() {

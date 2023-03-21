@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
+import 'package:sizer/sizer.dart';
 
 class QuCommentInput extends StatefulWidget {
   const QuCommentInput({
     super.key,
-    required this.displayWidth,
     required this.formKey,
     required this.token,
     required this.questionId,
     required this.provider,
   });
 
-  final double displayWidth;
   final GlobalKey<FormState> formKey;
   final String token;
   final int questionId;
@@ -45,7 +44,7 @@ class _QuCommentInputState extends State<QuCommentInput> {
           children: [
             const Icon(Icons.subdirectory_arrow_right),
             Container(
-              width: widget.displayWidth * (7.7 / 10),
+              width: 100.w * (7.7 / 10),
               padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),

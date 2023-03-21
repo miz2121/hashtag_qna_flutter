@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:hashtag_qna_flutter/app/ui/home/home_viewmodel.dart';
 import 'package:hashtag_qna_flutter/app/util/utility.dart';
+import 'package:sizer/sizer.dart';
 
 class UpperTextClikable extends StatelessWidget {
   const UpperTextClikable({
     super.key,
-    required this.buttonFontSize,
     required this.snapshot,
     required this.text,
+    required this.provider,
   });
 
-  final double buttonFontSize;
   final AsyncSnapshot<String?> snapshot;
   final String text;
+  final HomeViewModel provider;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class UpperTextClikable extends StatelessWidget {
         text,
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: buttonFontSize,
+          fontSize: 100.w / 15,
         ),
       ),
     );

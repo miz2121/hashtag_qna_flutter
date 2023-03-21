@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/answer_body.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/question_body.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
+import 'package:sizer/sizer.dart';
 
 class QuestionPage extends ConsumerStatefulWidget {
   const QuestionPage({Key? key}) : super(key: key);
@@ -12,21 +13,23 @@ class QuestionPage extends ConsumerStatefulWidget {
 }
 
 class _QuestionPageState extends ConsumerState<QuestionPage> {
-  late GlobalKey<FormState> formKey;
-  double displayWidth = 0;
-  double buttonFontSize = 0;
+  late final GlobalKey<FormState> formKey;
   int id = 0;
   String token = '';
   late QuestionViewModel provider;
 
   @override
-  didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     formKey = GlobalKey<FormState>();
-    displayWidth = MediaQuery.of(context).size.width;
-    buttonFontSize = displayWidth / 15;
+    provider = ref.read(questionViewModelProvider.notifier);
+  }
+
+  @override
+  void didChangeDependencies() {
     id = (ModalRoute.of(context)!.settings.arguments as Map)['id'];
     token = (ModalRoute.of(context)!.settings.arguments as Map)['token'];
+    super.didChangeDependencies();
     provider = ref.watch(questionViewModelProvider.notifier);
   }
 
@@ -54,7 +57,7 @@ class _QuestionPageState extends ConsumerState<QuestionPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            width: displayWidth * (9 / 10),
+                            width: 100.w * (9 / 10),
                             margin: const EdgeInsets.all(5),
                             padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                             decoration: BoxDecoration(
@@ -67,8 +70,6 @@ class _QuestionPageState extends ConsumerState<QuestionPage> {
                             // 질문 내용
                             child: QuestionBody(
                               snapshot: snapshot,
-                              buttonFontSize: buttonFontSize,
-                              displayWidth: displayWidth,
                               formKey: formKey,
                               token: token,
                               provider: provider,
@@ -80,8 +81,6 @@ class _QuestionPageState extends ConsumerState<QuestionPage> {
                           for (int i = 0; i < snapshot.data!["answerDtos"].length; i++)
                             AnswerBody(
                               snapshot: snapshot,
-                              displayWidth: displayWidth,
-                              buttonFontSize: buttonFontSize,
                               i: i,
                             ),
                         ],

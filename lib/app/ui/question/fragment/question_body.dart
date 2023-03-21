@@ -3,21 +3,18 @@ import 'package:hashtag_qna_flutter/app/ui/question/fragment/qu_comment.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/qu_comment_input.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
 import 'package:intl/intl.dart';
+import 'package:sizer/sizer.dart';
 
 class QuestionBody extends StatelessWidget {
   const QuestionBody({
     super.key,
     required this.snapshot,
-    required this.buttonFontSize,
-    required this.displayWidth,
     required this.formKey,
     required this.token,
     required this.provider,
   });
 
   final AsyncSnapshot<Map<String, dynamic>> snapshot;
-  final double buttonFontSize;
-  final double displayWidth;
   final GlobalKey<FormState> formKey;
   final String token;
   final QuestionViewModel provider;
@@ -32,7 +29,7 @@ class QuestionBody extends StatelessWidget {
           '질문',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: buttonFontSize,
+            fontSize: 100.w / 15,
             color: Colors.cyan[700],
           ),
         ),
@@ -63,13 +60,11 @@ class QuestionBody extends StatelessWidget {
         // 댓글창
         for (int i = 0; i < snapshot.data!["quCommentDtos"].length; i++)
           QuComment(
-            displayWidth: displayWidth,
             index: i,
             snapshot: snapshot,
           ),
         // 댓글 작성 창
         QuCommentInput(
-          displayWidth: displayWidth,
           formKey: formKey,
           token: token,
           questionId: snapshot.data!["questionDto"]["id"],
