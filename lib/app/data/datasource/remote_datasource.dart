@@ -142,4 +142,21 @@ class RemoteDatasource {
       throw Exception("Error on server");
     }
   }
+
+  Future<Map<String, String>> postWriteAnComment(String? token, int questionId, int answerId, String comment) async {
+    var uri = Uri.parse("$address/questions/$questionId/answers/$answerId/comments");
+
+    var message = {"content": comment};
+    var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"), body: jsonEncode(message));
+
+    logger.d('body: ${jsonEncode(message)}');
+
+    if (response.statusCode == 200) {
+      logger.d("response.headers", response.headers);
+      return response.headers;
+    } else {
+      logger.e('ERROR: ${response.statusCode}');
+      throw Exception("Error on server");
+    }
+  }
 }

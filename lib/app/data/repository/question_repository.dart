@@ -13,4 +13,8 @@ class QuestionRepository {
   Future<Map<String, String>> postWriteQuComment(String? token, int questionId, String comment) async {
     return _remoteDatasource.postWriteQuComment(token, questionId, comment);
   }
+
+  Future<Map<String, String>> postWriteAnComment(String? token, int questionId, int answerId, String comment) async {
+    return _remoteDatasource.postWriteAnComment(token, questionId, answerId, comment);
+  }
 }

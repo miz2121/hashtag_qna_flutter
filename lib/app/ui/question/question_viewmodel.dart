@@ -15,4 +15,8 @@ class QuestionViewModel extends StateNotifier<QuestionRepository> {
   Future<Map<String, String>> postWriteQuComment(String? token, int questionId, String comment) async {
     return _questionRepository.postWriteQuComment(token, questionId, comment);
   }
+
+  Future<Map<String, String>> postWriteAnComment(String? token, int questionId, int answerId, String comment) async {
+    return _questionRepository.postWriteAnComment(token, questionId, answerId, comment);
+  }
 }
