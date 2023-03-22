@@ -20,7 +20,7 @@ class QuestionBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(height: 15),
         Text(
@@ -66,6 +66,19 @@ class QuestionBody extends StatelessWidget {
           token: token,
           questionId: snapshot.data!["questionDto"]["id"],
           provider: provider,
+        ),
+        const Divider(thickness: 1),
+        ElevatedButton(
+          onPressed: () {
+            // 해야 할 것. 댓글 작성 post api 적용
+            // if (formKey.currentState!.validate()) {
+            //   parent?.setState(() {
+            //     formKey.currentState?.save();
+            //     _postWriteQuComment(widget.provider, widget.token, widget.questionId, _commentText);
+            //   });
+            // }
+          },
+          child: const Text('답변 작성'),
         ),
       ],
     );
