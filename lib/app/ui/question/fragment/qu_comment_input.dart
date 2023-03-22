@@ -71,8 +71,8 @@ class _QuCommentInputState extends State<QuCommentInput> {
                       // 해야 할 것. 댓글 작성 post api 적용
                       if (widget.formKey.currentState!.validate()) {
                         widget.formKey.currentState?.save();
+                        _postWriteQuComment(widget.provider, widget.token, widget.questionId, _commentText);
                       }
-                      _postWriteQuComment(widget.provider, widget.token, widget.questionId, _commentText);
                     },
                     child: const Text('댓글 작성'),
                   ),

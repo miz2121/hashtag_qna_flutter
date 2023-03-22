@@ -48,7 +48,7 @@ class _AnCommentInputState extends State<AnCommentInput> {
           children: [
             const Icon(Icons.subdirectory_arrow_right),
             Container(
-              width: 100.w * (7.7 / 10),
+              width: 100.w * (6.8 / 10),
               padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -75,8 +75,8 @@ class _AnCommentInputState extends State<AnCommentInput> {
                       // 해야 할 것. 댓글 작성 post api 적용
                       if (widget.formKey.currentState!.validate()) {
                         widget.formKey.currentState?.save();
+                        _postWriteAnComment(widget.provider, widget.token, widget.questionId, widget.answerId, _commentText);
                       }
-                      _postWriteAnComment(widget.provider, widget.token, widget.questionId, widget.answerId, _commentText);
                     },
                     child: const Text('댓글 작성'),
                   ),

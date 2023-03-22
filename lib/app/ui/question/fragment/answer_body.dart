@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/an_comment.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/an_comment_input.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
-import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
@@ -12,19 +11,18 @@ class AnswerBody extends StatelessWidget {
     required this.formKey,
     required this.token,
     required this.snapshot,
-    required this.i,
+    required this.answerIndex,
     required this.provider,
   });
 
   final GlobalKey<FormState> formKey;
   final String token;
   final AsyncSnapshot<Map<String, dynamic>> snapshot;
-  final int i;
+  final int answerIndex;
   final QuestionViewModel provider;
 
   @override
   Widget build(BuildContext context) {
-    logger.d('snapshot.data!["anCommentDtos"]["answerId"]: ${snapshot.data!["anCommentDtos"]["answerId"]}');
     return SizedBox(
       width: 100.w * (9 / 10),
       child: Column(
@@ -57,21 +55,21 @@ class AnswerBody extends StatelessWidget {
                     ),
                     Container(height: 15),
                     Text(
-                      snapshot.data!["answerDtos"][i]["content"],
+                      snapshot.data!["answerDtos"][answerIndex]["content"],
                       style: Theme.of(context).textTheme.bodyLarge!,
                     ),
                     Container(height: 15),
                     Text(
-                      DateFormat('yy년 MM월 dd일 a:h시 mm분').format(DateTime.parse(snapshot.data!["answerDtos"][i]["date"])),
+                      DateFormat('yy년 MM월 dd일 a:h시 mm분').format(DateTime.parse(snapshot.data!["answerDtos"][answerIndex]["date"])),
                     ),
                     Text(
-                      snapshot.data!["answerDtos"][i]["writer"],
+                      snapshot.data!["answerDtos"][answerIndex]["writer"],
                     ),
-                    Text(snapshot.data!["answerDtos"][i]["answerStatus"] == 'SELECTED' ? '채택됨!' : '채택 안됨!'),
+                    Text(snapshot.data!["answerDtos"][answerIndex]["answerStatus"] == 'SELECTED' ? '채택됨!' : '채택 안됨!'),
                     const Row(
                         // children: _printStar(snapshot, i),
                         ),
-                    Text('댓글 수: ${snapshot.data!["answerDtos"][i]["anCommentCount"]}'),
+                    Text('댓글 수: ${snapshot.data!["answerDtos"][answerIndex]["anCommentCount"]}'),
 
                     Container(height: 15),
                     const Divider(thickness: 1),
@@ -81,14 +79,15 @@ class AnswerBody extends StatelessWidget {
                     for (int c = 0; c < snapshot.data!["anCommentDtos"].length; c++)
                       AnComment(
                         snapshot: snapshot,
-                        i: i,
+                        i: c,
                       ),
+
                     // 답변 댓글 작성 창
                     AnCommentInput(
                       formKey: formKey,
                       token: token,
                       questionId: snapshot.data!["questionDto"]["id"],
-                      answerId: snapshot.data!["anCommentDtos"]["answerId"],
+                      answerId: snapshot.data!["answerDtos"][answerIndex]["id"],
                       provider: provider,
                     )
                   ],

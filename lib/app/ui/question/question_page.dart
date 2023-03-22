@@ -78,12 +78,12 @@ class _QuestionPageState extends ConsumerState<QuestionPage> {
                           Container(height: 15),
 
                           // 답변 내용
-                          for (int i = 0; i < snapshot.data!["answerDtos"].length; i++)
+                          for (int answerIndex = 0; answerIndex < snapshot.data!["answerDtos"].length; answerIndex++)
                             AnswerBody(
                               formKey: formKey,
                               token: token,
                               snapshot: snapshot,
-                              i: i,
+                              answerIndex: answerIndex,
                               provider: provider,
                             ),
                         ],
