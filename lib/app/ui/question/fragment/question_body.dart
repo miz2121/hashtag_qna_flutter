@@ -9,13 +9,11 @@ class QuestionBody extends StatelessWidget {
   const QuestionBody({
     super.key,
     required this.snapshot,
-    required this.formKey,
     required this.token,
     required this.provider,
   });
 
   final AsyncSnapshot<Map<String, dynamic>> snapshot;
-  final GlobalKey<FormState> formKey;
   final String token;
   final QuestionViewModel provider;
 
@@ -65,7 +63,6 @@ class QuestionBody extends StatelessWidget {
           ),
         // 댓글 작성 창
         QuCommentInput(
-          formKey: formKey,
           token: token,
           questionId: snapshot.data!["questionDto"]["id"],
           provider: provider,

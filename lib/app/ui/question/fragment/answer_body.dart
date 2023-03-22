@@ -8,14 +8,12 @@ import 'package:sizer/sizer.dart';
 class AnswerBody extends StatelessWidget {
   const AnswerBody({
     super.key,
-    required this.formKey,
     required this.token,
     required this.snapshot,
     required this.answerIndex,
     required this.provider,
   });
 
-  final GlobalKey<FormState> formKey;
   final String token;
   final AsyncSnapshot<Map<String, dynamic>> snapshot;
   final int answerIndex;
@@ -84,7 +82,6 @@ class AnswerBody extends StatelessWidget {
 
                     // 답변 댓글 작성 창
                     AnCommentInput(
-                      formKey: formKey,
                       token: token,
                       questionId: snapshot.data!["questionDto"]["id"],
                       answerId: snapshot.data!["answerDtos"][answerIndex]["id"],
