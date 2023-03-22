@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_viewmodel.dart';
+import 'package:sizer/sizer.dart';
 
 class ShowNickname extends ConsumerStatefulWidget {
   const ShowNickname({
@@ -33,13 +34,13 @@ class _ShowNicknameState extends ConsumerState<ShowNickname> {
               ? InkWell(
                   onTap: () => Navigator.pushNamed(context, '/login'),
                   child: Container(
-                    margin: const EdgeInsets.all(5),
-                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    margin: EdgeInsets.all(2.w),
+                    padding: EdgeInsets.fromLTRB(2.w, 1.w, 2.w, 1.w),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(80),
                       border: Border.all(
                         color: Colors.cyan,
-                        width: 2,
+                        width: 1.w,
                       ),
                     ),
                     child: const Text('로그인 정보가 없습니다.'),
@@ -63,13 +64,13 @@ class _ShowNicknameState extends ConsumerState<ShowNickname> {
                           return Container();
                         } else {
                           return Container(
-                            margin: const EdgeInsets.all(5),
-                            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                            margin: EdgeInsets.all(2.w),
+                            padding: EdgeInsets.fromLTRB(2.w, 1.w, 2.w, 1.w),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
                               border: Border.all(
                                 color: Colors.cyan,
-                                width: 2,
+                                width: 1.w,
                               ),
                             ),
                             child: Text('${snapshot.data!['nickname']}님께서 로그인 중입니다.'),

@@ -45,6 +45,7 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Container(height: 15.w),
                   Text(
                     '새로운 해시태그를\n생성할 수 있습니다.',
                     style: TextStyle(
@@ -53,7 +54,7 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
                       color: Colors.cyan[700],
                     ),
                   ),
-                  Container(height: 30),
+                  Container(height: 5.w),
                   Text(
                     '생성을 원하지 않거나\n작성을 완료하셨다면',
                     style: TextStyle(
@@ -70,7 +71,7 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
                       color: Colors.cyan[700],
                     ),
                   ),
-                  Container(height: 30),
+                  Container(height: 15.w),
                   argsList.isEmpty
                       ? (Container())
                       : Text(
@@ -81,12 +82,12 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
                             color: Colors.cyan[700],
                           ),
                         ),
-                  Container(height: 15),
+                  Container(height: 5.w),
 
                   // 이전 페이지에서 선택한 해시태그 목록
                   SelectedHashtags(argsList: argsList, provider: provider),
 
-                  Container(height: 30),
+                  Container(height: 5.w),
 
                   // 해시태그 추가하기 버튼
                   AddHashtagButton(
@@ -94,9 +95,9 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
                     createdHashtagNameList: createdHashtagNameList,
                   ),
 
-                  Container(height: 15),
+                  Container(height: 5.w),
                   for (Widget textForm in createdFormLists) textForm,
-                  Container(height: 15),
+                  Container(height: 5.w),
                   ElevatedButton(
                     onPressed: () {
                       formKey.currentState?.save();
@@ -104,6 +105,7 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
                     },
                     child: const Text("다음"),
                   ),
+                  Container(height: 15.w),
                 ],
               ),
             ),

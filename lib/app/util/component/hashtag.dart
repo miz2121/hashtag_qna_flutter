@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/create/create_viewmodel.dart';
+import 'package:sizer/sizer.dart';
 
 class Hashtag extends StatelessWidget {
   const Hashtag({
@@ -16,14 +17,14 @@ class Hashtag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(5),
-      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+      margin: EdgeInsets.all(1.w),
+      padding: EdgeInsets.fromLTRB(2.w, 1.w, 2.w, 1.w),
       decoration: BoxDecoration(
         color: Colors.cyan[provider.hashtagColorList[index % 3]],
         borderRadius: BorderRadius.circular(80),
         border: Border.all(
           color: Colors.cyan,
-          width: 2,
+          width: 0.5.w,
         ),
       ),
       child: Text(

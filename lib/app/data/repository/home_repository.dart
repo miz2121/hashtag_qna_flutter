@@ -44,4 +44,6 @@ class HomeRepository {
       hashtagCount,
     );
   }
+
+  get hashtagColorList => _localDataSource.hashtagColorList;
 }

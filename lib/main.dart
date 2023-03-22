@@ -5,6 +5,7 @@ import 'package:hashtag_qna_flutter/app/ui/create/create_second/create_second_pa
 import 'package:hashtag_qna_flutter/app/ui/create/create_third/create_third_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/join/join_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/create_answer.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question_list/questions_by_hashtag_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
           '/create_third': (BuildContext context) => const CreateThirdPage(),
           '/login': (BuildContext context) => const LoginPage(),
           '/question': (BuildContext context) => const QuestionPage(),
+          '/create_answer': (BuildContext context) => const CreateAnswer(),
           '/questions_by_hashtag': (BuildContext context) => const QuestionsByHashtag(),
           '/join': (BuildContext context) => const JoinPage(),
         },

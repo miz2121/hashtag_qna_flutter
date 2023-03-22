@@ -13,4 +13,6 @@ class CreateRepository {
     await _localDataSource.loadUser();
     return _remoteDatasource.postWriteQuestion(_localDataSource.token, title, content, existHashtags, newHashtags);
   }
+
+  get hashtagColorList => _localDataSource.hashtagColorList;
 }

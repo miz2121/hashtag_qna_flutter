@@ -19,4 +19,18 @@ class QuestionViewModel extends StateNotifier<QuestionRepository> {
   Future<Map<String, String>> postWriteAnComment(String? token, int questionId, int answerId, String comment) async {
     return _questionRepository.postWriteAnComment(token, questionId, answerId, comment);
   }
+
+  Future<Map<String, String>> postWriteAnswer(String? token, int questionId, String answer) async {
+    return _questionRepository.postWriteAnswer(token, questionId, answer);
+  }
+
+  Future<Map<String, String>> patchUpdateAnComment(String? token, int questionId, int answerId, int anCommentId, String anComment) async {
+    return _questionRepository.patchUpdateAnComment(token, questionId, answerId, anCommentId, anComment);
+  }
+
+  Future<Map<String, String>> patchUpdateQuComment(String? token, int questionId, int quCommentId, String quComment) async {
+    return _questionRepository.patchUpdateQuComment(token, questionId, quCommentId, quComment);
+  }
+
+  get hashtagColorList => _questionRepository.hashtagColorList;
 }

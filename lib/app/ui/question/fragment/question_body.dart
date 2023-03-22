@@ -1,28 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/fragment/hashtags.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/qu_comment.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/qu_comment_input.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
-class QuestionBody extends StatelessWidget {
+class QuestionBody extends StatefulWidget {
   const QuestionBody({
     super.key,
+    required this.fromWhere,
     required this.snapshot,
     required this.token,
     required this.provider,
   });
 
+  final String fromWhere;
   final AsyncSnapshot<Map<String, dynamic>> snapshot;
   final String token;
   final QuestionViewModel provider;
 
   @override
+  State<QuestionBody> createState() => _QuestionBodyState();
+}
+
+class _QuestionBodyState extends State<QuestionBody> {
+  @override
   Widget build(BuildContext context) {
+    QuestionPageState? parent = context.findAncestorStateOfType<QuestionPageState>();
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(height: 15),
+        Container(height: 15.w),
         Text(
           '질문',
           style: TextStyle(
@@ -31,55 +41,99 @@ class QuestionBody extends StatelessWidget {
             color: Colors.cyan[700],
           ),
         ),
-        Container(height: 15),
+        Container(height: 5.w),
         Text(
-          snapshot.data!["questionDto"]["title"],
+          widget.snapshot.data!["questionDto"]["title"],
           style: Theme.of(context).textTheme.bodyLarge!,
         ),
-        Container(height: 15),
+        Container(height: 5.w),
         Text(
-          DateFormat('yy년 MM월 dd일 a:h시 mm분').format(DateTime.parse(snapshot.data!["questionDto"]["date"])),
+          DateFormat('yy년 MM월 dd일 a:h시 mm분').format(DateTime.parse(widget.snapshot.data!["questionDto"]["date"])),
         ),
-        Text('${snapshot.data!["questionDto"]["writer"]}'),
-        Text(snapshot.data!["questionDto"]["questionStatus"] == "CLOSED" ? "답변 채택 완료(닫힌 글)" : "답변 채택 전(열린 글)"),
+        Text('${widget.snapshot.data!["questionDto"]["writer"]}'),
+        Text(widget.snapshot.data!["questionDto"]["questionStatus"] == "CLOSED" ? "답변 채택 완료(닫힌 글)" : "답변 채택 전(열린 글)"),
         Text(
-          '댓글 수: ${snapshot.data!["questionDto"]["quCommentCount"]}',
+          '댓글 수: ${widget.snapshot.data!["questionDto"]["quCommentCount"]}',
         ),
         Text(
-          '답변 수: ${snapshot.data!["questionDto"]["answerCount"]}',
+          '답변 수: ${widget.snapshot.data!["questionDto"]["answerCount"]}',
         ),
-        Container(height: 15),
+        Container(height: 5.w),
         Text(
-          snapshot.data!["questionDto"]["content"],
+          widget.snapshot.data!["questionDto"]["content"],
           style: Theme.of(context).textTheme.bodyLarge!,
         ),
-        Container(height: 15),
-        const Divider(thickness: 1),
+        Container(height: 5.w),
+
+        // 해당 글 해시태그
+        Hashtags(
+          provider: widget.provider,
+          token: widget.token,
+          snapshot: widget.snapshot,
+        ),
+
+        (widget.snapshot.data!["questionDto"]["editable"] == true && widget.snapshot.data!["questionDto"]["questionStatus"] == "OPEN")
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => {},
+                    child: const Text('수정하기'),
+                  ),
+                  Container(width: 1.w),
+                  ElevatedButton(
+                    onPressed: () => {},
+                    child: const Text('삭제하기'),
+                  ),
+                ],
+              )
+            : Container(),
+
+        Container(height: 5.w),
+        Divider(thickness: 1.w),
         // 댓글창
-        for (int i = 0; i < snapshot.data!["quCommentDtos"].length; i++)
+        for (int i = 0; i < widget.snapshot.data!["quCommentDtos"].length; i++)
           QuComment(
             index: i,
-            snapshot: snapshot,
+            snapshot: widget.snapshot,
+            token: widget.token,
+            provider: widget.provider,
           ),
-        // 댓글 작성 창
-        QuCommentInput(
-          token: token,
-          questionId: snapshot.data!["questionDto"]["id"],
-          provider: provider,
-        ),
-        const Divider(thickness: 1),
-        ElevatedButton(
-          onPressed: () {
-            // 해야 할 것. 댓글 작성 post api 적용
-            // if (formKey.currentState!.validate()) {
-            //   parent?.setState(() {
-            //     formKey.currentState?.save();
-            //     _postWriteQuComment(widget.provider, widget.token, widget.questionId, _commentText);
-            //   });
-            // }
-          },
-          child: const Text('답변 작성'),
-        ),
+        widget.fromWhere == 'QuestionPage'
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // 댓글 작성 창
+                  QuCommentInput(
+                    token: widget.token,
+                    questionId: widget.snapshot.data!["questionDto"]["id"],
+                    provider: widget.provider,
+                  ),
+                  Divider(thickness: 1.w),
+                  widget.snapshot.data!["questionDto"]["questionStatus"] == "CLOSED"
+                      ? const ElevatedButton(
+                          onPressed: null,
+                          child: Text('닫힌 글은 더 이상 답변을 달 수 없습니다.'),
+                        )
+                      : ElevatedButton(
+                          onPressed: () async {
+                            final refresh = await Navigator.pushNamed(context, '/create_answer', arguments: {
+                              'id': widget.snapshot.data!["questionDto"]["id"],
+                              'token': widget.token,
+                            });
+                            if (refresh != null) {
+                              if (refresh == true) {
+                                parent?.setState(() {});
+                              }
+                            }
+                          },
+                          child: const Text('답변 작성'),
+                        ),
+                ],
+              )
+            : widget.fromWhere == 'CreateAnswer'
+                ? Container()
+                : Container()
       ],
     );
   }

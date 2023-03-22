@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/create/create_viewmodel.dart';
 import 'package:hashtag_qna_flutter/app/util/utility.dart';
+import 'package:sizer/sizer.dart';
 
 class AllHashtags extends StatefulWidget {
   const AllHashtags({
@@ -51,14 +52,14 @@ class _AllHashtagsState extends State<AllHashtags> {
               for (int index = 0; index < snapshot.data!.length; index++)
                 InkWell(
                   child: Container(
-                    margin: const EdgeInsets.all(5),
-                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    margin: EdgeInsets.all(1.w),
+                    padding: EdgeInsets.fromLTRB(2.w, 1.w, 2.w, 1.w),
                     decoration: BoxDecoration(
                       color: Colors.cyan[widget.provider.hashtagColorList[index % 3]],
                       borderRadius: BorderRadius.circular(80),
                       border: Border.all(
                         color: Colors.cyan,
-                        width: 2,
+                        width: 0.5.w,
                       ),
                     ),
                     child: (widget.provider.isHashtagChecked.isEmpty)

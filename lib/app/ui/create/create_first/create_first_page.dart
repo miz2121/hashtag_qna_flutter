@@ -45,6 +45,7 @@ class _CreateFirstPageState extends ConsumerState<CreateFirstPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Container(height: 15.w),
                 Text(
                   '등록된 해시태그를\n전부 보여드립니다.\n\n새로 작성할 글에\n해당하는 해시태그가 있다면\n선택해 주세요.',
                   style: TextStyle(
@@ -53,18 +54,19 @@ class _CreateFirstPageState extends ConsumerState<CreateFirstPage> {
                     color: Colors.cyan[700],
                   ),
                 ),
-                Container(height: 15),
+                Container(height: 5.w),
                 ElevatedButton(
                   onPressed: () => setState(() {
                     cancelSelectAll(provider);
                   }),
                   child: const Text('해시태그 선택을 전부 취소하고 싶다면 눌러주세요.'),
                 ),
-                Container(height: 15),
+                Container(height: 5.w),
 
+                // 해야 할 것. 해시태그 접어서 간략하게 보기
                 // 가운데에 선택 가능한 모든 해시태그 보여줌
                 AllHashtags(provider: provider, hashtagNames: hashtagNames),
-                Container(height: 15),
+                Container(height: 15.w),
                 Text(
                   '등록할 해시태그가 없거나\n선택을 완료하셨으면\n"다음" 버튼을 눌러주세요',
                   style: TextStyle(
@@ -73,13 +75,14 @@ class _CreateFirstPageState extends ConsumerState<CreateFirstPage> {
                     color: Colors.cyan[700],
                   ),
                 ),
-                Container(height: 15),
+                Container(height: 5.w),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/create_second', arguments: hashtagNames);
                   },
                   child: const Text("다음"),
                 ),
+                Container(height: 5.w),
               ],
             ),
           ),

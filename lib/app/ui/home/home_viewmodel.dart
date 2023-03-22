@@ -27,7 +27,5 @@ class HomeViewModel extends StateNotifier<HomeRepository> {
 
   get token => _homeRepository.token;
 
-  final List<int> _hashtagColorList = [100, 200, 300];
-
-  get hashtagColorList => _hashtagColorList;
+  get hashtagColorList => _homeRepository.hashtagColorList;
 }

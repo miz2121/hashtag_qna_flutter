@@ -52,25 +52,24 @@ class _AnCommentInputState extends State<AnCommentInput> {
       key: formKey,
       child: Column(
         children: [
-          Container(height: 15),
           Row(
             children: [
               const Icon(Icons.subdirectory_arrow_right),
               Container(
-                width: 100.w * (6.8 / 10),
-                padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                width: 100.w * (6.3 / 10),
+                padding: EdgeInsets.fromLTRB(2.w, 1.w, 2.w, 1.w),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
                     color: Colors.cyan,
-                    width: 2,
+                    width: 1.w,
                   ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     TextFormField(
-                      maxLines: 3,
+                      maxLines: 5,
                       decoration: const InputDecoration(
                         labelText: '댓글을 입력해 주세요',
                       ),
@@ -81,7 +80,6 @@ class _AnCommentInputState extends State<AnCommentInput> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // 해야 할 것. 댓글 작성 post api 적용
                         if (formKey.currentState!.validate()) {
                           parent?.setState(() {
                             formKey.currentState?.save();
@@ -96,7 +94,7 @@ class _AnCommentInputState extends State<AnCommentInput> {
               ),
             ],
           ),
-          Container(height: 15),
+          Container(height: 5.w),
         ],
       ),
     );

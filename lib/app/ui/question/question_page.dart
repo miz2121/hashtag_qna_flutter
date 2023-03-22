@@ -15,6 +15,7 @@ class QuestionPage extends ConsumerStatefulWidget {
 class QuestionPageState extends ConsumerState<QuestionPage> {
   int id = 0;
   String token = '';
+  bool refresh = false;
   late QuestionViewModel provider;
 
   @override
@@ -27,6 +28,7 @@ class QuestionPageState extends ConsumerState<QuestionPage> {
   void didChangeDependencies() {
     id = (ModalRoute.of(context)!.settings.arguments as Map)['id'];
     token = (ModalRoute.of(context)!.settings.arguments as Map)['token'];
+    refresh = (ModalRoute.of(context)!.settings.arguments as Map)['refresh'];
     super.didChangeDependencies();
     provider = ref.watch(questionViewModelProvider.notifier);
   }
@@ -54,27 +56,28 @@ class QuestionPageState extends ConsumerState<QuestionPage> {
                       children: [
                         Container(
                           width: 100.w * (9 / 10),
-                          margin: const EdgeInsets.all(5),
-                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                          margin: EdgeInsets.all(5.w),
+                          padding: EdgeInsets.fromLTRB(5.w, 2.w, 5.w, 2.w),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: Colors.cyan,
-                              width: 2,
+                              width: 2.w,
                             ),
                           ),
                           // 질문 내용
                           child: QuestionBody(
+                            fromWhere: 'QuestionPage',
                             snapshot: snapshot,
                             token: token,
                             provider: provider,
                           ),
                         ),
-                        Container(height: 15),
 
                         // 답변 내용
                         for (int answerIndex = 0; answerIndex < snapshot.data!["answerDtos"].length; answerIndex++)
                           AnswerBody(
+                            fromWhere: 'QuestionPage',
                             token: token,
                             snapshot: snapshot,
                             answerIndex: answerIndex,

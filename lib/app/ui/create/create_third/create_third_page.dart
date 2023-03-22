@@ -49,24 +49,25 @@ class _CreateThirdPageState extends ConsumerState<CreateThirdPage> {
               key: formKey,
               child: Column(
                 children: [
+                  Container(height: 5.w),
                   Text(
-                    '제목과 내용을 작성해 주세요.\n아래의 해시태그와 함께\n글이 작성 됩니다.',
+                    '제목과 질문을 작성해 주세요.\n아래의 해시태그와 함께\n글이 작성 됩니다.',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 100.w / 15,
                       color: Colors.cyan[700],
                     ),
                   ),
-                  Container(height: 15),
+                  Container(height: 5.w),
                   Container(
                     width: 100.w * (9 / 10),
-                    margin: const EdgeInsets.all(5),
-                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    margin: EdgeInsets.all(1.w),
+                    padding: EdgeInsets.fromLTRB(2.w, 1.w, 2.w, 1.w),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         color: Colors.cyan,
-                        width: 2,
+                        width: 1.w,
                       ),
                     ),
                     child: TextFormField(
@@ -80,30 +81,30 @@ class _CreateThirdPageState extends ConsumerState<CreateThirdPage> {
                       },
                     ),
                   ),
-                  Container(height: 10),
+                  Container(height: 10.w),
                   Container(
                     width: 100.w * (9 / 10),
-                    margin: const EdgeInsets.all(5),
-                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    margin: EdgeInsets.all(1.w),
+                    padding: EdgeInsets.fromLTRB(2.w, 1.w, 2.w, 1.w),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         color: Colors.cyan,
-                        width: 2,
+                        width: 1.w,
                       ),
                     ),
                     child: TextFormField(
                       maxLines: 10,
                       decoration: const InputDecoration(
-                        labelText: '내용을 입력해 주세요',
+                        labelText: '질문을 입력해 주세요',
                       ),
-                      validator: (value) => value!.isEmpty ? '내용을 입력해 주세요.' : null,
+                      validator: (value) => value!.isEmpty ? '질문을 입력해 주세요.' : null,
                       onSaved: (value) {
                         _content = value!;
                       },
                     ),
                   ),
-                  Container(height: 15),
+                  Container(height: 5.w),
                   Wrap(
                     direction: Axis.horizontal,
                     alignment: WrapAlignment.start,
@@ -116,9 +117,7 @@ class _CreateThirdPageState extends ConsumerState<CreateThirdPage> {
                         )
                     ],
                   ),
-                  Container(
-                    height: 30,
-                  ),
+                  Container(height: 5.w),
                   ElevatedButton(
                     onPressed: () {
                       formKey.currentState?.save();

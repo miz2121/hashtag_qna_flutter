@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hashtag_qna_flutter/app/ui/home/component/hashtag_snapshot.dart';
-import 'package:hashtag_qna_flutter/app/ui/home/home_viewmodel.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/component/hashtag_snapshot.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
 
 class Hashtags extends StatelessWidget {
   const Hashtags({
@@ -10,7 +10,7 @@ class Hashtags extends StatelessWidget {
     this.token,
   });
 
-  final HomeViewModel provider;
+  final QuestionViewModel provider;
   final AsyncSnapshot<Map<String, dynamic>> snapshot;
   final String? token;
 
@@ -27,13 +27,12 @@ class Hashtags extends StatelessWidget {
               index: index,
               snapshot: snapshot,
             ),
-            onTap: () async {
-              // await _loadUser(provider);
-              if (token == null) {
-                Navigator.pushNamed(context, '/login');
-              } else {
-                Navigator.pushNamed(context, '/questions_by_hashtag');
-              }
+            onTap: () {
+              // if (token == null) {
+              //   Navigator.pushNamed(context, '/login');
+              // } else {
+              Navigator.pushNamed(context, '/questions_by_hashtag');
+              // }
             },
           ),
       ],

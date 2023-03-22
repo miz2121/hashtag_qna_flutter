@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/fragment/edit_comment.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
-class AnComment extends StatelessWidget {
+class AnComment extends StatefulWidget {
   const AnComment({
     super.key,
+    required this.token,
     required this.snapshot,
+    required this.provider,
+    required this.answerIndex,
     required this.i,
   });
 
+  final String token;
   final AsyncSnapshot<Map<String, dynamic>> snapshot;
+  final QuestionViewModel provider;
+  final int answerIndex;
   final int i;
 
+  @override
+  State<AnComment> createState() => _AnCommentState();
+}
+
+class _AnCommentState extends State<AnComment> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,13 +33,13 @@ class AnComment extends StatelessWidget {
           children: [
             const Icon(Icons.subdirectory_arrow_right),
             Container(
-              width: 100.w * (6.8 / 10),
-              padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+              width: 100.w * (6.3 / 10),
+              padding: EdgeInsets.fromLTRB(2.w, 1.w, 2.w, 1.w),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: Colors.cyan,
-                  width: 2,
+                  width: 1.w,
                 ),
               ),
               child: Column(
@@ -36,24 +49,58 @@ class AnComment extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        snapshot.data!["anCommentDtos"][i]["content"],
-                        style: Theme.of(context).textTheme.bodyLarge!,
+                      SizedBox(
+                        width: 40.w,
+                        child: Text(
+                          widget.snapshot.data!["anCommentDtos"][widget.i]["content"],
+                          style: Theme.of(context).textTheme.bodyLarge!,
+                        ),
                       ),
-                      Text(
-                        snapshot.data!["anCommentDtos"][i]["writer"],
+                      Container(width: 1.w),
+                      SizedBox(
+                        width: 14.w,
+                        child: Text(
+                          widget.snapshot.data!["anCommentDtos"][widget.i]["writer"],
+                          textAlign: TextAlign.end,
+                        ),
                       ),
                     ],
                   ),
                   Text(
-                    DateFormat('yy년 MM월 dd일 a:h시 mm분').format(DateTime.parse(snapshot.data!["anCommentDtos"][i]["date"])),
+                    DateFormat('yy년 MM월 dd일 a:h시 mm분').format(
+                      DateTime.parse(
+                        widget.snapshot.data!["anCommentDtos"][widget.i]["date"],
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
           ],
         ),
-        Container(height: 15),
+        widget.snapshot.data!["anCommentDtos"][widget.i]["editable"] == true
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const Icon(Icons.subdirectory_arrow_right),
+                  EditComment(
+                    comment: widget.snapshot.data!["anCommentDtos"][widget.i]["content"],
+                    i: widget.i,
+                    questionId: widget.snapshot.data!["questionDto"]["id"],
+                    answerId: widget.snapshot.data!["answerDtos"][widget.answerIndex]["id"],
+                    anCommentId: widget.snapshot.data!["anCommentDtos"][widget.i]["id"],
+                    token: widget.token,
+                    provider: widget.provider,
+                  ),
+                  Container(width: 1.w),
+                  ElevatedButton(
+                    onPressed: () => {},
+                    child: const Text('삭제하기'),
+                  ),
+                ],
+              )
+            : Container(),
+        Container(height: 5.w),
       ],
     );
   }

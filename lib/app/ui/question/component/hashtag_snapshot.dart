@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hashtag_qna_flutter/app/ui/home/home_viewmodel.dart';
-import 'package:sizer/sizer.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
 
 class HashtagSnapshot extends StatelessWidget {
   const HashtagSnapshot({
@@ -10,21 +9,21 @@ class HashtagSnapshot extends StatelessWidget {
     required this.snapshot,
   });
 
-  final HomeViewModel provider;
+  final QuestionViewModel provider;
   final int index;
   final AsyncSnapshot<Map<String, dynamic>> snapshot;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(1.w),
-      padding: EdgeInsets.fromLTRB(2.w, 1.w, 2.w, 1.w),
+      margin: const EdgeInsets.all(5),
+      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
       decoration: BoxDecoration(
         color: Colors.cyan[provider.hashtagColorList[index % 3]],
         borderRadius: BorderRadius.circular(80),
         border: Border.all(
           color: Colors.cyan,
-          width: 0.5.w,
+          width: 2,
         ),
       ),
       child: Text(

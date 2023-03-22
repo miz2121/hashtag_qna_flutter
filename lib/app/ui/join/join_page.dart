@@ -64,7 +64,7 @@ class _JoinPageState extends ConsumerState<JoinPage> {
                       color: Colors.cyan[700],
                     ),
                   ),
-                  Container(height: 30),
+                  Container(height: 30.w),
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Email'),
                     validator: (value) => value!.isEmpty ? 'Email can not be empty' : null,
@@ -81,7 +81,7 @@ class _JoinPageState extends ConsumerState<JoinPage> {
                     validator: (value) => value!.isEmpty ? 'Nickname can not be empty' : null,
                     onSaved: (value) => _nickname = value!,
                   ),
-                  Container(height: 30),
+                  Container(height: 30.w),
                   ElevatedButton(
                     onPressed: () {
                       if (_validate()) {

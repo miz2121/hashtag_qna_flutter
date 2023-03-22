@@ -3,8 +3,8 @@ import 'package:hashtag_qna_flutter/app/ui/home/fragment/bottom_buttons.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/fragment/hashtags.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_viewmodel.dart';
-import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:intl/intl.dart';
+import 'package:sizer/sizer.dart';
 
 class HomeBody extends StatefulWidget {
   const HomeBody({
@@ -100,10 +100,11 @@ class _HomeBodyState extends State<HomeBody> {
                       if (widget.token == null) {
                         Navigator.pushNamed(context, '/login');
                       } else {
-                        logger.d("Entering the question page, token is: ${widget.token}");
+                        // logger.d("Entering the question page, token is: ${widget.token}");
                         Navigator.pushNamed(context, '/question', arguments: {
                           'id': snapshot.data!['questionListDtos'][index]['id'],
                           'token': widget.token,
+                          'refresh': false,
                         });
                       }
                     },
@@ -125,9 +126,7 @@ class _HomeBodyState extends State<HomeBody> {
                 },
                 child: const Text('>>질문글 더 보기'),
               ),
-              Container(height: 30),
-              //
-              //
+
               // hashtags
               widget.token == null
                   ? Hashtags(
@@ -139,11 +138,8 @@ class _HomeBodyState extends State<HomeBody> {
                       snapshot: snapshot,
                       token: widget.token,
                     ),
-              Container(
-                height: 30,
-              ),
 
-              Container(height: 10),
+              Container(height: 10.w),
               widget.token == null
                   ? BottomButtons(
                       parent: parent,

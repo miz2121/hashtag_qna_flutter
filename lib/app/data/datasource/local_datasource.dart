@@ -48,4 +48,7 @@ class LocalDataSource {
     prefs = await SharedPreferences.getInstance();
     prefs?.setString("token", token ?? '');
   }
+
+  final List<int> _hashtagColorList = [100, 200, 300];
+  get hashtagColorList => _hashtagColorList;
 }

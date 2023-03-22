@@ -159,4 +159,55 @@ class RemoteDatasource {
       throw Exception("Error on server");
     }
   }
+
+  Future<Map<String, String>> postWriteAnswer(String? token, int questionId, String answer) async {
+    var uri = Uri.parse("$address/questions/$questionId/answers");
+
+    var message = {"content": answer};
+    var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"), body: jsonEncode(message));
+
+    logger.d('body: ${jsonEncode(message)}');
+
+    if (response.statusCode == 200) {
+      logger.d("response.headers", response.headers);
+      return response.headers;
+    } else {
+      logger.e('ERROR: ${response.statusCode}');
+      throw Exception("Error on server");
+    }
+  }
+
+  Future<Map<String, String>> patchUpdateAnComment(String? token, int questionId, int answerId, int anCommentId, String anComment) async {
+    var uri = Uri.parse("$address/questions/$questionId/answers/$answerId/comments/$anCommentId");
+
+    var message = {"content": anComment};
+    var response = await http.patch(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"), body: jsonEncode(message));
+
+    logger.d('body: ${jsonEncode(message)}');
+
+    if (response.statusCode == 200) {
+      logger.d("response.headers", response.headers);
+      return response.headers;
+    } else {
+      logger.e('ERROR: ${response.statusCode}');
+      throw Exception("Error on server");
+    }
+  }
+
+  Future<Map<String, String>> patchUpdateQuComment(String? token, int questionId, int quCommentId, String quComment) async {
+    var uri = Uri.parse("$address/questions/$questionId/comments/$quCommentId");
+
+    var message = {"content": quComment};
+    var response = await http.patch(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"), body: jsonEncode(message));
+
+    logger.d('body: ${jsonEncode(message)}');
+
+    if (response.statusCode == 200) {
+      logger.d("response.headers", response.headers);
+      return response.headers;
+    } else {
+      logger.e('ERROR: ${response.statusCode}');
+      throw Exception("Error on server");
+    }
+  }
 }

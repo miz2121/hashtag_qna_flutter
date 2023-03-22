@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_viewmodel.dart';
+import 'package:sizer/sizer.dart';
 
 class BottomButtons extends StatefulWidget {
   const BottomButtons({
@@ -59,7 +60,7 @@ class _BottomButtonsState extends State<BottomButtons> {
         ),
 
         // 회원 비활성화 버튼
-        Container(height: 10),
+        Container(height: 5.w),
         ElevatedButton(
           onPressed: () {
             // 이미 로그아웃 된 상태라면
@@ -84,6 +85,7 @@ class _BottomButtonsState extends State<BottomButtons> {
           },
           child: const Text('회원 비활성화...하실 수도 있습니다.'),
         ),
+        Container(height: 5.w),
       ],
     );
   }
