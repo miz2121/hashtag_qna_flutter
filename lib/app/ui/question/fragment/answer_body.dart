@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/component/qu_an_edit_delete_buttons.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/comment.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/write_comment.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
@@ -70,6 +71,19 @@ class AnswerBody extends StatelessWidget {
                           // children: _printStar(snapshot, i),
                           ),
                       Text('댓글 수: ${snapshot.data!["answerDtos"][answerIndex]["anCommentCount"]}'),
+
+                      (snapshot.data!["answerDtos"][answerIndex]["editable"] == true && snapshot.data!["questionDto"]["questionStatus"] == "OPEN")
+                          ?
+                          // 작성자 본인이라 수정 가능하고, 질문글이 채택된 게 있어서 닫힌 상태가 아니면
+                          // 수정버튼 삭제버튼을 띄움
+                          QuAnEditDeleteButtons(
+                              fromWhere: "Answerbody",
+                              answerIndex: answerIndex,
+                              token: token,
+                              provider: provider,
+                              snapshot: snapshot,
+                            )
+                          : Container(),
 
                       Container(height: 5.w),
                       Divider(thickness: 1.w),

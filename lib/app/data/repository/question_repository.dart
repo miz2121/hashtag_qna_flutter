@@ -30,12 +30,28 @@ class QuestionRepository {
     return _remoteDatasource.patchUpdateQuComment(token, questionId, quCommentId, quComment);
   }
 
-  Future<Map<String, String>> postDeleteQuComment(String? token, int questionId, int quCommentId) async {
-    return _remoteDatasource.postDeleteQuComment(token, questionId, quCommentId);
+  Future<Map<String, String>> postRemoveQuComment(String? token, int questionId, int quCommentId) async {
+    return _remoteDatasource.postRemoveQuComment(token, questionId, quCommentId);
   }
 
-  Future<Map<String, String>> postDeleteAnComment(String? token, int questionId, int answerId, int anCommentId) async {
-    return _remoteDatasource.postDeleteAnComment(token, questionId, answerId, anCommentId);
+  Future<Map<String, String>> postRemoveAnComment(String? token, int questionId, int answerId, int anCommentId) async {
+    return _remoteDatasource.postRemoveAnComment(token, questionId, answerId, anCommentId);
+  }
+
+  Future<Map<String, String>> patchUpdateQuestion(String? token, int questionId, String title, String content) async {
+    return _remoteDatasource.patchUpdateQuestion(token, questionId, title, content);
+  }
+
+  Future<Map<String, String>> postRemoveQuestion(String? token, int questionId) async {
+    return _remoteDatasource.postRemoveQuestion(token, questionId);
+  }
+
+  Future<Map<String, String>> patchUpdateAnswer(String? token, int questionId, int answerId, String content) async {
+    return _remoteDatasource.patchUpdateAnswer(token, questionId, answerId, content);
+  }
+
+  Future<Map<String, String>> postRemoveAnswer(String? token, int questionId, int answerId) async {
+    return _remoteDatasource.postRemoveAnswer(token, questionId, answerId);
   }
 
   get hashtagColorList => _localDataSource.hashtagColorList;

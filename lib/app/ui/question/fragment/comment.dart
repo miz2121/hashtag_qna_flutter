@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hashtag_qna_flutter/app/ui/question/fragment/edit_comment.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/component/comment_edit_delete_buttons.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
 import 'package:intl/intl.dart';
@@ -107,123 +107,26 @@ class _CommentState extends State<Comment> {
         ),
         widget.fromWhere == "QuestionBody"
             ? (widget.snapshot.data!["quCommentDtos"][widget.i]["editable"] == true
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      const Icon(Icons.subdirectory_arrow_right),
-                      EditComment(
-                        fromWhere: "quComment",
-                        comment: widget.snapshot.data!["quCommentDtos"][widget.i]["content"],
-                        i: widget.i,
-                        questionId: widget.snapshot.data!["questionDto"]["id"],
-                        quCommentId: widget.snapshot.data!["quCommentDtos"][widget.i]["id"],
-                        token: widget.token,
-                        provider: widget.provider,
-                      ),
-                      Container(width: 1.w),
-                      ElevatedButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('삭제 확인'),
-                                  content: const Text('댓글을 삭제하시겠습니까?'),
-                                  actions: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        TextButton(
-                                          onPressed: () async {
-                                            await widget.provider.postDeleteQuComment(
-                                              widget.token,
-                                              widget.snapshot.data!["questionDto"]["id"],
-                                              widget.snapshot.data!["quCommentDtos"][widget.i]["id"],
-                                            );
-                                            if (!mounted) return;
-                                            Navigator.of(context).pop();
-                                            parent?.setState(() {});
-                                          },
-                                          child: const Text('확인'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () async {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('취소'),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              });
-                        },
-                        child: const Text('삭제하기'),
-                      ),
-                    ],
+                ? CommentEditDeleteButtons(
+                    fromWhere: "QuestionBody",
+                    snapshot: widget.snapshot,
+                    i: widget.i,
+                    token: widget.token,
+                    provider: widget.provider,
                   )
                 : Container())
-            : widget.fromWhere == "AnswerBody"
+            : (widget.fromWhere == "AnswerBody"
                 ? (widget.snapshot.data!["anCommentDtos"][widget.i]["editable"] == true
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          const Icon(Icons.subdirectory_arrow_right),
-                          EditComment(
-                            fromWhere: "anComment",
-                            comment: widget.snapshot.data!["anCommentDtos"][widget.i]["content"],
-                            i: widget.i,
-                            questionId: widget.snapshot.data!["questionDto"]["id"],
-                            answerId: widget.snapshot.data!["answerDtos"][widget.answerIndex]["id"],
-                            anCommentId: widget.snapshot.data!["anCommentDtos"][widget.i]["id"],
-                            token: widget.token,
-                            provider: widget.provider,
-                          ),
-                          Container(width: 1.w),
-                          ElevatedButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('삭제 확인'),
-                                      content: const Text('댓글을 삭제하시겠습니까?'),
-                                      actions: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            TextButton(
-                                              onPressed: () async {
-                                                await widget.provider.postDeleteAnComment(
-                                                  widget.token,
-                                                  widget.snapshot.data!["questionDto"]["id"],
-                                                  widget.snapshot.data!["answerDtos"][widget.answerIndex]["id"],
-                                                  widget.snapshot.data!["anCommentDtos"][widget.i]["id"],
-                                                );
-                                                if (!mounted) return;
-                                                Navigator.of(context).pop();
-                                                parent?.setState(() {});
-                                              },
-                                              child: const Text('확인'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () async {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('취소'),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            },
-                            child: const Text('삭제하기'),
-                          ),
-                        ],
+                    ? CommentEditDeleteButtons(
+                        fromWhere: "AnswerBody",
+                        snapshot: widget.snapshot,
+                        i: widget.i,
+                        token: widget.token,
+                        provider: widget.provider,
+                        answerIndex: widget.answerIndex,
                       )
                     : Container())
-                : Container(),
+                : Container()),
         Container(height: 5.w),
       ],
     );

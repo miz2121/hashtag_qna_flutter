@@ -126,7 +126,7 @@ class _CreateThirdPageState extends ConsumerState<CreateThirdPage> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text("작성을 완료하시겠습니까?"),
-                              content: const Text("포스팅 합니다."),
+                              content: const Text("질문을 등록 합니다."),
                               actions: [
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

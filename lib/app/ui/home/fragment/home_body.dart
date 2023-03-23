@@ -104,7 +104,7 @@ class _HomeBodyState extends State<HomeBody> {
                         Navigator.pushNamed(context, '/question', arguments: {
                           'id': snapshot.data!['questionListDtos'][index]['id'],
                           'token': widget.token,
-                          'refresh': false,
+                          'previous': 'homePage',
                         });
                       }
                     },

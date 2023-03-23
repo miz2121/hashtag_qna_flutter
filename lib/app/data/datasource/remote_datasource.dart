@@ -211,7 +211,7 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> postDeleteQuComment(String? token, int questionId, int quCommentId) async {
+  Future<Map<String, String>> postRemoveQuComment(String? token, int questionId, int quCommentId) async {
     var uri = Uri.parse("$address/questions/$questionId/comments/remove/$quCommentId");
 
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
@@ -225,8 +225,68 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> postDeleteAnComment(String? token, int questionId, int answerId, int anCommentId) async {
+  Future<Map<String, String>> postRemoveAnComment(String? token, int questionId, int answerId, int anCommentId) async {
     var uri = Uri.parse("$address/questions/$questionId/answers/$answerId/comments/remove/$anCommentId");
+
+    var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
+
+    if (response.statusCode == 200) {
+      logger.d("response.headers", response.headers);
+      return response.headers;
+    } else {
+      logger.e('ERROR: ${response.statusCode}');
+      throw Exception("Error on server");
+    }
+  }
+
+  Future<Map<String, String>> patchUpdateQuestion(String? token, int questionId, String title, String content) async {
+    var uri = Uri.parse("$address/questions/$questionId");
+
+    var message = {"title": title, "content": content};
+    var response = await http.patch(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"), body: jsonEncode(message));
+
+    if (response.statusCode == 200) {
+      logger.d("response.headers", response.headers);
+      return response.headers;
+    } else {
+      logger.e('ERROR: ${response.statusCode}');
+      throw Exception("Error on server");
+    }
+  }
+
+  Future<Map<String, String>> postRemoveQuestion(String? token, int questionId) async {
+    var uri = Uri.parse("$address/questions/remove/$questionId");
+
+    var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
+
+    if (response.statusCode == 200) {
+      logger.d("response.headers", response.headers);
+      return response.headers;
+    } else {
+      logger.e('ERROR: ${response.statusCode}');
+      throw Exception("Error on server");
+    }
+  }
+
+  Future<Map<String, String>> patchUpdateAnswer(String? token, int questionId, int answerId, String content) async {
+    var uri = Uri.parse("$address/questions/$questionId/answers/$answerId");
+
+    var message = {"content": content};
+    var response = await http.patch(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"), body: jsonEncode(message));
+
+    logger.d('body: ${jsonEncode(message)}');
+
+    if (response.statusCode == 200) {
+      logger.d("response.headers", response.headers);
+      return response.headers;
+    } else {
+      logger.e('ERROR: ${response.statusCode}');
+      throw Exception("Error on server");
+    }
+  }
+
+  Future<Map<String, String>> postRemoveAnswer(String? token, int questionId, int answerId) async {
+    var uri = Uri.parse("$address/questions/$questionId/answers/remove/$answerId");
 
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
 
