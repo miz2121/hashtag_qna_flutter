@@ -32,5 +32,13 @@ class QuestionViewModel extends StateNotifier<QuestionRepository> {
     return _questionRepository.patchUpdateQuComment(token, questionId, quCommentId, quComment);
   }
 
+  Future<Map<String, String>> postDeleteQuComment(String? token, int questionId, int quCommentId) async {
+    return _questionRepository.postDeleteQuComment(token, questionId, quCommentId);
+  }
+
+  Future<Map<String, String>> postDeleteAnComment(String? token, int questionId, int answerId, int anCommentId) async {
+    return _questionRepository.postDeleteAnComment(token, questionId, answerId, anCommentId);
+  }
+
   get hashtagColorList => _questionRepository.hashtagColorList;
 }

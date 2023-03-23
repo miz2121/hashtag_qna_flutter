@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/edit_comment.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
-class QuComment extends StatelessWidget {
+class QuComment extends StatefulWidget {
   const QuComment({
     super.key,
     required this.index,
@@ -19,7 +20,13 @@ class QuComment extends StatelessWidget {
   final QuestionViewModel provider;
 
   @override
+  State<QuComment> createState() => _QuCommentState();
+}
+
+class _QuCommentState extends State<QuComment> {
+  @override
   Widget build(BuildContext context) {
+    QuestionPageState? parent = context.findAncestorStateOfType<QuestionPageState>();
     return Column(
       children: [
         Container(height: 5.w),
@@ -46,7 +53,7 @@ class QuComment extends StatelessWidget {
                       SizedBox(
                         width: 40.w,
                         child: Text(
-                          snapshot.data!["quCommentDtos"][index]["content"],
+                          widget.snapshot.data!["quCommentDtos"][widget.index]["content"],
                           style: Theme.of(context).textTheme.bodyLarge!,
                         ),
                       ),
@@ -54,14 +61,14 @@ class QuComment extends StatelessWidget {
                       SizedBox(
                         width: 14.w,
                         child: Text(
-                          snapshot.data!["quCommentDtos"][index]["writer"],
+                          widget.snapshot.data!["quCommentDtos"][widget.index]["writer"],
                         ),
                       ),
                     ],
                   ),
                   Text(
                     DateFormat('yy년 MM월 dd일 a:h시 mm분').format(
-                      DateTime.parse(snapshot.data!["quCommentDtos"][index]["date"]),
+                      DateTime.parse(widget.snapshot.data!["quCommentDtos"][widget.index]["date"]),
                     ),
                   ),
                 ],
@@ -70,22 +77,57 @@ class QuComment extends StatelessWidget {
             Container(height: 5.w),
           ],
         ),
-        snapshot.data!["quCommentDtos"][index]["editable"] == true
+        widget.snapshot.data!["quCommentDtos"][widget.index]["editable"] == true
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const Icon(Icons.subdirectory_arrow_right),
                   EditComment(
-                    comment: snapshot.data!["quCommentDtos"][index]["content"],
-                    i: index,
-                    questionId: snapshot.data!["questionDto"]["id"],
-                    quCommentId: snapshot.data!["quCommentDtos"][index]["id"],
-                    token: token,
-                    provider: provider,
+                    comment: widget.snapshot.data!["quCommentDtos"][widget.index]["content"],
+                    i: widget.index,
+                    questionId: widget.snapshot.data!["questionDto"]["id"],
+                    quCommentId: widget.snapshot.data!["quCommentDtos"][widget.index]["id"],
+                    token: widget.token,
+                    provider: widget.provider,
                   ),
                   Container(width: 1.w),
                   ElevatedButton(
-                    onPressed: () => {},
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('삭제 확인'),
+                              content: const Text('댓글을 삭제하시겠습니까?'),
+                              actions: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        await widget.provider.postDeleteQuComment(
+                                          widget.token,
+                                          widget.snapshot.data!["questionDto"]["id"],
+                                          widget.snapshot.data!["quCommentDtos"][widget.index]["id"],
+                                        );
+                                        if (!mounted) return;
+                                        Navigator.of(context).pop();
+                                        parent?.setState(() {});
+                                      },
+                                      child: const Text('확인'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('취소'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          });
+                    },
                     child: const Text('삭제하기'),
                   ),
                 ],

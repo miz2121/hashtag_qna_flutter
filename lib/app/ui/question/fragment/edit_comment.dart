@@ -71,6 +71,7 @@ class _EditCommentState extends ConsumerState<EditComment> {
                       }),
                   actions: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         TextButton(
                           onPressed: () async {

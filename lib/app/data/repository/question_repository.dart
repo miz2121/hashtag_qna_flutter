@@ -30,5 +30,13 @@ class QuestionRepository {
     return _remoteDatasource.patchUpdateQuComment(token, questionId, quCommentId, quComment);
   }
 
+  Future<Map<String, String>> postDeleteQuComment(String? token, int questionId, int quCommentId) async {
+    return _remoteDatasource.postDeleteQuComment(token, questionId, quCommentId);
+  }
+
+  Future<Map<String, String>> postDeleteAnComment(String? token, int questionId, int answerId, int anCommentId) async {
+    return _remoteDatasource.postDeleteAnComment(token, questionId, answerId, anCommentId);
+  }
+
   get hashtagColorList => _localDataSource.hashtagColorList;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/edit_comment.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
@@ -27,6 +28,7 @@ class AnComment extends StatefulWidget {
 class _AnCommentState extends State<AnComment> {
   @override
   Widget build(BuildContext context) {
+    QuestionPageState? parent = context.findAncestorStateOfType<QuestionPageState>();
     return Column(
       children: [
         Row(
@@ -47,7 +49,7 @@ class _AnCommentState extends State<AnComment> {
                 children: [
                   Row(
                     mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       SizedBox(
                         width: 40.w,
@@ -94,7 +96,41 @@ class _AnCommentState extends State<AnComment> {
                   ),
                   Container(width: 1.w),
                   ElevatedButton(
-                    onPressed: () => {},
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('삭제 확인'),
+                              content: const Text('댓글을 삭제하시겠습니까?'),
+                              actions: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        await widget.provider.postDeleteAnComment(
+                                          widget.token,
+                                          widget.snapshot.data!["questionDto"]["id"],
+                                          widget.snapshot.data!["answerDtos"][widget.answerIndex]["id"],
+                                          widget.snapshot.data!["anCommentDtos"][widget.i]["id"],
+                                        );
+                                        parent?.setState(() {});
+                                      },
+                                      child: const Text('확인'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('취소'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          });
+                    },
                     child: const Text('삭제하기'),
                   ),
                 ],
