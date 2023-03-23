@@ -3,43 +3,40 @@ import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
 import 'package:sizer/sizer.dart';
 
-class QuCommentInput extends StatefulWidget {
-  const QuCommentInput({
+class WriteComment extends StatefulWidget {
+  const WriteComment({
     super.key,
+    required this.fromWhere, // "QuestionBody, AnswerBody"
     required this.token,
     required this.questionId,
+    this.answerId,
     required this.provider,
   });
 
+  final String fromWhere; // "QuestionBody, AnswerBody"
   final String token;
   final int questionId;
+  final int? answerId;
   final QuestionViewModel provider;
 
   @override
-  State<QuCommentInput> createState() => _QuCommentInputState();
+  State<WriteComment> createState() => _WriteCommentState();
 }
 
-class _QuCommentInputState extends State<QuCommentInput> {
+class _WriteCommentState extends State<WriteComment> {
   String _commentText = '';
+  int aid = 0;
   late final GlobalKey<FormState> formKey;
 
   @override
   void initState() {
     formKey = GlobalKey<FormState>();
     super.initState();
+    if (widget.answerId != null) {
+      // "fromWhere == AnswerBody"
+      aid = widget.answerId!;
+    }
   }
-
-  void _postWriteQuComment(
-    QuestionViewModel provider,
-    String token,
-    int questionId,
-    String comment,
-  ) =>
-      provider.postWriteQuComment(
-        token,
-        questionId,
-        comment,
-      );
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +45,12 @@ class _QuCommentInputState extends State<QuCommentInput> {
       key: formKey,
       child: Column(
         children: [
-          Container(height: 5.w),
           Row(
             children: [
               const Icon(Icons.subdirectory_arrow_right),
               Container(
-                width: 100.w * (6.9 / 10),
-                padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                width: (widget.fromWhere == "AnswerBody" ? 100.w * (6.3 / 10) : (widget.fromWhere == "QuestionBody" ? 100.w * (6.9 / 10) : 0)),
+                padding: EdgeInsets.fromLTRB(2.w, 1.w, 2.w, 1.w),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
@@ -76,13 +72,19 @@ class _QuCommentInputState extends State<QuCommentInput> {
                       },
                     ),
                     ElevatedButton(
-                      onPressed: () {
-                        // 해야 할 것. 댓글 작성 post api 적용
+                      onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          parent?.setState(() {
-                            formKey.currentState?.save();
-                            _postWriteQuComment(widget.provider, widget.token, widget.questionId, _commentText);
-                          });
+                          formKey.currentState?.save();
+
+                          switch (widget.fromWhere) {
+                            case "AnswerBody":
+                              await widget.provider.postWriteAnComment(widget.token, widget.questionId, aid, _commentText);
+                              break;
+                            case "QuestionBody":
+                              await widget.provider.postWriteQuComment(widget.token, widget.questionId, _commentText);
+                              break;
+                          }
+                          parent?.setState(() {});
                         }
                       },
                       child: const Text('댓글 작성'),

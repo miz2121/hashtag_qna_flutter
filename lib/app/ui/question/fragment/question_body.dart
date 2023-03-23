@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/fragment/comment.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/hashtags.dart';
-import 'package:hashtag_qna_flutter/app/ui/question/fragment/qu_comment.dart';
-import 'package:hashtag_qna_flutter/app/ui/question/fragment/qu_comment_input.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/fragment/write_comment.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
 import 'package:intl/intl.dart';
@@ -91,20 +91,29 @@ class _QuestionBodyState extends State<QuestionBody> {
 
         Container(height: 5.w),
         Divider(thickness: 1.w),
+        Container(height: 5.w),
+
         // 댓글창
         for (int i = 0; i < widget.snapshot.data!["quCommentDtos"].length; i++)
-          QuComment(
-            index: i,
-            snapshot: widget.snapshot,
+          Comment(
+            fromWhere: "QuestionBody",
             token: widget.token,
+            snapshot: widget.snapshot,
             provider: widget.provider,
+            i: i,
           ),
         widget.fromWhere == 'QuestionPage'
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // 댓글 작성 창
-                  QuCommentInput(
+                  // QuCommentInput(
+                  //   token: widget.token,
+                  //   questionId: widget.snapshot.data!["questionDto"]["id"],
+                  //   provider: widget.provider,
+                  // ),
+                  WriteComment(
+                    fromWhere: "QuestionBody",
                     token: widget.token,
                     questionId: widget.snapshot.data!["questionDto"]["id"],
                     provider: widget.provider,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hashtag_qna_flutter/app/ui/question/fragment/an_comment.dart';
-import 'package:hashtag_qna_flutter/app/ui/question/fragment/an_comment_input.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/fragment/comment.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/fragment/write_comment.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
@@ -78,7 +78,8 @@ class AnswerBody extends StatelessWidget {
                       // 답변 댓글창
                       for (int c = 0; c < snapshot.data!["anCommentDtos"].length; c++)
                         snapshot.data!["anCommentDtos"][c]["answerId"] == snapshot.data!["answerDtos"][answerIndex]["id"]
-                            ? AnComment(
+                            ? Comment(
+                                fromWhere: "AnswerBody",
                                 token: token,
                                 snapshot: snapshot,
                                 provider: provider,
@@ -88,9 +89,8 @@ class AnswerBody extends StatelessWidget {
                             : Container(),
 
                       fromWhere == 'QuestionPage'
-                          ?
-                          // 답변 댓글 작성 창
-                          AnCommentInput(
+                          ? WriteComment(
+                              fromWhere: "AnswerBody",
                               token: token,
                               questionId: snapshot.data!["questionDto"]["id"],
                               answerId: snapshot.data!["answerDtos"][answerIndex]["id"],

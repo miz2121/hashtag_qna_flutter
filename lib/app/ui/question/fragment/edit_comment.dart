@@ -6,6 +6,7 @@ import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
 class EditComment extends ConsumerStatefulWidget {
   const EditComment({
     super.key,
+    required this.fromWhere, // "anComment, quComment"
     required this.comment,
     required this.i,
     required this.questionId,
@@ -16,6 +17,7 @@ class EditComment extends ConsumerStatefulWidget {
     required this.provider,
   });
 
+  final String fromWhere;
   final String comment;
   final int i;
   final int questionId;
@@ -78,12 +80,13 @@ class _EditCommentState extends ConsumerState<EditComment> {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState?.save();
 
-                              if (widget.answerId == null && widget.anCommentId == null) {
-                                // 질문 댓글에서 넘어온 위젯이므로
-                                await widget.provider.patchUpdateQuComment(widget.token, widget.questionId, qcid, _commentText);
-                              } else if (widget.quCommentId == null) {
-                                // 답변 댓글에서 넘어온 위젯이므로
-                                await widget.provider.patchUpdateAnComment(widget.token, widget.questionId, aid, acid, _commentText);
+                              switch (widget.fromWhere) {
+                                case "quComment":
+                                  await widget.provider.patchUpdateQuComment(widget.token, widget.questionId, qcid, _commentText);
+                                  break;
+                                case "anComment":
+                                  await widget.provider.patchUpdateAnComment(widget.token, widget.questionId, aid, acid, _commentText);
+                                  break;
                               }
 
                               if (!mounted) return;
