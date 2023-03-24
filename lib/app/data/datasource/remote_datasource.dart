@@ -35,7 +35,7 @@ class RemoteDatasource {
         body: jsonEncode(message));
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
@@ -49,7 +49,7 @@ class RemoteDatasource {
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json"}, encoding: Encoding.getByName("utf-8"), body: jsonEncode(message));
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
@@ -103,7 +103,7 @@ class RemoteDatasource {
     logger.d('body: ${jsonEncode(message)}');
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
@@ -135,7 +135,7 @@ class RemoteDatasource {
     logger.d('body: ${jsonEncode(message)}');
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
@@ -152,7 +152,7 @@ class RemoteDatasource {
     logger.d('body: ${jsonEncode(message)}');
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
@@ -169,7 +169,7 @@ class RemoteDatasource {
     logger.d('body: ${jsonEncode(message)}');
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
@@ -186,7 +186,7 @@ class RemoteDatasource {
     logger.d('body: ${jsonEncode(message)}');
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
@@ -203,7 +203,7 @@ class RemoteDatasource {
     logger.d('body: ${jsonEncode(message)}');
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
@@ -217,7 +217,7 @@ class RemoteDatasource {
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
@@ -231,7 +231,7 @@ class RemoteDatasource {
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
@@ -246,7 +246,7 @@ class RemoteDatasource {
     var response = await http.patch(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"), body: jsonEncode(message));
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
@@ -260,7 +260,7 @@ class RemoteDatasource {
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
@@ -277,7 +277,7 @@ class RemoteDatasource {
     logger.d('body: ${jsonEncode(message)}');
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
@@ -291,7 +291,7 @@ class RemoteDatasource {
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
 
     if (response.statusCode == 200) {
-      logger.d("response.headers", response.headers);
+      // logger.d("response.headers", response.headers);
       return response.headers;
     } else {
       logger.e('ERROR: ${response.statusCode}');
