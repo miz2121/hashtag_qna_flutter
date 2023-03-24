@@ -73,7 +73,7 @@ class _QuestionBodyState extends State<QuestionBody> {
           snapshot: widget.snapshot,
         ),
 
-        (widget.snapshot.data!["questionDto"]?["editable"] ?? '' == true && widget.snapshot.data!["questionDto"]?["questionStatus"] ?? '' == "OPEN")
+        ((widget.snapshot.data!["questionDto"]?["editable"] ?? '') == true && ((widget.snapshot.data!["questionDto"]?["questionStatus"] ?? '') == "OPEN"))
             ?
             // 작성자 본인이라 수정 가능하고, 질문글이 채택된 게 있어서 닫힌 상태가 아니면
             // 수정버튼 삭제버튼을 띄움

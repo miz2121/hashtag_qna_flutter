@@ -77,7 +77,7 @@ class AnswerBody extends StatelessWidget {
                           // 작성자 본인이라 수정 가능하고, 질문글이 채택된 게 있어서 닫힌 상태가 아니면
                           // 수정버튼 삭제버튼을 띄움
                           QuAnEditDeleteButtons(
-                              fromWhere: "Answerbody",
+                              fromWhere: "AnswerBody",
                               answerIndex: answerIndex,
                               token: token,
                               provider: provider,

@@ -107,6 +107,7 @@ class _EditQuAnState extends State<EditQuAn> {
                             content: Column(
                               children: [
                                 TextFormField(
+                                    maxLines: 5,
                                     decoration: InputDecoration(labelText: widget.snapshot.data!["answerDtos"][widget.answerIndex]["content"]),
                                     validator: (value) => value!.isEmpty ? "title can not be empty" : null,
                                     onSaved: (value) {

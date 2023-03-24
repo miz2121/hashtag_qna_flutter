@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/component/edit_qu_an.dart';
-import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
 import 'package:sizer/sizer.dart';
 
@@ -28,8 +26,6 @@ class QuAnEditDeleteButtons extends StatefulWidget {
 class _QuAnEditDeleteButtonsState extends State<QuAnEditDeleteButtons> {
   @override
   Widget build(BuildContext context) {
-    QuestionPageState? parent = context.findAncestorStateOfType<QuestionPageState>();
-    HomePageState? gParent = context.findAncestorStateOfType<HomePageState>();
     return Column(
       children: [
         Container(height: 5.w),
@@ -64,7 +60,7 @@ class _QuAnEditDeleteButtonsState extends State<QuAnEditDeleteButtons> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: const Text('삭제 확인'),
-                        content: const Text('질문을 삭제하시겠습니까?\n댓글과 답변이 모두 사라집니다.'),
+                        content: widget.fromWhere == "QuestionBody" ? const Text('질문을 삭제하시겠습니까?\n댓글과 답변이 모두 사라집니다.') : (widget.fromWhere == "AnswerBody" ? const Text('답변을 삭제하시겠습니까?\n댓글이 모두 사라집니다.') : Container()),
                         actions: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
