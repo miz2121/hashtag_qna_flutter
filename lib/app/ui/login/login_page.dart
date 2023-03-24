@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/login/login_viewmodel.dart';
+import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
@@ -19,9 +20,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   String? token;
   late LoginViewModel provider;
 
-  Future<Map<String, String>?> _postRequestLogin(LoginViewModel provider) async {
+  Future<Map<String, dynamic>?> _postRequestLogin(LoginViewModel provider) async {
     final form = formKey.currentState;
-    Map<String, String> map = {};
+    Map<String, dynamic> map = {};
     if (form!.validate()) {
       form.save();
       map = await provider.postLogin(_email, _password);
@@ -104,6 +105,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 ],
                               );
                             });
+                      } else if (headers['code'] != null) {
+                        logger.d("headers['code']: ${headers['code']}");
+                        switch (headers['code']) {
+                          case "INACTIVE_MEMBER":
+                            exceptionShowDialog(context, '비활성화된 회원입니다.');
+                            break;
+                          case "NOT_MEMBER":
+                            exceptionShowDialog(context, '회원 정보가 없습니다.');
+                            break;
+                        }
                       } else {
                         showDialog(
                             context: context,

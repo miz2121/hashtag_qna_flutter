@@ -8,7 +8,7 @@ class JoinViewModel extends StateNotifier<JoinRepository> {
 
   final JoinRepository _joinRepository = JoinRepository();
 
-  Future<Map<String, String>> postJoin(String email, String password, String nickname) {
+  Future<Map<String, dynamic>> postJoin(String email, String password, String nickname) {
     return _joinRepository.postJoin(email, password, nickname);
   }
 

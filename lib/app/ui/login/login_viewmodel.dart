@@ -8,7 +8,7 @@ class LoginViewModel extends StateNotifier<LoginRepository> {
 
   final LoginRepository _loginRepository = LoginRepository();
 
-  Future<Map<String, String>> postLogin(String email, String password) {
+  Future<Map<String, dynamic>> postLogin(String email, String password) {
     return _loginRepository.postLogin(email, password);
   }
 

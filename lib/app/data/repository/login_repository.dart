@@ -5,7 +5,7 @@ class LoginRepository {
   final LocalDataSource _localDataSource = LocalDataSource();
   final RemoteDatasource _remoteDatasource = RemoteDatasource();
 
-  Future<Map<String, String>> postLogin(String email, String password) {
+  Future<Map<String, dynamic>> postLogin(String email, String password) {
     return _remoteDatasource.postLogin(email, password);
   }
 

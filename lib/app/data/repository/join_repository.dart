@@ -5,7 +5,7 @@ class JoinRepository {
   final RemoteDatasource _remoteDatasource = RemoteDatasource();
   final LocalDataSource _localDataSource = LocalDataSource();
 
-  Future<Map<String, String>> postJoin(String email, String password, String nickname) {
+  Future<Map<String, dynamic>> postJoin(String email, String password, String nickname) {
     return _remoteDatasource.postJoin(email, password, nickname);
   }
 

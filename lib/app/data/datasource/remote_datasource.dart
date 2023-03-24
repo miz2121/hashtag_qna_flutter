@@ -9,21 +9,23 @@ class RemoteDatasource {
 
   Future<Map<String, dynamic>> getHomeQuestions() async {
     Uri uri = Uri.parse("$address/home");
-    // logger.d("$address/home");
     final response = await (http.get(uri));
-    // logger.d("response.statusCode: ", response.statusCode);
-    if (response.statusCode == 200) {
-      // OK
-      var data = jsonDecode(utf8.decode(response.bodyBytes));
-      // logger.d("data is: ", data);
-      return data;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+
+    switch (response.statusCode) {
+      case 200:
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
-  Future<Map<String, String>> postLogin(String email, String password) async {
+  Future<Map<String, dynamic>> postLogin(String email, String password) async {
     var uri = Uri.parse("$address/login");
     var message = {"email": email, "pwd": password};
     var response = await http.post(uri,
@@ -34,26 +36,42 @@ class RemoteDatasource {
         encoding: Encoding.getByName("utf-8"),
         body: jsonEncode(message));
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
-  Future<Map<String, String>> postJoin(String email, String password, String nickname) async {
+  Future<Map<String, dynamic>> postJoin(String email, String password, String nickname) async {
     var uri = Uri.parse("$address/join");
     var message = {"email": email, "pwd": password, "nickname": nickname};
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json"}, encoding: Encoding.getByName("utf-8"), body: jsonEncode(message));
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 409: // data['code'] == "INFO_ALREADY_EXISTS"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -61,27 +79,38 @@ class RemoteDatasource {
     Uri uri = Uri.parse("$address/members");
     var headers = {"Authorization": "Bearer $token"};
     final response = await (http.get(uri, headers: headers));
-    // logger.d("response.statusCode: ", response.statusCode);
-    if (response.statusCode == 200) {
-      // OK
-      var data = jsonDecode(utf8.decode(response.bodyBytes));
-      // logger.d("data is: ", data);
-      return data;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+
+    switch (response.statusCode) {
+      case 200:
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
   Future<List<dynamic>> getHashtags() async {
     Uri uri = Uri.parse("$address/hashtags");
     final response = await http.get(uri);
-    if (response.statusCode == 200) {
-      var data = jsonDecode(utf8.decode(response.bodyBytes));
-      return data;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+
+    switch (response.statusCode) {
+      case 200:
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -100,14 +129,22 @@ class RemoteDatasource {
     var message = {"title": title, "content": content, "existHashtagDtos": existHashtagDtos, "newHashtagDtos": newHashtagDtos};
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"), body: jsonEncode(message));
 
-    logger.d('body: ${jsonEncode(message)}');
+    // logger.d('body: ${jsonEncode(message)}');
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -115,14 +152,20 @@ class RemoteDatasource {
     Uri uri = Uri.parse("$address/questions/$id");
     var headers = {"Authorization": "Bearer $token"};
     final response = await (http.get(uri, headers: headers));
-    // logger.d("response.statusCode: ", response.statusCode);
-    if (response.statusCode == 200) {
-      // OK
-      var data = jsonDecode(utf8.decode(response.bodyBytes));
-      return data;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+
+    switch (response.statusCode) {
+      case 200:
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -134,12 +177,20 @@ class RemoteDatasource {
 
     logger.d('body: ${jsonEncode(message)}');
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_COMMENT_AUTH"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -151,12 +202,20 @@ class RemoteDatasource {
 
     logger.d('body: ${jsonEncode(message)}');
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_COMMENT_AUTH"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -168,12 +227,20 @@ class RemoteDatasource {
 
     logger.d('body: ${jsonEncode(message)}');
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER" || "CLOSED_QUESTION_AUTH" || "ANSWER_AUTH"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -185,12 +252,20 @@ class RemoteDatasource {
 
     logger.d('body: ${jsonEncode(message)}');
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_COMMENT_AUTH"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -202,12 +277,20 @@ class RemoteDatasource {
 
     logger.d('body: ${jsonEncode(message)}');
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_COMMENT_AUTH"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -216,12 +299,20 @@ class RemoteDatasource {
 
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_COMMENT_AUTH"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -230,12 +321,20 @@ class RemoteDatasource {
 
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_COMMENT_AUTH"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -245,12 +344,20 @@ class RemoteDatasource {
     var message = {"title": title, "content": content};
     var response = await http.patch(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"), body: jsonEncode(message));
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_QUESTION_AUTH" || "CLOSED_QUESTION_AUTH"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -259,12 +366,20 @@ class RemoteDatasource {
 
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_QUESTION_AUTH" || "CLOSED_QUESTION_AUTH"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -276,12 +391,20 @@ class RemoteDatasource {
 
     logger.d('body: ${jsonEncode(message)}');
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_ANSWER_AUTH" || "CLOSED_QUESTION_AUTH"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 
@@ -290,12 +413,20 @@ class RemoteDatasource {
 
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
 
-    if (response.statusCode == 200) {
-      // logger.d("response.headers", response.headers);
-      return response.headers;
-    } else {
-      logger.e('ERROR: ${response.statusCode}');
-      throw Exception("Error on server");
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_ANSWER_AUTH" || "CLOSED_QUESTION_AUTH"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 }
