@@ -114,20 +114,26 @@ class _QuestionBodyState extends State<QuestionBody> {
                           onPressed: null,
                           child: Text('닫힌 글은 더 이상 답변을 달 수 없습니다.'),
                         )
-                      : ElevatedButton(
-                          onPressed: () async {
-                            final refresh = await Navigator.pushNamed(context, '/create_answer', arguments: {
-                              'id': widget.snapshot.data!["questionDto"]?["id"] ?? 0,
-                              'token': widget.token,
-                            });
-                            if (refresh != null) {
-                              if (refresh == true) {
-                                parent?.setState(() {});
-                              }
-                            }
-                          },
-                          child: const Text('답변 작성'),
-                        ),
+                      : (widget.snapshot.data!["questionDto"]?["editable"]) == true
+                          ? // 질문 글을 수정할 수 있다면 본인의 질문 글이므로, 본인이 본인 질문 글에 답변 달 수 없도록.
+                          const ElevatedButton(
+                              onPressed: null,
+                              child: Text('답변 작성'),
+                            )
+                          : ElevatedButton(
+                              onPressed: () async {
+                                final refresh = await Navigator.pushNamed(context, '/create_answer', arguments: {
+                                  'id': widget.snapshot.data!["questionDto"]?["id"] ?? 0,
+                                  'token': widget.token,
+                                });
+                                if (refresh != null) {
+                                  if (refresh == true) {
+                                    parent?.setState(() {});
+                                  }
+                                }
+                              },
+                              child: const Text('답변 작성'),
+                            ),
                 ],
               )
             : widget.fromWhere == 'CreateAnswer'

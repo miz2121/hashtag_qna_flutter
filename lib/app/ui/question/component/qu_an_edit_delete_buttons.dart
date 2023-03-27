@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/component/edit_qu_an.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
+import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:sizer/sizer.dart';
 
 class QuAnEditDeleteButtons extends StatefulWidget {
@@ -26,6 +28,7 @@ class QuAnEditDeleteButtons extends StatefulWidget {
 class _QuAnEditDeleteButtonsState extends State<QuAnEditDeleteButtons> {
   @override
   Widget build(BuildContext context) {
+    QuestionPageState? parent = context.findAncestorStateOfType<QuestionPageState>();
     return Column(
       children: [
         Container(height: 5.w),
@@ -69,21 +72,85 @@ class _QuAnEditDeleteButtonsState extends State<QuAnEditDeleteButtons> {
                                 onPressed: () async {
                                   switch (widget.fromWhere) {
                                     case "QuestionBody":
-                                      await widget.provider.postRemoveQuestion(widget.token, widget.snapshot.data!["questionDto"]["id"]);
+                                      var response = await widget.provider.postRemoveQuestion(widget.token, widget.snapshot.data!["questionDto"]["id"]);
+                                      if (!mounted) return;
+                                      if (response['data'] != null) {
+                                        switch (response['data']) {
+                                          case "INVALID_PARAMETER":
+                                            exceptionShowDialog(context, "INVALID_PARAMETER");
+                                            break;
+                                          case "NOT_MEMBER":
+                                            exceptionShowDialog(context, '등록된 회원 정보가 없습니다.');
+                                            break;
+                                          case "EDIT_QUESTION_AUTH":
+                                            exceptionShowDialog(context, '작성자만이 질문을 수정 및 삭제할 수 있습니다.');
+                                            break;
+                                          case "CLOSED_QUESTION_AUTH":
+                                            exceptionShowDialog(context, '닫힌 글은 더 이상 수정할 수 없습니다.');
+                                            break;
+                                          case "INACTIVE_MEMBER":
+                                            exceptionShowDialog(context, '비활성화된 회원입니다.');
+                                            break;
+                                          case "RESOURCE_NOT_FOUND":
+                                            exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
+                                            break;
+                                          case "INTERNAL_SERVER_ERROR":
+                                            exceptionShowDialog(context, "INTERNAL_SERVER_ERROR");
+                                            break;
+                                          default:
+                                            logger.e("Error");
+                                            throw Exception("Error");
+                                        }
+                                      }
                                       break;
                                     case "AnswerBody":
-                                      await widget.provider.postRemoveAnswer(widget.token, widget.snapshot.data!["questionDto"]["id"], widget.snapshot.data!["answerDtos"][widget.answerIndex]["id"]);
+                                      var response = await widget.provider.postRemoveAnswer(widget.token, widget.snapshot.data!["questionDto"]["id"], widget.snapshot.data!["answerDtos"][widget.answerIndex]["id"]);
+                                      if (!mounted) return;
+                                      if (response['data'] != null) {
+                                        switch (response['data']) {
+                                          case "INVALID_PARAMETER":
+                                            exceptionShowDialog(context, "INVALID_PARAMETER");
+                                            break;
+                                          case "NOT_MEMBER":
+                                            exceptionShowDialog(context, '등록된 회원 정보가 없습니다.');
+                                            break;
+                                          case "EDIT_ANSWER_AUTH":
+                                            exceptionShowDialog(context, '작성자만이 답변을 수정 및 삭제할 수 있습니다.');
+                                            break;
+                                          case "CLOSED_QUESTION_AUTH":
+                                            exceptionShowDialog(context, '닫힌 글의 답변은 더 이상 수정 및 삭제할 수 없습니다.');
+                                            break;
+                                          case "INACTIVE_MEMBER":
+                                            exceptionShowDialog(context, '비활성화된 회원입니다.');
+                                            break;
+                                          case "RESOURCE_NOT_FOUND":
+                                            exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
+                                            break;
+                                          case "INTERNAL_SERVER_ERROR":
+                                            exceptionShowDialog(context, "INTERNAL_SERVER_ERROR");
+                                            break;
+                                          default:
+                                            logger.e("Error");
+                                            throw Exception("Error");
+                                        }
+                                      }
                                       break;
                                   }
                                   if (!mounted) return;
-
-                                  switch (widget.provider.previous) {
-                                    case "homePage":
-                                      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                                  switch (widget.fromWhere) {
+                                    case "QuestionBody": // 질문의 삭제 버튼이면
+                                      switch (widget.provider.previous) {
+                                        case "homePage":
+                                          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                                          break;
+                                        case "questionsPage":
+                                          Navigator.pushNamedAndRemoveUntil(context, '/questions', (route) => false);
+                                          break;
+                                      }
                                       break;
-                                    case "questionsPage":
-                                      Navigator.pushNamedAndRemoveUntil(context, '/questions', (route) => false);
-                                      break;
+                                    case "AnswerBody": // 답변의 삭제 버튼이면
+                                      Navigator.of(context).pop();
+                                      parent?.setState(() {});
                                   }
                                 },
                                 child: const Text('확인'),

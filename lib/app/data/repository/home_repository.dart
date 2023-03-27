@@ -13,7 +13,7 @@ class HomeRepository {
   Future<Map<String, dynamic>> getMemberInfoMaps(String token) async {
     Map<String, dynamic> info = await _remoteDatasource.getMemberInfoMaps(token);
 
-    await saveMemberInfo(info['nickname'], info['email'], info['questionCount'], info['answerCount'], info['commentCount'], info['hashtagCount']);
+    await saveMemberInfo(info['nickname'] ?? '', info['email'] ?? '', info['questionCount'] ?? 0, info['answerCount'] ?? 0, info['commentCount'] ?? 0, info['hashtagCount'] ?? 0);
     return info;
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/edit_comment.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
+import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:sizer/sizer.dart';
 
 class CommentEditDeleteButtons extends StatefulWidget {
@@ -73,19 +74,71 @@ class _CommentEditDeleteButtonsState extends State<CommentEditDeleteButtons> {
                             onPressed: () async {
                               switch (widget.fromWhere) {
                                 case "QuestionBody":
-                                  await widget.provider.postRemoveQuComment(
+                                  var response = await widget.provider.postRemoveQuComment(
                                     widget.token,
                                     widget.snapshot.data!["questionDto"]["id"],
                                     widget.snapshot.data!["quCommentDtos"][widget.i]["id"],
                                   );
+                                  if (!mounted) return;
+                                  if (response['data'] != null) {
+                                    switch (response['data']) {
+                                      case "INVALID_PARAMETER":
+                                        exceptionShowDialog(context, "INVALID_PARAMETER");
+                                        break;
+                                      case "NOT_MEMBER":
+                                        exceptionShowDialog(context, '등록된 회원 정보가 없습니다.');
+                                        break;
+                                      case "EDIT_COMMENT_AUTH":
+                                        exceptionShowDialog(context, '작성자만이 댓글을 수정 및 삭제할 수 있습니다.');
+                                        break;
+                                      case "INACTIVE_MEMBER":
+                                        exceptionShowDialog(context, '비활성화된 회원입니다.');
+                                        break;
+                                      case "RESOURCE_NOT_FOUND":
+                                        exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
+                                        break;
+                                      case "INTERNAL_SERVER_ERROR":
+                                        exceptionShowDialog(context, "INTERNAL_SERVER_ERROR");
+                                        break;
+                                      default:
+                                        logger.e("Error");
+                                        throw Exception('Error');
+                                    }
+                                  }
                                   break;
                                 case "AnswerBody":
-                                  await widget.provider.postRemoveAnComment(
+                                  var response = await widget.provider.postRemoveAnComment(
                                     widget.token,
                                     widget.snapshot.data!["questionDto"]["id"],
                                     widget.snapshot.data!["answerDtos"][widget.answerIndex]["id"],
                                     widget.snapshot.data!["anCommentDtos"][widget.i]["id"],
                                   );
+                                  if (!mounted) return;
+                                  if (response['data'] != null) {
+                                    switch (response['data']) {
+                                      case "INVALID_PARAMETER":
+                                        exceptionShowDialog(context, "INVALID_PARAMETER");
+                                        break;
+                                      case "NOT_MEMBER":
+                                        exceptionShowDialog(context, '등록된 회원 정보가 없습니다.');
+                                        break;
+                                      case "EDIT_COMMENT_AUTH":
+                                        exceptionShowDialog(context, '작성자만이 댓글을 수정 및 삭제할 수 있습니다.');
+                                        break;
+                                      case "INACTIVE_MEMBER":
+                                        exceptionShowDialog(context, '비활성화된 회원입니다.');
+                                        break;
+                                      case "RESOURCE_NOT_FOUND":
+                                        exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
+                                        break;
+                                      case "INTERNAL_SERVER_ERROR":
+                                        exceptionShowDialog(context, "INTERNAL_SERVER_ERROR");
+                                        break;
+                                      default:
+                                        logger.e("Error");
+                                        throw Exception('Error');
+                                    }
+                                  }
                                   break;
                               }
 

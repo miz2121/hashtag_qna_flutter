@@ -87,10 +87,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   Container(height: 30.w),
                   ElevatedButton(
                     onPressed: () async {
-                      var headers = await _postRequestLogin(provider);
+                      var response = await _postRequestLogin(provider);
                       if (!mounted) return;
                       _loadUser(provider);
-                      if (headers == null) {
+                      if (response == null) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -105,9 +105,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 ],
                               );
                             });
-                      } else if (headers['code'] != null) {
-                        logger.d("headers['code']: ${headers['code']}");
-                        switch (headers['code']) {
+                      } else if (response['code'] != null) {
+                        logger.d("response['code']: ${response['code']}");
+                        switch (response['code']) {
                           case "INACTIVE_MEMBER":
                             exceptionShowDialog(context, '비활성화된 회원입니다.');
                             break;

@@ -9,7 +9,7 @@ class CreateRepository {
     return _remoteDatasource.getHashtags();
   }
 
-  Future<Map<String, String>> postWriteQuestion(String title, String content, List<String> existHashtags, List<String> newHashtags) async {
+  Future<Map<String, dynamic>> postWriteQuestion(String title, String content, List<String> existHashtags, List<String> newHashtags) async {
     await _localDataSource.loadUser();
     return _remoteDatasource.postWriteQuestion(_localDataSource.token, title, content, existHashtags, newHashtags);
   }

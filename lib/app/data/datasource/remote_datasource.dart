@@ -45,7 +45,7 @@ class RemoteDatasource {
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
-        // logger.d("data is: ", data);
+        logger.d("data is: ", data);
         return data;
       default:
         logger.e('ERROR: ${response.statusCode}');
@@ -114,7 +114,7 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> postWriteQuestion(String? token, String title, String content, List<String> existHashtags, List<String> newHashtags) async {
+  Future<Map<String, dynamic>> postWriteQuestion(String? token, String title, String content, List<String> existHashtags, List<String> newHashtags) async {
     var uri = Uri.parse("$address/questions");
 
     List<HashtagDtos> existHashtagDtos = [];
@@ -165,11 +165,11 @@ class RemoteDatasource {
         return data;
       default:
         logger.e('ERROR: ${response.statusCode}');
-        throw Exception("Error on server");
+        throw Exception("Error");
     }
   }
 
-  Future<Map<String, String>> postWriteQuComment(String? token, int questionId, String comment) async {
+  Future<Map<String, dynamic>> postWriteQuComment(String? token, int questionId, String comment) async {
     var uri = Uri.parse("$address/questions/$questionId/comments");
 
     var message = {"content": comment};
@@ -194,7 +194,7 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> postWriteAnComment(String? token, int questionId, int answerId, String comment) async {
+  Future<Map<String, dynamic>> postWriteAnComment(String? token, int questionId, int answerId, String comment) async {
     var uri = Uri.parse("$address/questions/$questionId/answers/$answerId/comments");
 
     var message = {"content": comment};
@@ -219,7 +219,7 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> postWriteAnswer(String? token, int questionId, String answer) async {
+  Future<Map<String, dynamic>> postWriteAnswer(String? token, int questionId, String answer) async {
     var uri = Uri.parse("$address/questions/$questionId/answers");
 
     var message = {"content": answer};
@@ -244,7 +244,7 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> patchUpdateAnComment(String? token, int questionId, int answerId, int anCommentId, String anComment) async {
+  Future<Map<String, dynamic>> patchUpdateAnComment(String? token, int questionId, int answerId, int anCommentId, String anComment) async {
     var uri = Uri.parse("$address/questions/$questionId/answers/$answerId/comments/$anCommentId");
 
     var message = {"content": anComment};
@@ -269,7 +269,7 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> patchUpdateQuComment(String? token, int questionId, int quCommentId, String quComment) async {
+  Future<Map<String, dynamic>> patchUpdateQuComment(String? token, int questionId, int quCommentId, String quComment) async {
     var uri = Uri.parse("$address/questions/$questionId/comments/$quCommentId");
 
     var message = {"content": quComment};
@@ -294,7 +294,7 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> postRemoveQuComment(String? token, int questionId, int quCommentId) async {
+  Future<Map<String, dynamic>> postRemoveQuComment(String? token, int questionId, int quCommentId) async {
     var uri = Uri.parse("$address/questions/$questionId/comments/remove/$quCommentId");
 
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
@@ -316,7 +316,7 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> postRemoveAnComment(String? token, int questionId, int answerId, int anCommentId) async {
+  Future<Map<String, dynamic>> postRemoveAnComment(String? token, int questionId, int answerId, int anCommentId) async {
     var uri = Uri.parse("$address/questions/$questionId/answers/$answerId/comments/remove/$anCommentId");
 
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
@@ -338,7 +338,7 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> patchUpdateQuestion(String? token, int questionId, String title, String content) async {
+  Future<Map<String, dynamic>> patchUpdateQuestion(String? token, int questionId, String title, String content) async {
     var uri = Uri.parse("$address/questions/$questionId");
 
     var message = {"title": title, "content": content};
@@ -361,7 +361,7 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> postRemoveQuestion(String? token, int questionId) async {
+  Future<Map<String, dynamic>> postRemoveQuestion(String? token, int questionId) async {
     var uri = Uri.parse("$address/questions/remove/$questionId");
 
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
@@ -383,7 +383,7 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> patchUpdateAnswer(String? token, int questionId, int answerId, String content) async {
+  Future<Map<String, dynamic>> patchUpdateAnswer(String? token, int questionId, int answerId, String content) async {
     var uri = Uri.parse("$address/questions/$questionId/answers/$answerId");
 
     var message = {"content": content};
@@ -408,7 +408,7 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> postRemoveAnswer(String? token, int questionId, int answerId) async {
+  Future<Map<String, dynamic>> postRemoveAnswer(String? token, int questionId, int answerId) async {
     var uri = Uri.parse("$address/questions/$questionId/answers/remove/$answerId");
 
     var response = await http.post(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"));
@@ -418,6 +418,28 @@ class RemoteDatasource {
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
       case 401: // data['code'] == "NOT_MEMBER" || "EDIT_ANSWER_AUTH" || "CLOSED_QUESTION_AUTH"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
+    }
+  }
+
+  Future<Map<String, dynamic>> patchselectAnswerAndGiveScore(String? token, int questionId, int answerId, String score) async {
+    var uri = Uri.parse("$address/questions/$questionId/answers/select/$answerId");
+    var message = {"scoreString": score};
+    var response = await http.patch(uri, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"), body: jsonEncode(message));
+
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_QUESTION_AUTH" || "CLOSED_QUESTION_AUTH" || "SELECT_AUTH"
       case 403: // data['code'] == "INACTIVE_MEMBER"
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"

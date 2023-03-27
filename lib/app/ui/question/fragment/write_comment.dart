@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
+import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:sizer/sizer.dart';
 
 class WriteComment extends StatefulWidget {
@@ -78,10 +79,62 @@ class _WriteCommentState extends State<WriteComment> {
 
                           switch (widget.fromWhere) {
                             case "AnswerBody":
-                              await widget.provider.postWriteAnComment(widget.token, widget.questionId, aid, _commentText);
+                              var response = await widget.provider.postWriteAnComment(widget.token, widget.questionId, aid, _commentText);
+                              if (!mounted) return;
+                              if (response['code'] != null) {
+                                switch (response['code']) {
+                                  case "INVALID_PARAMETER":
+                                    exceptionShowDialog(context, "INVALID_PARAMETER");
+                                    break;
+                                  case "NOT_MEMBER":
+                                    exceptionShowDialog(context, "회원 정보가 없습니다.");
+                                    break;
+                                  case "EDIT_COMMENT_AUTH":
+                                    exceptionShowDialog(context, "작성자만이 수정 및 삭제가 가능합니다.");
+                                    break;
+                                  case "INACTIVE_MEMBER":
+                                    exceptionShowDialog(context, "비활성화된 회원입니다.");
+                                    break;
+                                  case "RESOURCE_NOT_FOUND":
+                                    exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
+                                    break;
+                                  case "INTERNAL_SERVER_ERROR":
+                                    exceptionShowDialog(context, "INTERNAL_SERVER_ERROR");
+                                    break;
+                                  default:
+                                    logger.e("Error");
+                                    throw Exception("Error");
+                                }
+                              }
                               break;
                             case "QuestionBody":
-                              await widget.provider.postWriteQuComment(widget.token, widget.questionId, _commentText);
+                              var response = await widget.provider.postWriteQuComment(widget.token, widget.questionId, _commentText);
+                              if (!mounted) return;
+                              if (response['code'] != null) {
+                                switch (response['code']) {
+                                  case "INVALID_PARAMETER":
+                                    exceptionShowDialog(context, "INVALID_PARAMETER");
+                                    break;
+                                  case "NOT_MEMBER":
+                                    exceptionShowDialog(context, "회원 정보가 없습니다.");
+                                    break;
+                                  case "EDIT_COMMENT_AUTH":
+                                    exceptionShowDialog(context, "작성자만이 수정 및 삭제가 가능합니다.");
+                                    break;
+                                  case "INACTIVE_MEMBER":
+                                    exceptionShowDialog(context, "비활성화된 회원입니다.");
+                                    break;
+                                  case "RESOURCE_NOT_FOUND":
+                                    exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
+                                    break;
+                                  case "INTERNAL_SERVER_ERROR":
+                                    exceptionShowDialog(context, "INTERNAL_SERVER_ERROR");
+                                    break;
+                                  default:
+                                    logger.e("Error");
+                                    throw Exception("Error");
+                                }
+                              }
                               break;
                           }
                           parent?.setState(() {});

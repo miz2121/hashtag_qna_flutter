@@ -14,7 +14,7 @@ class CreateViewModel extends StateNotifier<CreateRepository> {
 
   List<bool> isHashtagChecked = [];
 
-  Future<Map<String, String>> postWriteQuestion(String title, String content, List<String> existHashtags, List<String> newHashtags) async {
+  Future<Map<String, dynamic>> postWriteQuestion(String title, String content, List<String> existHashtags, List<String> newHashtags) async {
     return _createRepository.postWriteQuestion(title, content, existHashtags, newHashtags);
   }
 

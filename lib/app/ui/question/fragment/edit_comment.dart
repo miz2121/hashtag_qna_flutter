@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
+import 'package:hashtag_qna_flutter/app/util/utility.dart';
 
 class EditComment extends ConsumerStatefulWidget {
   const EditComment({
@@ -82,10 +83,62 @@ class _EditCommentState extends ConsumerState<EditComment> {
 
                               switch (widget.fromWhere) {
                                 case "quComment":
-                                  await widget.provider.patchUpdateQuComment(widget.token, widget.questionId, qcid, _commentText);
+                                  var response = await widget.provider.patchUpdateQuComment(widget.token, widget.questionId, qcid, _commentText);
+                                  if (!mounted) return;
+                                  if (response['code'] != null) {
+                                    switch (response['code']) {
+                                      case "INVALID_PARAMETER":
+                                        exceptionShowDialog(context, "INVALID_PARAMETER");
+                                        break;
+                                      case "NOT_MEMBER":
+                                        exceptionShowDialog(context, '등록된 회원 정보가 없습니다.');
+                                        break;
+                                      case "EDIT_COMMENT_AUTH":
+                                        exceptionShowDialog(context, '작성자만이 댓글을 수정 및 삭제할 수 있습니다.');
+                                        break;
+                                      case "INACTIVE_MEMBER":
+                                        exceptionShowDialog(context, '비활성화된 회원입니다.');
+                                        break;
+                                      case "RESOURCE_NOT_FOUND":
+                                        exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
+                                        break;
+                                      case "INTERNAL_SERVER_ERROR":
+                                        exceptionShowDialog(context, "INTERNAL_SERVER_ERROR");
+                                        break;
+                                      default:
+                                        logger.e("Error");
+                                        throw Exception('Error');
+                                    }
+                                  }
                                   break;
                                 case "anComment":
-                                  await widget.provider.patchUpdateAnComment(widget.token, widget.questionId, aid, acid, _commentText);
+                                  var response = await widget.provider.patchUpdateAnComment(widget.token, widget.questionId, aid, acid, _commentText);
+                                  if (!mounted) return;
+                                  if (response['code'] != null) {
+                                    switch (response['code']) {
+                                      case "INVALID_PARAMETER":
+                                        exceptionShowDialog(context, "INVALID_PARAMETER");
+                                        break;
+                                      case "NOT_MEMBER":
+                                        exceptionShowDialog(context, '등록된 회원 정보가 없습니다.');
+                                        break;
+                                      case "EDIT_COMMENT_AUTH":
+                                        exceptionShowDialog(context, '작성자만이 댓글을 수정 및 삭제할 수 있습니다.');
+                                        break;
+                                      case "INACTIVE_MEMBER":
+                                        exceptionShowDialog(context, '비활성화된 회원입니다.');
+                                        break;
+                                      case "RESOURCE_NOT_FOUND":
+                                        exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
+                                        break;
+                                      case "INTERNAL_SERVER_ERROR":
+                                        exceptionShowDialog(context, "INTERNAL_SERVER_ERROR");
+                                        break;
+                                      default:
+                                        logger.e("Error");
+                                        throw Exception('Error');
+                                    }
+                                  }
                                   break;
                               }
 
@@ -97,9 +150,7 @@ class _EditCommentState extends ConsumerState<EditComment> {
                           child: const Text('확인'),
                         ),
                         TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
+                          onPressed: () => Navigator.of(context).pop(),
                           child: const Text('취소'),
                         ),
                       ],

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/answer_body.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/fragment/question_body.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_viewmodel.dart';
+import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:sizer/sizer.dart';
 
 class QuestionPage extends ConsumerStatefulWidget {
@@ -76,44 +77,65 @@ class QuestionPageState extends ConsumerState<QuestionPage> {
                   }
                   if (snapshot.data!.isEmpty) {
                     return Container();
-                  } else {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 100.w * (9 / 10),
-                            margin: EdgeInsets.all(5.w),
-                            padding: EdgeInsets.fromLTRB(5.w, 2.w, 5.w, 2.w),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.cyan,
-                                width: 2.w,
-                              ),
-                            ),
-                            // 질문 내용
-                            child: QuestionBody(
-                              fromWhere: 'QuestionPage',
-                              snapshot: snapshot,
-                              token: token,
-                              provider: provider,
+                  }
+                  if (snapshot.data!['code'] != null) {
+                    switch (snapshot.data!['code']) {
+                      case "INVALID_PARAMETER":
+                        exceptionShowDialog(context, "INVALID_PARAMETER");
+                        break;
+                      case "NOT_MEMBER":
+                        exceptionShowDialog(context, '등록된 회원 정보가 없습니다.');
+                        break;
+                      case "INACTIVE_MEMBER":
+                        exceptionShowDialog(context, '비활성화 된 회원입니다.');
+                        break;
+                      case "RESOURCE_NOT_FOUND":
+                        exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
+                        break;
+                      case "INTERNAL_SERVER_ERROR":
+                        exceptionShowDialog(context, "INTERNAL_SERVER_ERROR");
+                        break;
+                      default:
+                        logger.e('ERROR');
+                        throw Exception("Error");
+                    }
+                  }
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 100.w * (9 / 10),
+                          margin: EdgeInsets.all(5.w),
+                          padding: EdgeInsets.fromLTRB(5.w, 2.w, 5.w, 2.w),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.cyan,
+                              width: 2.w,
                             ),
                           ),
+                          // 질문 내용
+                          child: QuestionBody(
+                            fromWhere: 'QuestionPage',
+                            snapshot: snapshot,
+                            token: token,
+                            provider: provider,
+                          ),
+                        ),
 
-                          // 답변 내용
-                          for (int answerIndex = 0; answerIndex < snapshot.data!["answerDtos"].length; answerIndex++)
-                            AnswerBody(
-                              fromWhere: 'QuestionPage',
-                              token: token,
-                              snapshot: snapshot,
-                              answerIndex: answerIndex,
-                              provider: provider,
-                            ),
-                        ],
-                      ),
-                    );
-                  }
+                        // 답변 내용
+                        for (int answerIndex = 0; answerIndex < snapshot.data!["answerDtos"].length; answerIndex++)
+                          AnswerBody(
+                            fromWhere: 'QuestionPage',
+                            token: token,
+                            snapshot: snapshot,
+                            answerIndex: answerIndex,
+                            provider: provider,
+                          ),
+                      ],
+                    ),
+                  );
                 }),
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/create/create_viewmodel.dart';
 import 'package:hashtag_qna_flutter/app/util/component/hashtag.dart';
+import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:sizer/sizer.dart';
 
 class CreateThirdPage extends ConsumerStatefulWidget {
@@ -19,10 +20,6 @@ class _CreateThirdPageState extends ConsumerState<CreateThirdPage> {
   List<String> newHashtags = [];
   List<String> myHashtags = [];
   late CreateViewModel provider;
-
-  Future<void> _postWriteQuestion(CreateViewModel provider, String title, String content, List<String> existHashtags, List<String> newHashtags) async {
-    await provider.postWriteQuestion(title, content, existHashtags, newHashtags);
-  }
 
   @override
   void initState() {
@@ -134,8 +131,30 @@ class _CreateThirdPageState extends ConsumerState<CreateThirdPage> {
                                     TextButton(
                                       onPressed: () async {
                                         formKey.currentState?.save();
-                                        await _postWriteQuestion(provider, _title, _content, existHashtags, newHashtags);
+                                        var response = await provider.postWriteQuestion(_title, _content, existHashtags, newHashtags);
                                         if (!mounted) return;
+                                        if (response['code'] != null) {
+                                          switch (response['code']) {
+                                            case "INVALID_PARAMETER":
+                                              exceptionShowDialog(context, "INVALID_PARAMETER");
+                                              break;
+                                            case "NOT_MEMBER":
+                                              exceptionShowDialog(context, "회원 정보가 없습니다.");
+                                              break;
+                                            case "INACTIVE_MEMBER":
+                                              exceptionShowDialog(context, "비활성화된 회원입니다.");
+                                              break;
+                                            case "RESOURCE_NOT_FOUND":
+                                              exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
+                                              break;
+                                            case "INTERNAL_SERVER_ERROR":
+                                              exceptionShowDialog(context, "INTERNAL_SERVER_ERROR");
+                                              break;
+                                            default:
+                                              logger.e("Error");
+                                              throw Exception("Error");
+                                          }
+                                        }
                                         Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
                                       },
                                       child: const Text("확인"),
