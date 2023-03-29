@@ -36,16 +36,76 @@ class MyApp extends StatelessWidget {
       return MaterialApp(
         initialRoute: '/',
         routes: {
-          '/': (BuildContext context) => const StartPage(),
-          '/home': (BuildContext context) => const HomePage(),
-          '/create_first': (BuildContext context) => const CreateFirstPage(),
-          '/create_second': (BuildContext context) => const CreateSecondPage(),
-          '/create_third': (BuildContext context) => const CreateThirdPage(),
-          '/login': (BuildContext context) => const LoginPage(),
-          '/question': (BuildContext context) => const QuestionPage(),
-          '/create_answer': (BuildContext context) => const CreateAnswer(),
-          '/questions_by_hashtag': (BuildContext context) => const QuestionsByHashtag(),
-          '/join': (BuildContext context) => const JoinPage(),
+          '/': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/'),
+              builder: (context) => const StartPage(),
+            );
+            return const StartPage();
+          },
+          '/home': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/home'),
+              builder: (context) => const HomePage(),
+            );
+            return const HomePage();
+          },
+          '/create_first': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/create_first'),
+              builder: (context) => const CreateFirstPage(),
+            );
+            return const CreateFirstPage();
+          },
+          '/create_second': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/create_second'),
+              builder: (context) => const CreateSecondPage(),
+            );
+            return const CreateSecondPage();
+          },
+          '/create_third': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/create_third'),
+              builder: (context) => const CreateThirdPage(),
+            );
+            return const CreateThirdPage();
+          },
+          '/login': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/login'),
+              builder: (context) => const LoginPage(),
+            );
+            return const LoginPage();
+          },
+          '/question': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/question'),
+              builder: (context) => const QuestionPage(),
+            );
+            return const QuestionPage();
+          },
+          '/create_answer': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/create_answer'),
+              builder: (context) => const CreateAnswer(),
+            );
+            return const CreateAnswer();
+          },
+          '/questions_by_hashtag': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/questions_by_hashtag'),
+              builder: (context) => const QuestionsByHashtag(),
+            );
+            return const QuestionsByHashtag();
+          },
+          '/join': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/join'),
+              builder: (context) => const JoinPage(),
+            );
+            return const JoinPage();
+          },
         },
         theme: ThemeData(
           primaryColor: Colors.cyan[900],
@@ -75,7 +135,11 @@ class StartPage extends StatelessWidget {
         child: Center(
           child: TextButton(
             onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/home',
+                (route) => false,
+              );
             },
             child: Text(
               '해시태그 QnA 게시판\n서비스를 시작합니다.',

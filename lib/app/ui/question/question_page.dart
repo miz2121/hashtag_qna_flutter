@@ -35,20 +35,6 @@ class QuestionPageState extends ConsumerState<QuestionPage> {
     provider.setPrevious(previous);
   }
 
-  // Future<bool> _movePage(BuildContext context) {
-  //   Future<bool?> result;
-
-  //   switch (provider.previous) {
-  //     case "homePage":
-  //       return Navigator.pushNamedAndRemoveUntil<bool>(context, '/home', (route) => false) as Future<bool>;
-  //     case "questionsPage":
-  //       return Navigator.pushNamedAndRemoveUntil<bool>(context, '/questions', (route) => false) as Future<bool>;
-  //     default:
-  //       setState(() {});
-  //       return false as Future<bool>;
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,6 +119,14 @@ class QuestionPageState extends ConsumerState<QuestionPage> {
                             answerIndex: answerIndex,
                             provider: provider,
                           ),
+
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('목록으로 이동'),
+                        ),
+                        Container(height: 5.w),
                       ],
                     ),
                   );

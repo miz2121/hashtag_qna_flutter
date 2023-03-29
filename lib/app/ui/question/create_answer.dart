@@ -44,6 +44,7 @@ class _CreateAnswerState extends ConsumerState<CreateAnswer> {
   @override
   Widget build(BuildContext context) {
     QuestionPageState? parent = context.findAncestorStateOfType<QuestionPageState>();
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -199,8 +200,9 @@ class _CreateAnswerState extends ConsumerState<CreateAnswer> {
                                                                   throw Exception("Error");
                                                               }
                                                             }
-                                                            Navigator.pop(context, true);
-                                                            parent?.setState(() {});
+
+                                                            Navigator.of(context).popUntil(ModalRoute.withName("/question"));
+                                                            WidgetsBinding.instance.addPostFrameCallback((_) => parent?.setState(() {}));
                                                           }
                                                         },
                                                         child: const Text('확인'),

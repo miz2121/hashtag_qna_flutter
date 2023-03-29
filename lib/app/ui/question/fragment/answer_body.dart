@@ -25,10 +25,10 @@ class AnswerBody extends StatefulWidget {
   final QuestionViewModel provider;
 
   @override
-  State<AnswerBody> createState() => _AnswerBodyState();
+  State<AnswerBody> createState() => AnswerBodyState();
 }
 
-class _AnswerBodyState extends State<AnswerBody> {
+class AnswerBodyState extends State<AnswerBody> {
   String _userRatingString = "";
   IconData? _selectedIcon;
 
