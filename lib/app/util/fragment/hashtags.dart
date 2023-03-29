@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/component/hashtag_snapshot.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_viewmodel.dart';
+import 'package:hashtag_qna_flutter/app/ui/question_list/question_list_viewmodel.dart';
 
 class Hashtags extends StatelessWidget {
   const Hashtags({
     super.key,
-    required this.provider,
+    this.homeViewModelProvider,
+    this.questionListViewModelProvider,
     required this.snapshot,
     this.token,
   });
 
-  final HomeViewModel provider;
+  final HomeViewModel? homeViewModelProvider;
+  final QuestionListViewModel? questionListViewModelProvider;
   final AsyncSnapshot<Map<String, dynamic>> snapshot;
   final String? token;
 
@@ -23,7 +26,8 @@ class Hashtags extends StatelessWidget {
         for (int index = 0; index < snapshot.data!['hashtagDtos'].length; index++)
           InkWell(
             child: HashtagSnapshot(
-              provider: provider,
+              questionListViewModelProvider: homeViewModelProvider == null ? questionListViewModelProvider : null,
+              homeViewModelProvider: questionListViewModelProvider == null ? homeViewModelProvider : null,
               index: index,
               snapshot: snapshot,
             ),
@@ -32,7 +36,11 @@ class Hashtags extends StatelessWidget {
               if (token == null) {
                 Navigator.pushNamed(context, '/login');
               } else {
-                Navigator.pushNamed(context, '/questions');
+                Navigator.pushNamed(
+                  context,
+                  '/question_list',
+                  arguments: {'token': token},
+                );
               }
             },
           ),

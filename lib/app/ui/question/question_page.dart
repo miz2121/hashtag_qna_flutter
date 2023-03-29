@@ -16,7 +16,7 @@ class QuestionPage extends ConsumerStatefulWidget {
 class QuestionPageState extends ConsumerState<QuestionPage> {
   int id = 0;
   String token = '';
-  String previous = ''; // "/home, /questions"
+  String previous = ''; // "/home, /question_list"
   late QuestionViewModel provider;
 
   @override
@@ -44,8 +44,8 @@ class QuestionPageState extends ConsumerState<QuestionPage> {
             case "/home":
               Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
               break;
-            case "/questions":
-              Navigator.pushNamedAndRemoveUntil(context, '/questions', (route) => false);
+            case "/question_list":
+              Navigator.pushNamedAndRemoveUntil(context, '/question_list', (route) => false);
               break;
           }
           return false;

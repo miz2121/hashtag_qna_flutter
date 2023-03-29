@@ -96,6 +96,26 @@ class RemoteDatasource {
     }
   }
 
+  Future<Map<String, dynamic>> getViewQuestions(String token) async {
+    Uri uri = Uri.parse("$address/questions");
+    var headers = {"Authorization": "Bearer $token"};
+    final response = await (http.get(uri, headers: headers));
+    switch (response.statusCode) {
+      case 200:
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
+    }
+  }
+
   Future<List<dynamic>> getHashtags() async {
     Uri uri = Uri.parse("$address/hashtags");
     final response = await http.get(uri);

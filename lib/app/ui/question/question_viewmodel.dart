@@ -62,7 +62,7 @@ class QuestionViewModel extends StateNotifier<QuestionRepository> {
 
   get hashtagColorList => _questionRepository.hashtagColorList;
 
-  String _previous = ''; // "homePage, questionsPage"
+  String _previous = ''; // "/home, /question_list"
   get previous => _previous;
   setPrevious(String page) {
     _previous = page;

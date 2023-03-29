@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/fragment/bottom_buttons.dart';
-import 'package:hashtag_qna_flutter/app/ui/home/fragment/hashtags.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_viewmodel.dart';
-import 'package:intl/intl.dart';
+import 'package:hashtag_qna_flutter/app/util/fragment/hashtags.dart';
+import 'package:hashtag_qna_flutter/app/util/fragment/question_list.dart';
+import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:sizer/sizer.dart';
 
 class HomeBody extends StatefulWidget {
@@ -43,114 +44,82 @@ class _HomeBodyState extends State<HomeBody> {
         }
         if (snapshot.data!.isEmpty) {
           return Container();
-        } else {
-          return Column(
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: snapshot.data!['questionListDtos'].length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    child: Card(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // boards
-                          ListTile(
-                            title: Text(
-                              snapshot.data!['questionListDtos'][index]['title'],
-                              style: Theme.of(context).textTheme.bodyLarge!,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            subtitle: Text(
-                              DateFormat('yy년 MM월 dd일 a:h시 mm분').format(DateTime.parse(snapshot.data!['questionListDtos'][index]['date'])),
-                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey[700]),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            trailing: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "상태: ${snapshot.data!['questionListDtos'][index]['questionStatus']}",
-                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey[700]),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  "답변 수: ${snapshot.data!['questionListDtos'][index]['answerCount']}",
-                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey[700]),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.fromLTRB(15, 0, 0, 15),
-                            child: Text(
-                              snapshot.data!['questionListDtos'][index]['writer'],
-                              style: Theme.of(context).textTheme.bodyMedium!,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    onTap: () async {
-                      if (!mounted) return;
-                      if (widget.token == null) {
-                        Navigator.pushNamed(context, '/login');
-                      } else {
-                        // logger.d("Entering the question page, token is: ${widget.token}");
-                        Navigator.pushNamed(context, '/question', arguments: {
-                          'id': snapshot.data!['questionListDtos'][index]['id'],
-                          'token': widget.token,
-                          'previous': '/home',
-                        });
-                      }
-                    },
-                  );
-                },
-              ),
-              //
-              // boards
-              //
-              TextButton(
-                onPressed: () async {
-                  if (widget.token == null) {
-                    Navigator.pushNamed(context, '/login');
-                  } else {
-                    Navigator.pushNamed(context, '/questions ');
-                  }
-                },
-                child: const Text('>>질문글 더 보기'),
-              ),
-
-              // hashtags
-              widget.token == null
-                  ? Hashtags(
-                      provider: widget.provider,
-                      snapshot: snapshot,
-                    )
-                  : Hashtags(
-                      provider: widget.provider,
-                      snapshot: snapshot,
-                      token: widget.token,
-                    ),
-
-              Container(height: 10.w),
-              widget.token == null
-                  ? BottomButtons(
-                      parent: parent,
-                      provider: widget.provider,
-                    )
-                  : BottomButtons(
-                      parent: parent,
-                      token: widget.token,
-                      provider: widget.provider,
-                    ),
-            ],
-          );
         }
+        if (snapshot.data!['code'] != null) {
+          switch (snapshot.data!['code']) {
+            case "INVALID_PARAMETER":
+              exceptionShowDialog(context, "INVALID_PARAMETER");
+              break;
+            case "NOT_MEMBER":
+              exceptionShowDialog(context, "NOT_MEMBER");
+              break;
+            case "INACTIVE_MEMBER":
+              exceptionShowDialog(context, "INACTIVE_MEMBER");
+              break;
+            case "RESOURCE_NOT_FOUND":
+              exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
+              break;
+            case "INTERNAL_SERVER_ERROR":
+              exceptionShowDialog(context, "INTERNAL_SERVER_ERROR");
+              break;
+            default:
+              logger.e('ERROR');
+              throw Exception("Error");
+          }
+        }
+
+        return Column(
+          children: [
+            QuestionList(
+              snapshot: snapshot,
+              token: widget.token,
+              previous: '/home',
+            ),
+
+            TextButton(
+              onPressed: () async {
+                if (widget.token == null) {
+                  Navigator.pushNamed(context, '/login');
+                } else {
+                  Navigator.pushNamed(
+                    context,
+                    '/question_list',
+                    arguments: {'token': widget.token},
+                  );
+                }
+              },
+              child: Text(
+                '>> 질문글 더 보기',
+                style: TextStyle(fontSize: 5.w),
+              ),
+            ),
+
+            Container(height: 10.w),
+            // hashtags
+            widget.token == null
+                ? Hashtags(
+                    homeViewModelProvider: widget.provider,
+                    snapshot: snapshot,
+                  )
+                : Hashtags(
+                    homeViewModelProvider: widget.provider,
+                    snapshot: snapshot,
+                    token: widget.token,
+                  ),
+
+            Container(height: 10.w),
+            widget.token == null
+                ? BottomButtons(
+                    parent: parent,
+                    provider: widget.provider,
+                  )
+                : BottomButtons(
+                    parent: parent,
+                    token: widget.token,
+                    provider: widget.provider,
+                  ),
+          ],
+        );
       },
     );
   }

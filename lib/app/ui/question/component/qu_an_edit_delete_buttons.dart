@@ -140,11 +140,11 @@ class _QuAnEditDeleteButtonsState extends State<QuAnEditDeleteButtons> {
                                   switch (widget.fromWhere) {
                                     case "QuestionBody": // 질문의 삭제 버튼이면
                                       switch (widget.provider.previous) {
-                                        case "homePage":
+                                        case "/home":
                                           Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
                                           break;
-                                        case "questionsPage":
-                                          Navigator.pushNamedAndRemoveUntil(context, '/questions', (route) => false);
+                                        case "/question_list":
+                                          Navigator.pushNamedAndRemoveUntil(context, '/question_list', (route) => false);
                                           break;
                                       }
                                       break;

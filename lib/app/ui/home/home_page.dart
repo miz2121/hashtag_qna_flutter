@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/data/model/member_info.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/fragment/home_body.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/fragment/show_nickname.dart';
-import 'package:hashtag_qna_flutter/app/ui/home/fragment/upper_text_clickable.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_viewmodel.dart';
+import 'package:hashtag_qna_flutter/app/util/fragment/upper_text_clickable.dart';
 import 'package:sizer/sizer.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -59,7 +59,7 @@ class HomePageState extends ConsumerState<HomePage> {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(height: 100.w / 10),
+                        Container(height: 10.w),
                         // 상단 닉네임
                         snapshot.data == null // 토큰이 없으면
                             ? ShowNickname(
@@ -71,12 +71,10 @@ class HomePageState extends ConsumerState<HomePage> {
                               ),
 
                         UpperTextClikable(
-                          snapshot: snapshot,
-                          text: '질문을 작성하실 수 있습니다.\n클릭해 보세요.',
-                          provider: provider,
+                          token: snapshot.data,
                         ),
 
-                        Container(height: 100.w / 10),
+                        Container(height: 10.w),
 
                         snapshot.data == null // 토큰이 없으면
                             ? HomeBody(provider: provider)

@@ -7,7 +7,7 @@ import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/join/join_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/create_answer.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
-import 'package:hashtag_qna_flutter/app/ui/question_list/questions.dart';
+import 'package:hashtag_qna_flutter/app/ui/question_list/question_list_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:sizer/sizer.dart';
 
@@ -92,12 +92,12 @@ class MyApp extends StatelessWidget {
             );
             return const CreateAnswer();
           },
-          '/questions': (BuildContext context) {
+          '/question_list': (BuildContext context) {
             MaterialPageRoute(
-              settings: const RouteSettings(name: '/questions'),
-              builder: (context) => const Questions(),
+              settings: const RouteSettings(name: '/question_list'),
+              builder: (context) => const QuestionListPage(),
             );
-            return const Questions();
+            return const QuestionListPage();
           },
           '/join': (BuildContext context) {
             MaterialPageRoute(
