@@ -116,12 +116,10 @@ class _HomeBodyState extends State<HomeBody> {
               //
               TextButton(
                 onPressed: () async {
-                  // 해야 할 것. 전체 질문글 목록 받아와야 함.
-                  // await _loadUser(provider);
                   if (widget.token == null) {
-                    // 해야 할 것. 토큰에 따라 다른 동작
+                    Navigator.pushNamed(context, '/login');
                   } else {
-                    // 해야 할 것. 토큰에 따라 다른 동작
+                    Navigator.pushNamed(context, '/questions ');
                   }
                 },
                 child: const Text('>>질문글 더 보기'),

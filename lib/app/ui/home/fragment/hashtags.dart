@@ -32,7 +32,7 @@ class Hashtags extends StatelessWidget {
               if (token == null) {
                 Navigator.pushNamed(context, '/login');
               } else {
-                Navigator.pushNamed(context, '/questions_by_hashtag');
+                Navigator.pushNamed(context, '/questions');
               }
             },
           ),

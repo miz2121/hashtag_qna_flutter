@@ -171,6 +171,7 @@ class _CreateAnswerState extends ConsumerState<CreateAnswer> {
                                                           if (formKey.currentState!.validate()) {
                                                             formKey.currentState?.save();
                                                             var response = await provider.postWriteAnswer(token, id, _answer);
+
                                                             if (!mounted) return;
                                                             if (response['code'] != null) {
                                                               switch (response['code']) {
@@ -202,7 +203,6 @@ class _CreateAnswerState extends ConsumerState<CreateAnswer> {
                                                             }
 
                                                             Navigator.of(context).popUntil(ModalRoute.withName("/question"));
-                                                            WidgetsBinding.instance.addPostFrameCallback((_) => parent?.setState(() {}));
                                                           }
                                                         },
                                                         child: const Text('확인'),

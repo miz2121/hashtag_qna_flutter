@@ -122,15 +122,10 @@ class _QuestionBodyState extends State<QuestionBody> {
                             )
                           : ElevatedButton(
                               onPressed: () async {
-                                final refresh = await Navigator.pushNamed(context, '/create_answer', arguments: {
+                                await Navigator.pushNamed(context, '/create_answer', arguments: {
                                   'id': widget.snapshot.data!["questionDto"]?["id"] ?? 0,
                                   'token': widget.token,
-                                });
-                                if (refresh != null) {
-                                  if (refresh == true) {
-                                    parent?.setState(() {});
-                                  }
-                                }
+                                }).then((_) => {parent?.setState(() {})});
                               },
                               child: const Text('답변 작성'),
                             ),

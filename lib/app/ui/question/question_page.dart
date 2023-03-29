@@ -41,10 +41,10 @@ class QuestionPageState extends ConsumerState<QuestionPage> {
       body: WillPopScope(
         onWillPop: () async {
           switch (provider.previous) {
-            case "homePage":
+            case "/home":
               Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
               break;
-            case "questionsPage":
+            case "/questions":
               Navigator.pushNamedAndRemoveUntil(context, '/questions', (route) => false);
               break;
           }
@@ -120,12 +120,6 @@ class QuestionPageState extends ConsumerState<QuestionPage> {
                             provider: provider,
                           ),
 
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('목록으로 이동'),
-                        ),
                         Container(height: 5.w),
                       ],
                     ),

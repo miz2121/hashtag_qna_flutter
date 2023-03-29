@@ -38,23 +38,49 @@ class _BottomButtonsState extends State<BottomButtons> {
         ElevatedButton(
           onPressed: () {
             // 이미 로그아웃 된 상태라면
-            widget.parent?.setState(() {
-              if (widget.token == null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("로그아웃 상태입니다."),
-                  ),
-                );
-              } else {
-                // logout
-                _clearPref();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("로그아웃 되었습니다."),
-                  ),
-                );
-              }
-            });
+            if (widget.token == null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("로그아웃 상태입니다."),
+                ),
+              );
+            } else {
+              // logout
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('확인해 주세요.'),
+                      content: const Text('로그아웃 하시겠습니까?'),
+                      actions: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                _clearPref();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("로그아웃 되었습니다."),
+                                  ),
+                                );
+                                Navigator.of(context).pop();
+                                widget.parent?.setState(() {});
+                              },
+                              child: const Text('확인'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('취소'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  });
+            }
           },
           child: const Text('로그아웃 하실 수 있습니다.'),
         ),
@@ -71,8 +97,6 @@ class _BottomButtonsState extends State<BottomButtons> {
                 ),
               );
             } else {
-              // logout
-              // _clearPref(widget.provider);
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text("계정이 비활성화 되었습니다."),

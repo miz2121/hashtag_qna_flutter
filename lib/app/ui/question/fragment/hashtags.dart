@@ -28,11 +28,11 @@ class Hashtags extends StatelessWidget {
               snapshot: snapshot,
             ),
             onTap: () {
-              // if (token == null) {
-              //   Navigator.pushNamed(context, '/login');
-              // } else {
-              Navigator.pushNamed(context, '/questions_by_hashtag');
-              // }
+              if (token == null) {
+                Navigator.pushNamed(context, '/login');
+              } else {
+                Navigator.pushNamed(context, '/questions');
+              }
             },
           ),
       ],
