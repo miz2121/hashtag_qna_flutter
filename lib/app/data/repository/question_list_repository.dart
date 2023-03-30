@@ -5,8 +5,8 @@ class QuestionListRepository {
   final RemoteDatasource _remoteDatasource = RemoteDatasource();
   final LocalDataSource _localDataSource = LocalDataSource();
 
-  Future<Map<String, dynamic>> getViewQuestions(String token) async {
-    return await _remoteDatasource.getViewQuestions(token);
+  Future<Map<String, dynamic>> getViewQuestionsWithPagination(String token, int page) async {
+    return await _remoteDatasource.getViewQuestionsWithPagination(token, page);
   }
 
   get hashtagColorList => _localDataSource.hashtagColorList;

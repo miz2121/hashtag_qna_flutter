@@ -30,7 +30,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     initializeDateFormatting('ko_KR', null);
-    // MainViewModel vm = MainViewModel();
 
     return Sizer(builder: (context, orientation, deviceType) {
       return MaterialApp(
@@ -108,7 +107,7 @@ class MyApp extends StatelessWidget {
           },
         },
         theme: ThemeData(
-          primaryColor: Colors.cyan[900],
+          primaryColor: Colors.cyan[700],
           scaffoldBackgroundColor: Colors.lightBlue[50],
           buttonTheme: ButtonThemeData(
             buttonColor: Colors.cyan[100],
@@ -146,6 +145,7 @@ class StartPage extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 100.w / 15,
+                color: Theme.of(context).primaryColor,
               ),
             ),
           ),

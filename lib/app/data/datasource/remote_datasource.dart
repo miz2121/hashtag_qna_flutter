@@ -96,8 +96,8 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, dynamic>> getViewQuestions(String token) async {
-    Uri uri = Uri.parse("$address/questions");
+  Future<Map<String, dynamic>> getViewQuestionsWithPagination(String token, int page) async {
+    Uri uri = Uri.parse("$address/questions?page=$page");
     var headers = {"Authorization": "Bearer $token"};
     final response = await (http.get(uri, headers: headers));
     switch (response.statusCode) {

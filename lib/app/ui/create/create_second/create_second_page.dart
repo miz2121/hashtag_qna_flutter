@@ -16,8 +16,9 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
   final List<Widget> createdFormLists = [];
   final List<String> createdHashtagNameList = [];
   final formKey = GlobalKey<FormState>();
-  var args;
-  var argsList;
+  var hashtagNames;
+  var hashtagNamesList;
+  String token = '';
   late CreateViewModel provider;
 
   @override
@@ -29,8 +30,9 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    args = ModalRoute.of(context)?.settings.arguments as Set;
-    argsList = args.toList();
+    hashtagNames = (ModalRoute.of(context)!.settings.arguments as Map)['hashtagNames'];
+    token = (ModalRoute.of(context)!.settings.arguments as Map)['token'];
+    hashtagNamesList = hashtagNames.toList();
     provider = ref.watch(createViewModelProvider.notifier);
   }
 
@@ -72,7 +74,7 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
                     ),
                   ),
                   Container(height: 15.w),
-                  argsList.isEmpty
+                  hashtagNamesList.isEmpty
                       ? (Container())
                       : Text(
                           '이전 페이지에서\n선택한 해시태그 입니다. ',
@@ -85,7 +87,7 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
                   Container(height: 5.w),
 
                   // 이전 페이지에서 선택한 해시태그 목록
-                  SelectedHashtags(argsList: argsList, provider: provider),
+                  SelectedHashtags(argsList: hashtagNamesList, provider: provider),
 
                   Container(height: 5.w),
 
@@ -101,7 +103,15 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
                   ElevatedButton(
                     onPressed: () {
                       formKey.currentState?.save();
-                      Navigator.pushNamed(context, '/create_third', arguments: {"existHashtag": argsList, "newHashtag": createdHashtagNameList});
+                      Navigator.pushNamed(
+                        context,
+                        '/create_third',
+                        arguments: {
+                          "existHashtag": hashtagNamesList,
+                          "newHashtag": createdHashtagNameList,
+                          'token': token,
+                        },
+                      );
                     },
                     child: const Text("다음"),
                   ),

@@ -15,6 +15,8 @@ class CreateFirstPage extends ConsumerStatefulWidget {
 class _CreateFirstPageState extends ConsumerState<CreateFirstPage> {
   Set<String> hashtagNames = {};
   late CreateViewModel provider;
+  String token = '';
+  String previous = '';
 
   @override
   void initState() {
@@ -25,7 +27,10 @@ class _CreateFirstPageState extends ConsumerState<CreateFirstPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    token = (ModalRoute.of(context)!.settings.arguments as Map)['token'];
+    previous = (ModalRoute.of(context)!.settings.arguments as Map)['previous'];
     provider = ref.watch(createViewModelProvider.notifier);
+    provider.setPrevious = previous;
   }
 
   void cancelSelectAll(CreateViewModel provider) {
@@ -78,7 +83,14 @@ class _CreateFirstPageState extends ConsumerState<CreateFirstPage> {
                 Container(height: 5.w),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/create_second', arguments: hashtagNames);
+                    Navigator.pushNamed(
+                      context,
+                      '/create_second',
+                      arguments: {
+                        'hashtagNames': hashtagNames,
+                        'token': token,
+                      },
+                    );
                   },
                   child: const Text("다음"),
                 ),

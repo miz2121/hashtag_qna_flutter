@@ -69,9 +69,19 @@ class HomePageState extends ConsumerState<HomePage> {
                                 token: snapshot.data,
                                 provider: provider,
                               ),
-
-                        UpperTextClikable(
+                        Container(height: 5.w),
+                        Text(
+                          "메인 화면 입니다.\n최근 5개 질문을 보여드립니다.",
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 100.w / 15,
+                          ),
+                        ),
+                        Container(height: 5.w),
+                        CreateQuestionTextButton(
                           token: snapshot.data,
+                          previous: '/home',
                         ),
 
                         Container(height: 10.w),

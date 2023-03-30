@@ -34,7 +34,11 @@ class Hashtags extends StatelessWidget {
                 Navigator.pushNamed(
                   context,
                   '/question_list',
-                  arguments: {'token': token},
+                  arguments: {
+                    'token': token,
+                    'titleText': '전체 질문을 보여드립니다.',
+                    'currentPage': 1,
+                  },
                 );
               }
             },

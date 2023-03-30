@@ -32,6 +32,7 @@ class _QuestionListState extends State<QuestionList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: widget.snapshot.data![jsonKey].length,
       itemBuilder: (context, index) {

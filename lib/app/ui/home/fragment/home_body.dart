@@ -84,13 +84,20 @@ class _HomeBodyState extends State<HomeBody> {
                   Navigator.pushNamed(
                     context,
                     '/question_list',
-                    arguments: {'token': widget.token},
+                    arguments: {
+                      'token': widget.token,
+                      'titleText': '전체 질문을 보여드립니다.',
+                      'currentPage': 1,
+                    },
                   );
                 }
               },
               child: Text(
                 '>> 질문글 더 보기',
-                style: TextStyle(fontSize: 5.w),
+                style: TextStyle(
+                  fontSize: 5.w,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
 

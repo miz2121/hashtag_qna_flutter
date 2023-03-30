@@ -45,7 +45,16 @@ class QuestionPageState extends ConsumerState<QuestionPage> {
               Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
               break;
             case "/question_list":
-              Navigator.pushNamedAndRemoveUntil(context, '/question_list', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/question_list',
+                (route) => false,
+                arguments: {
+                  'token': token,
+                  'titleText': '전체 질문을 보여드립니다.',
+                  'currentPage': 1,
+                },
+              );
               break;
           }
           return false;

@@ -19,6 +19,7 @@ class _CreateThirdPageState extends ConsumerState<CreateThirdPage> {
   List<String> existHashtags = [];
   List<String> newHashtags = [];
   List<String> myHashtags = [];
+  String token = '';
   late CreateViewModel provider;
 
   @override
@@ -33,6 +34,7 @@ class _CreateThirdPageState extends ConsumerState<CreateThirdPage> {
     existHashtags = (ModalRoute.of(context)!.settings.arguments as Map)['existHashtag'];
     newHashtags = (ModalRoute.of(context)!.settings.arguments as Map)['newHashtag'];
     myHashtags = existHashtags + newHashtags;
+    token = (ModalRoute.of(context)!.settings.arguments as Map)['token'];
     provider = ref.watch(createViewModelProvider.notifier);
   }
 
@@ -155,7 +157,20 @@ class _CreateThirdPageState extends ConsumerState<CreateThirdPage> {
                                               throw Exception("Error");
                                           }
                                         }
-                                        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                                        if (provider.getPrevious == '/home') {
+                                          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                                        } else if (provider.getPrevious == '/question_list') {
+                                          Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            '/question_list',
+                                            (route) => false,
+                                            arguments: {
+                                              'token': token,
+                                              'titleText': "전체 질문을 보여드립니다.",
+                                              'currentPage': 1,
+                                            },
+                                          );
+                                        }
                                       },
                                       child: const Text("확인"),
                                     ),

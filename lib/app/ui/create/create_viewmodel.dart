@@ -19,4 +19,8 @@ class CreateViewModel extends StateNotifier<CreateRepository> {
   }
 
   get hashtagColorList => _createRepository.hashtagColorList;
+
+  String _previous = '';
+  get getPrevious => _previous;
+  set setPrevious(String prev) => _previous = prev;
 }

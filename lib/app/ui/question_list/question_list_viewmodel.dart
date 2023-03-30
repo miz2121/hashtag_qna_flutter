@@ -8,8 +8,8 @@ class QuestionListViewModel extends StateNotifier<QuestionListRepository> {
 
   final QuestionListRepository _questionListRepository = QuestionListRepository();
 
-  Future<Map<String, dynamic>> getViewQuestions(String token) async {
-    return await _questionListRepository.getViewQuestions(token);
+  Future<Map<String, dynamic>> getViewQuestionsWithPagination(String token, page) async {
+    return await _questionListRepository.getViewQuestionsWithPagination(token, page);
   }
 
   get hashtagColorList => _questionListRepository.hashtagColorList;
