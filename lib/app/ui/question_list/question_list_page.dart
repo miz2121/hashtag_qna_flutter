@@ -109,14 +109,14 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
                     onPressed: () {
                       Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
                     },
-                    child: const Text('홈으로 가기'),
+                    child: const Text('메인 화면으로 가기'),
                   ),
                   Container(height: 10.w),
                   ElevatedButton(
                     onPressed: () async {
                       CreateViewModel p = ref.watch(createViewModelProvider.notifier);
                       for (int i = snapshot.data!['totalElements']; i < snapshot.data!['totalElements'] + 100; i++) {
-                        await p.postWriteQuestion('text$i', 'text$i', ['테스트'], []);
+                        await p.postWriteQuestion('테스트$i', '테스트$i', ['테스트'], []);
                       }
                       setState(() {});
                     },

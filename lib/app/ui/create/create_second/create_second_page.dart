@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/create/component/add_hashtag_button.dart';
 import 'package:hashtag_qna_flutter/app/ui/create/create_second/fragment/selected_hashtags.dart';
 import 'package:hashtag_qna_flutter/app/ui/create/create_viewmodel.dart';
+import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:sizer/sizer.dart';
 
 class CreateSecondPage extends ConsumerStatefulWidget {
@@ -16,8 +17,8 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
   final List<Widget> createdFormLists = [];
   final List<String> createdHashtagNameList = [];
   final formKey = GlobalKey<FormState>();
-  var hashtagNames;
-  var hashtagNamesList;
+  List<dynamic> hashtagNames = [];
+  List<dynamic> hashtagNamesList = [];
   String token = '';
   late CreateViewModel provider;
 
@@ -30,7 +31,7 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    hashtagNames = (ModalRoute.of(context)!.settings.arguments as Map)['hashtagNames'];
+    hashtagNames = (ModalRoute.of(context)!.settings.arguments as Map)['hashtagNames'].toList();
     token = (ModalRoute.of(context)!.settings.arguments as Map)['token'];
     hashtagNamesList = hashtagNames.toList();
     provider = ref.watch(createViewModelProvider.notifier);
@@ -102,16 +103,36 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
                   Container(height: 5.w),
                   ElevatedButton(
                     onPressed: () {
-                      formKey.currentState?.save();
-                      Navigator.pushNamed(
-                        context,
-                        '/create_third',
-                        arguments: {
-                          "existHashtag": hashtagNamesList,
-                          "newHashtag": createdHashtagNameList,
-                          'token': token,
-                        },
-                      );
+                      logger.d("(hashtagNamesList.length) + (createdHashtagNameList.length): ${(hashtagNamesList.length) + (createdHashtagNameList.length)}");
+                      if ((hashtagNamesList.length) + (createdHashtagNameList.length) == 0) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('확인해 주세요'),
+                                content: const Text('해시태그를 하나 이상 지정해 주세요'),
+                                actions: [
+                                  Center(
+                                    child: TextButton(
+                                      onPressed: () => Navigator.of(context).pop(),
+                                      child: const Text('확인'),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            });
+                      } else {
+                        formKey.currentState?.save();
+                        Navigator.pushNamed(
+                          context,
+                          '/create_third',
+                          arguments: {
+                            "existHashtag": hashtagNamesList,
+                            "newHashtag": createdHashtagNameList,
+                            'token': token,
+                          },
+                        );
+                      }
                     },
                     child: const Text("다음"),
                   ),

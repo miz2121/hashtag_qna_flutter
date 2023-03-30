@@ -123,9 +123,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 title: const Text("로그인 성공"),
                                 content: const Text("홈 화면으로 이동합니다."),
                                 actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false),
-                                    child: const Text("확인"),
+                                  Center(
+                                    child: TextButton(
+                                      onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false),
+                                      child: const Text("확인"),
+                                    ),
                                   )
                                 ],
                               );
