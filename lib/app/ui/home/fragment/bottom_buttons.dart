@@ -20,8 +20,6 @@ class BottomButtons extends StatefulWidget {
 }
 
 class _BottomButtonsState extends State<BottomButtons> {
-  void _clearPref() => widget.provider.clearPref();
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -39,11 +37,7 @@ class _BottomButtonsState extends State<BottomButtons> {
           onPressed: () {
             // 이미 로그아웃 된 상태라면
             if (widget.token == null) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("로그아웃 상태입니다."),
-                ),
-              );
+              Navigator.pushNamed(context, '/login');
             } else {
               // logout
               showDialog(
@@ -57,8 +51,9 @@ class _BottomButtonsState extends State<BottomButtons> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             TextButton(
-                              onPressed: () {
-                                _clearPref();
+                              onPressed: () async {
+                                await widget.provider.clearPref();
+                                if (!mounted) return;
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text("로그아웃 되었습니다."),
@@ -82,7 +77,7 @@ class _BottomButtonsState extends State<BottomButtons> {
                   });
             }
           },
-          child: const Text('로그아웃 하실 수 있습니다.'),
+          child: (widget.token == null) ? const Text('로그인 하실 수 있습니다.') : const Text('로그아웃 하실 수 있습니다.'),
         ),
 
         // 회원 비활성화 버튼
@@ -93,18 +88,46 @@ class _BottomButtonsState extends State<BottomButtons> {
             if (widget.token == null) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text("로그아웃 상태입니다."),
+                  content: Text("로그인 정보가 없습니다."),
                 ),
               );
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("계정이 비활성화 되었습니다."),
-                ),
-              );
-              widget.parent?.setState(() {
-                // 해야 할 것. 비활성화 기능 넣어야 함.
-              });
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('확인해 주세요.'),
+                      content: const Text('되돌릴 수 없습니다.\n비활성화 회원이 되시겠습니까?'),
+                      actions: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            TextButton(
+                              onPressed: () async {
+                                await widget.provider.clearPref();
+                                await widget.provider.putMemberInactive((widget.token)!);
+                                if (!mounted) return;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("비활성화 회원이 되었습니다."),
+                                  ),
+                                );
+                                Navigator.of(context).pop();
+                                widget.parent?.setState(() {});
+                              },
+                              child: const Text('확인'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('취소'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  });
             }
           },
           child: const Text('회원 비활성화...하실 수도 있습니다.'),

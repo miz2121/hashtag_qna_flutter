@@ -103,13 +103,14 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
                   Container(height: 5.w),
                   ElevatedButton(
                     onPressed: () {
+                      formKey.currentState?.save();
                       logger.d("(hashtagNamesList.length) + (createdHashtagNameList.length): ${(hashtagNamesList.length) + (createdHashtagNameList.length)}");
                       if ((hashtagNamesList.length) + (createdHashtagNameList.length) == 0) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: const Text('확인해 주세요'),
+                                title: const Text('확인해 주세요.'),
                                 content: const Text('해시태그를 하나 이상 지정해 주세요'),
                                 actions: [
                                   Center(
@@ -122,7 +123,6 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
                               );
                             });
                       } else {
-                        formKey.currentState?.save();
                         Navigator.pushNamed(
                           context,
                           '/create_third',

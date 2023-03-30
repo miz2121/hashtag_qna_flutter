@@ -5,6 +5,7 @@ import 'package:hashtag_qna_flutter/app/ui/home/fragment/home_body.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/fragment/show_nickname.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_viewmodel.dart';
 import 'package:hashtag_qna_flutter/app/util/fragment/upper_text_clickable.dart';
+import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:sizer/sizer.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -14,7 +15,7 @@ class HomePage extends ConsumerStatefulWidget {
   ConsumerState<HomePage> createState() => HomePageState();
 }
 
-class HomePageState extends ConsumerState<HomePage> {
+class HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver {
   late HomeViewModel provider;
 
   Future<String?> _getToken(HomeViewModel provider) async => await provider.token;
@@ -33,12 +34,42 @@ class HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
     provider = ref.read(homeViewModelProvider.notifier);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     provider = ref.watch(homeViewModelProvider.notifier);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        logger.d('resumed');
+        break;
+      case AppLifecycleState.inactive:
+        logger.d('inactive');
+        break;
+      case AppLifecycleState.detached:
+        setState(() {
+          provider.clearPref();
+        });
+        logger.d('detached');
+        break;
+      case AppLifecycleState.paused:
+        logger.d('paused');
+        break;
+      default:
+        break;
+    }
   }
 
   @override
@@ -71,7 +102,7 @@ class HomePageState extends ConsumerState<HomePage> {
                               ),
                         Container(height: 5.w),
                         Text(
-                          "메인 화면 입니다.\n최근 5개 질문을 보여드립니다.",
+                          "메인 화면 입니다.\n최신 질문 최대 5개를\n보여드립니다.",
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold,

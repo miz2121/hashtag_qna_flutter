@@ -8,7 +8,7 @@ Future<dynamic> exceptionShowDialog(BuildContext context, String exceptionMessag
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('확인해 주세요'),
+          title: const Text('확인해 주세요.'),
           content: Text(exceptionMessage),
           actions: [
             Center(

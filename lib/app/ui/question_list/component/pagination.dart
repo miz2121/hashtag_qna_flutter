@@ -37,7 +37,7 @@ class _PaginationState extends State<Pagination> {
     }
     if (widget.totalPages <= 10) {
       currentMiddlePage = widget.totalPages;
-      currentMaxPage = 0;
+      currentMaxPage = 1;
     } else {
       currentMaxPage = currentMinPage + 9;
       if (currentMaxPage > widget.totalPages) {
@@ -152,7 +152,7 @@ class _PaginationState extends State<Pagination> {
                       ),
                     ),
                   // '>' 버튼
-                  (currentMaxPage) != (widget.totalPages)
+                  ((currentMaxPage) != (widget.totalPages))
                       ? TextButton(
                           onPressed: () {
                             Navigator.pushNamed(context, '/question_list', arguments: {

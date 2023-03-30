@@ -29,7 +29,7 @@ class AnswerBody extends StatefulWidget {
 }
 
 class AnswerBodyState extends State<AnswerBody> {
-  String _userRatingString = "";
+  String _userRatingString = "5";
   IconData? _selectedIcon;
 
   @override
@@ -80,7 +80,7 @@ class AnswerBodyState extends State<AnswerBody> {
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 AlertDialog(
-                                                  title: const Text('별점을 매길 수 있습니다.'),
+                                                  title: const Text('별점을 매길 수 있습니다.\n채택이 완료되면 해당 질문글은\n"닫힌 글" 상태가 됩니다.'),
                                                   content: Center(
                                                     child: RatingBar.builder(
                                                       minRating: 1,

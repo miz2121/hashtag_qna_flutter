@@ -76,30 +76,32 @@ class _HomeBodyState extends State<HomeBody> {
               previous: '/home',
             ),
 
-            TextButton(
-              onPressed: () async {
-                if (widget.token == null) {
-                  Navigator.pushNamed(context, '/login');
-                } else {
-                  Navigator.pushNamed(
-                    context,
-                    '/question_list',
-                    arguments: {
-                      'token': widget.token,
-                      'titleText': '전체 질문을 보여드립니다.',
-                      'currentPage': 1,
+            ((snapshot.data!["questionListDtos"].length) != 0)
+                ? TextButton(
+                    onPressed: () async {
+                      if (widget.token == null) {
+                        Navigator.pushNamed(context, '/login');
+                      } else {
+                        Navigator.pushNamed(
+                          context,
+                          '/question_list',
+                          arguments: {
+                            'token': widget.token,
+                            'titleText': '전체 질문을 보여드립니다.',
+                            'currentPage': 1,
+                          },
+                        );
+                      }
                     },
-                  );
-                }
-              },
-              child: Text(
-                '>> 질문글 더 보기',
-                style: TextStyle(
-                  fontSize: 5.w,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-            ),
+                    child: Text(
+                      '>> 질문글 더 보기',
+                      style: TextStyle(
+                        fontSize: 5.w,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  )
+                : Container(),
 
             Container(height: 10.w),
             // hashtags

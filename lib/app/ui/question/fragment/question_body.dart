@@ -52,7 +52,7 @@ class _QuestionBodyState extends State<QuestionBody> {
           DateFormat('yy년 MM월 dd일 a:h시 mm분').format(DateTime.parse(widget.snapshot.data!["questionDto"]?["date"] ?? DateTime.now().toString())),
         ),
         Text('${widget.snapshot.data!["questionDto"]?["writer"] ?? ''}'),
-        Text((widget.snapshot.data!["questionDto"]?["questionStatus"] ?? '') == "CLOSED" ? "답변 채택 완료(닫힌 글)" : "답변 채택 전(열린 글)"),
+        Text((widget.snapshot.data!["questionDto"]?["questionStatus"] ?? '') == "CLOSED" ? "닫힌 글" : "답변 채택 전(열린 글)"),
         Text(
           '댓글 수: ${widget.snapshot.data!["questionDto"]?["quCommentCount"] ?? ''}',
         ),

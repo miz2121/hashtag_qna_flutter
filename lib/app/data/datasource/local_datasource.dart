@@ -22,8 +22,8 @@ class LocalDataSource {
     );
   }
 
-  void clearPref() {
-    prefs?.clear();
+  Future<void> clearPref() async {
+    await prefs?.clear();
     _token = null;
   }
 

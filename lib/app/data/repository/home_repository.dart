@@ -17,12 +17,16 @@ class HomeRepository {
     return info;
   }
 
+  Future<Map<String, dynamic>> putMemberInactive(String token) async {
+    return await _remoteDatasource.putMemberInactive(token);
+  }
+
   Future<MemberInfo> loadUser() async {
     return await _localDataSource.loadUser();
   }
 
-  void clearPref() {
-    _localDataSource.clearPref();
+  Future<void> clearPref() async {
+    await _localDataSource.clearPref();
   }
 
   get token => _localDataSource.token;
