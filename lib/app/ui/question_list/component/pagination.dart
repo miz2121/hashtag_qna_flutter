@@ -5,14 +5,20 @@ import 'package:sizer/sizer.dart';
 class Pagination extends StatefulWidget {
   const Pagination({
     Key? key,
+    required this.operation,
     required this.totalPages,
     required this.currentPage,
     required this.token,
+    required this.selectedType,
+    required this.searchText,
   }) : super(key: key);
 
+  final String operation;
   final int totalPages;
   final int currentPage;
   final String token;
+  final String selectedType;
+  final String searchText;
 
   @override
   State<Pagination> createState() => _PaginationState();
@@ -69,6 +75,9 @@ class _PaginationState extends State<Pagination> {
                               'token': widget.token,
                               'titleText': "전체 질문을 보여드립니다.",
                               'currentPage': (currentMinPage - 1),
+                              'operation': widget.operation,
+                              'selectedType': widget.selectedType,
+                              'searchText': widget.searchText,
                             });
                             // parent?.setState(() {});
                           },
@@ -98,6 +107,9 @@ class _PaginationState extends State<Pagination> {
                             'token': widget.token,
                             'titleText': "전체 질문을 보여드립니다.",
                             'currentPage': p,
+                            'operation': widget.operation,
+                            'selectedType': widget.selectedType,
+                            'searchText': widget.searchText,
                           });
                           // parent?.setState(() {});
                         }
@@ -133,6 +145,9 @@ class _PaginationState extends State<Pagination> {
                             'token': widget.token,
                             'titleText': "전체 질문을 보여드립니다.",
                             'currentPage': p,
+                            'operation': widget.operation,
+                            'selectedType': widget.selectedType,
+                            'searchText': widget.searchText,
                           });
                           // parent?.setState(() {});
                         }
@@ -159,6 +174,9 @@ class _PaginationState extends State<Pagination> {
                               'token': widget.token,
                               'titleText': "전체 질문을 보여드립니다.",
                               'currentPage': (currentMaxPage + 1),
+                              'operation': widget.operation,
+                              'selectedType': widget.selectedType,
+                              'searchText': widget.searchText,
                             });
                             // parent?.setState(() {});
                           },
@@ -197,6 +215,9 @@ class _PaginationState extends State<Pagination> {
                             'token': widget.token,
                             'titleText': "전체 질문을 보여드립니다.",
                             'currentPage': 1,
+                            'operation': widget.operation,
+                            'selectedType': widget.selectedType,
+                            'searchText': widget.searchText,
                           },
                         ),
                 style: TextButton.styleFrom(
@@ -223,6 +244,9 @@ class _PaginationState extends State<Pagination> {
                             'token': widget.token,
                             'titleText': "전체 질문을 보여드립니다.",
                             'currentPage': widget.totalPages,
+                            'operation': widget.operation,
+                            'selectedType': widget.selectedType,
+                            'searchText': widget.searchText,
                           },
                         ),
                 style: TextButton.styleFrom(

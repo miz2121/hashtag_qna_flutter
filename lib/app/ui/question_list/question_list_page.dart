@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hashtag_qna_flutter/app/ui/create/create_viewmodel.dart';
+import 'package:hashtag_qna_flutter/app/ui/question_list/component/insertTestData.dart';
 import 'package:hashtag_qna_flutter/app/ui/question_list/component/pagination.dart';
 import 'package:hashtag_qna_flutter/app/ui/question_list/question_list_viewmodel.dart';
 import 'package:hashtag_qna_flutter/app/util/fragment/question_list.dart';
@@ -19,8 +19,11 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
   late Future<Map<String, dynamic>> init;
   late QuestionListViewModel provider;
   String token = '';
-  String titleText = ''; // "전체 질문을 보여드립니다."
+  String titleText = ''; // "전체 질문을 보여드립니다." 등등
   int currentPage = 0;
+  String operation = '';
+  String selectedType = '전체 검색';
+  String searchText = '';
 
   @override
   void initState() {
@@ -34,6 +37,9 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
     token = (ModalRoute.of(context)!.settings.arguments as Map)['token'];
     titleText = (ModalRoute.of(context)!.settings.arguments as Map)['titleText'];
     currentPage = (ModalRoute.of(context)!.settings.arguments as Map)['currentPage'];
+    operation = (ModalRoute.of(context)!.settings.arguments as Map)['operation']; // 'pagination', 'search'
+    selectedType = (ModalRoute.of(context)!.settings.arguments as Map)['selectedType']; // 'operation'이 'search'가 아니면 ''
+    searchText = (ModalRoute.of(context)!.settings.arguments as Map)['searchText']; // 'operation'이 'search'가 아니면 ''
     provider = ref.watch(questionListViewModelProvider.notifier);
   }
 
@@ -48,7 +54,11 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: FutureBuilder(
-              future: provider.getViewQuestionsWithPagination(token, currentPage),
+              future: operation == 'pagination'
+                  ? provider.getViewQuestionsWithPagination(token, currentPage)
+                  : operation == 'search'
+                      ? provider.getSearch(token, selectedType, searchText, currentPage)
+                      : null,
               builder: (BuildContext _, snapshot) {
                 if (snapshot.hasError) {
                   return Text('Error = ${snapshot.error}');
@@ -105,9 +115,12 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
                       token: token,
                     ),
                     Pagination(
-                      totalPages: snapshot.data!["totalPages"],
+                      operation: operation,
+                      totalPages: snapshot.data!["totalPages"] ?? 1,
                       currentPage: currentPage,
                       token: token,
+                      searchText: searchText,
+                      selectedType: selectedType,
                     ),
                     Container(height: 10.w),
                     ElevatedButton(
@@ -117,32 +130,13 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
                       child: const Text('메인 화면으로 가기'),
                     ),
                     Container(height: 10.w),
-                    ElevatedButton(
-                      onPressed: () async {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('확인해 주세요'),
-                                content: const Text('데이터가 등록되는 데 시간이 걸립니다.\n화면이 갱신될 때까지 기다려 주세요.'),
-                                actions: [
-                                  Center(
-                                    child: TextButton(
-                                      onPressed: () => Navigator.of(context).pop(),
-                                      child: const Text('확인'),
-                                    ),
-                                  )
-                                ],
-                              );
-                            });
-                        CreateViewModel p = ref.watch(createViewModelProvider.notifier);
-                        for (int i = snapshot.data!['totalElements']; i < snapshot.data!['totalElements'] + 100; i++) {
-                          await p.postWriteQuestion('테스트$i', '테스트$i', ['테스트'], []);
-                        }
-
-                        setState(() {});
-                      },
-                      child: const Text('테스트 데이터 100개 삽입'),
+                    SearchField(
+                      provider: provider,
+                      token: token,
+                    ),
+                    Container(height: 10.w),
+                    InsertTestData(
+                      snapshot: snapshot,
                     ),
                     Container(height: 10.w),
                   ],
@@ -151,6 +145,104 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class SearchField extends ConsumerStatefulWidget {
+  const SearchField({
+    super.key,
+    required this.provider,
+    required this.token,
+  });
+
+  final QuestionListViewModel provider;
+  final String token;
+  @override
+  ConsumerState<SearchField> createState() => _SearchFieldState();
+}
+
+class _SearchFieldState extends ConsumerState<SearchField> {
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.provider.setSelectedType = widget.provider.getSearchType[0];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 95.w,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: DropdownButton<String>(
+                value: widget.provider.getSelectedType,
+                items: (widget.provider.getSearchType)
+                    .map<DropdownMenuItem<String>>((String e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(e),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    widget.provider.setSelectedType = value!;
+                  });
+                }),
+          ),
+          Container(height: 1.w),
+          Row(
+            children: [
+              Container(
+                width: 74.w,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Form(
+                  key: formKey,
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: '검색할 내용을 입력해 주세요',
+                    ),
+                    onSaved: (value) => widget.provider.setSearchText = value!,
+                    validator: (value) => value!.isEmpty ? '검색을 원하시면 입력해 주세요.' : null,
+                  ),
+                ),
+              ),
+              Container(width: 1.w),
+              SizedBox(
+                width: 20.w,
+                child: ElevatedButton(
+                  onPressed: () {
+                    formKey.currentState?.save();
+                    Navigator.pushNamed(
+                      context,
+                      '/question_list',
+                      arguments: {
+                        'token': widget.token,
+                        'titleText': "'${widget.provider.getSelectedType}'기준\n'${widget.provider.getSearchText}'으로\n검색한 결과를 보여드립니다.",
+                        'currentPage': 1,
+                        'operation': "search",
+                        'selectedType': widget.provider.getSelectedType,
+                        'searchText': widget.provider.getSearchText,
+                      },
+                    );
+                  },
+                  child: const Text('검색'),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

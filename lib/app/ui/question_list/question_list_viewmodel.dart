@@ -12,5 +12,26 @@ class QuestionListViewModel extends StateNotifier<QuestionListRepository> {
     return await _questionListRepository.getViewQuestionsWithPagination(token, page);
   }
 
+  Future<Map<String, dynamic>> getSearch(String? token, String searchType, String searchText, int page) async {
+    return await _questionListRepository.getSearch(token, searchType, searchText, page);
+  }
+
+  final List<String> _searchType = [
+    '전체 검색',
+    '제목 검색',
+    '내용 검색',
+    '질문 작성자 닉네임 검색',
+    '답변 작성자 닉네임 검색',
+    '댓글 작성자 닉네임',
+  ];
+  String _selectedType = '전체 검색';
+  String _searchText = '';
+
+  get getSearchType => _searchType;
+  get getSelectedType => _selectedType;
+  get getSearchText => _searchText;
+  set setSelectedType(String type) => _selectedType = type;
+  set setSearchText(String text) => _searchText = text;
+
   get hashtagColorList => _questionListRepository.hashtagColorList;
 }

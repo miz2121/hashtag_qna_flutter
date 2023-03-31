@@ -43,6 +43,9 @@ class Hashtags extends StatelessWidget {
                     'token': token,
                     'titleText': '전체 질문을 보여드립니다.',
                     'currentPage': 1,
+                    'operation': 'pagination',
+                    'selectedType': '',
+                    'searchText': '',
                   },
                 );
               }

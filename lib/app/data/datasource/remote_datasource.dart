@@ -494,4 +494,46 @@ class RemoteDatasource {
         throw Exception("Error on server");
     }
   }
+
+  Future<Map<String, dynamic>> getSearch(String? token, String searchType, String searchText, int page) async {
+    switch (searchType) {
+      case '전체 검색':
+        searchType = 'searchAll';
+        break;
+      case '제목 검색':
+        searchType = 'searchTitle';
+        break;
+      case '내용 검색':
+        searchType = 'searchContent';
+        break;
+      case '질문 작성자 닉네임 검색':
+        searchType = 'searchQuestionWriter';
+        break;
+      case '답변 작성자 닉네임 검색':
+        searchType = 'searchAnswerWriter';
+        break;
+      case '댓글 작성자 닉네임':
+        searchType = 'searchCommentWriter';
+        break;
+    }
+    Uri uri = Uri.parse("$address/questions/$searchType?page=$page&text=$searchText");
+
+    var headers = {"Connection": "Keep-Alive", "Authorization": "Bearer $token"};
+    final response = await (http.get(uri, headers: headers));
+
+    switch (response.statusCode) {
+      case 200:
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER"
+      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error");
+    }
+  }
 }

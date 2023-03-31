@@ -34,7 +34,7 @@ class _QuestionListState extends State<QuestionList> {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: widget.snapshot.data![jsonKey].length,
+      itemCount: (widget.snapshot.data![jsonKey])?.length ?? 0,
       itemBuilder: (context, index) {
         return InkWell(
           child: Card(

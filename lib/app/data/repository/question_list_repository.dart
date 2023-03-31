@@ -9,5 +9,9 @@ class QuestionListRepository {
     return await _remoteDatasource.getViewQuestionsWithPagination(token, page);
   }
 
+  Future<Map<String, dynamic>> getSearch(String? token, String searchType, String searchText, int page) async {
+    return await _remoteDatasource.getSearch(token, searchType, searchText, page);
+  }
+
   get hashtagColorList => _localDataSource.hashtagColorList;
 }
