@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/create/create_second/create_second_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/create/create_viewmodel.dart';
 import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:sizer/sizer.dart';
 
@@ -8,10 +9,12 @@ class AddHashtagButton extends StatefulWidget {
     super.key,
     required this.createdFormLists,
     required this.createdHashtagNameList,
+    required this.provider,
   });
 
   final List<Widget> createdFormLists;
   final List<String> createdHashtagNameList;
+  final CreateViewModel provider;
 
   @override
   State<AddHashtagButton> createState() => _AddHashtagButtonState();
@@ -54,6 +57,7 @@ class _AddHashtagButtonState extends State<AddHashtagButton> {
       ),
       onTap: () {
         logger.d("_createdFormLists: ${widget.createdFormLists}");
+        widget.provider.isHashtagChecked.add(true);
         if (!mounted) return;
         parent?.setState(() {
           widget.createdFormLists.add(

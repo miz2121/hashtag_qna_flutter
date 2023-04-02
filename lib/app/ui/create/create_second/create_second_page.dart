@@ -96,6 +96,7 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
                   AddHashtagButton(
                     createdFormLists: createdFormLists,
                     createdHashtagNameList: createdHashtagNameList,
+                    provider: provider,
                   ),
 
                   Container(height: 5.w),

@@ -57,22 +57,34 @@ class _QuestionListState extends State<QuestionList> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       widget.previous == '/question_list'
-                          ? Row(
-                              children: [
-                                for (int h = 0; h < widget.snapshot.data!['hashtagListDtoList'][index]['hashtagDtoList'].length; h++)
-                                  Text(
-                                    '# ${widget.snapshot.data!['hashtagListDtoList'][index]['hashtagDtoList'][h]['hashtagName']}  ',
-                                  ),
-                              ],
+                          ? SizedBox(
+                              width: 70.w,
+                              child: Row(
+                                children: [
+                                  for (int h = 0; h < widget.snapshot.data!['hashtagListDtoList'][index]['hashtagDtoList'].length; h++)
+                                    Text(
+                                      '# ${widget.snapshot.data!['hashtagListDtoList'][index]['hashtagDtoList'][h]['hashtagName']}  ',
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                ],
+                              ),
                             )
                           : widget.previous == '/home'
-                              ? Row(
-                                  children: [
-                                    for (int h = 0; h < widget.snapshot.data!['homeQuestionWithHashtagsListDto']['hashtagListDtoList'][index]['hashtagDtoList'].length; h++)
-                                      Text(
-                                        '# ${widget.snapshot.data!['homeQuestionWithHashtagsListDto']['hashtagListDtoList'][index]['hashtagDtoList'][h]['hashtagName']}  ',
-                                      ),
-                                  ],
+                              ? SizedBox(
+                                  // color: Colors.red,
+                                  width: 70.w,
+                                  child: Wrap(
+                                    direction: Axis.horizontal,
+                                    alignment: WrapAlignment.start,
+                                    children: [
+                                      for (int h = 0; h < widget.snapshot.data!['homeQuestionWithHashtagsListDto']['hashtagListDtoList'][index]['hashtagDtoList'].length; h++)
+                                        Text(
+                                          '# ${widget.snapshot.data!['homeQuestionWithHashtagsListDto']['hashtagListDtoList'][index]['hashtagDtoList'][h]['hashtagName']}  ',
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: false,
+                                        ),
+                                    ],
+                                  ),
                                 )
                               : Container(),
                       const Text(''),
