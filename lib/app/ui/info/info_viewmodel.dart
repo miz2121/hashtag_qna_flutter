@@ -20,6 +20,10 @@ class InfoViewModel extends StateNotifier<InfoRepository> {
     return await _infoRepository.patchUpdateNickname(token, nickname);
   }
 
+  Future<Map<String, dynamic>> getMyHashtags(String? token) async {
+    return await _infoRepository.getMyHashtags(token);
+  }
+
   Future<void> clearPref() async {
     await _infoRepository.clearPref();
   }

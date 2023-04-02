@@ -17,6 +17,10 @@ class InfoRepository {
     return await _remoteDatasource.patchUpdateNickname(token, nickname);
   }
 
+  Future<Map<String, dynamic>> getMyHashtags(String? token) async {
+    return await _remoteDatasource.getMyHashtags(token);
+  }
+
   Future<void> clearPref() async {
     await _localDataSource.clearPref();
   }

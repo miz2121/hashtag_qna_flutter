@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_viewmodel.dart';
+import 'package:hashtag_qna_flutter/app/ui/info/info_viewmodel.dart';
 import 'package:hashtag_qna_flutter/app/ui/question_list/question_list_viewmodel.dart';
 import 'package:sizer/sizer.dart';
 
@@ -8,12 +9,14 @@ class HashtagSnapshot extends StatelessWidget {
     super.key,
     this.homeViewModelProvider,
     this.questionListViewModelProvider,
+    this.infoViewModelProvider,
     required this.index,
     required this.snapshot,
   });
 
   final HomeViewModel? homeViewModelProvider;
   final QuestionListViewModel? questionListViewModelProvider;
+  final InfoViewModel? infoViewModelProvider;
   final int index;
   final AsyncSnapshot<Map<String, dynamic>> snapshot;
 
@@ -23,7 +26,14 @@ class HashtagSnapshot extends StatelessWidget {
       margin: EdgeInsets.all(1.w),
       padding: EdgeInsets.fromLTRB(2.w, 1.w, 2.w, 1.w),
       decoration: BoxDecoration(
-        color: homeViewModelProvider == null ? Colors.cyan[questionListViewModelProvider!.hashtagColorList[index % 3]] : Colors.cyan[homeViewModelProvider!.hashtagColorList[index % 3]],
+        color: homeViewModelProvider != null
+            ? Colors.cyan[homeViewModelProvider!.hashtagColorList[index % 3]]
+            : questionListViewModelProvider != null
+                ? Colors.cyan[questionListViewModelProvider!.hashtagColorList[index % 3]]
+                : infoViewModelProvider != null
+                    ? Colors.cyan[infoViewModelProvider!.hashtagColorList[index % 3]]
+                    : Colors.cyan,
+        // homeViewModelProvider == null ? Colors.cyan[questionListViewModelProvider!.hashtagColorList[index % 3]] : Colors.cyan[homeViewModelProvider!.hashtagColorList[index % 3]],
         borderRadius: BorderRadius.circular(80),
         border: Border.all(
           color: Colors.cyan,

@@ -5,6 +5,7 @@ import 'package:hashtag_qna_flutter/app/ui/create/create_second/create_second_pa
 import 'package:hashtag_qna_flutter/app/ui/create/create_third/create_third_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/info/info_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/info/my_hashtags_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/join/join_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/create_answer.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
@@ -112,6 +113,13 @@ class MyApp extends StatelessWidget {
               builder: (context) => const InfoPage(),
             );
             return const InfoPage();
+          },
+          '/my_hashtags': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/my_hashtags'),
+              builder: (context) => const MyHashtagsPage(),
+            );
+            return const MyHashtagsPage();
           },
         },
         theme: ThemeData(
