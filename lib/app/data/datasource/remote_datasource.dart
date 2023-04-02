@@ -573,4 +573,104 @@ class RemoteDatasource {
         throw Exception("Error");
     }
   }
+
+  Future<Map<String, dynamic>> getQuestionsByOneHashtag(String? token, String hashtag) async {
+    Uri uri = Uri.parse("$address/questions/hashtag?text=$hashtag");
+    var headers = {"Connection": "Keep-Alive", "Authorization": "Bearer $token"};
+    final response = await (http.get(uri, headers: headers));
+
+    switch (response.statusCode) {
+      case 200:
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error");
+    }
+  }
+
+  Future<Map<String, dynamic>> getMyQuestions(String? token) async {
+    Uri uri = Uri.parse("$address/questions/myQuestions");
+    var headers = {"Connection": "Keep-Alive", "Authorization": "Bearer $token"};
+    final response = await (http.get(uri, headers: headers));
+
+    switch (response.statusCode) {
+      case 200:
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error");
+    }
+  }
+
+  Future<Map<String, dynamic>> getQuestionsWithMyAnswers(String? token) async {
+    Uri uri = Uri.parse("$address/questions/myAnswers");
+    var headers = {"Connection": "Keep-Alive", "Authorization": "Bearer $token"};
+    final response = await (http.get(uri, headers: headers));
+
+    switch (response.statusCode) {
+      case 200:
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error");
+    }
+  }
+
+  Future<Map<String, dynamic>> getQuestionsWithMyComments(String? token) async {
+    Uri uri = Uri.parse("$address/questions/myComments");
+    var headers = {"Connection": "Keep-Alive", "Authorization": "Bearer $token"};
+    final response = await (http.get(uri, headers: headers));
+
+    switch (response.statusCode) {
+      case 200:
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error");
+    }
+  }
+
+  Future<Map<String, dynamic>> getQuestionsWithMyHashtags(String? token) async {
+    Uri uri = Uri.parse("$address/questions/myHashtags");
+    var headers = {"Connection": "Keep-Alive", "Authorization": "Bearer $token"};
+    final response = await (http.get(uri, headers: headers));
+
+    switch (response.statusCode) {
+      case 200:
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error");
+    }
+  }
 }

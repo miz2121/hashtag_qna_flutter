@@ -21,9 +21,11 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
   String token = '';
   String titleText = ''; // "전체 질문을 보여드립니다." 등등
   int currentPage = 0;
-  String operation = '';
+  String operation = ''; // 'pagination', 'search', 'hashtag'
   String selectedType = '전체 검색';
   String searchText = '';
+  String hashtag = '';
+  late Future<Map<String, dynamic>> getQuestionsMethod;
 
   @override
   void initState() {
@@ -40,7 +42,32 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
     operation = (ModalRoute.of(context)!.settings.arguments as Map)['operation']; // 'pagination', 'search'
     selectedType = (ModalRoute.of(context)!.settings.arguments as Map)['selectedType']; // 'operation'이 'search'가 아니면 ''
     searchText = (ModalRoute.of(context)!.settings.arguments as Map)['searchText']; // 'operation'이 'search'가 아니면 ''
+    hashtag = (ModalRoute.of(context)!.settings.arguments as Map)['hashtag']; // 'operation'이 'hashtag'가 아니면 ''
     provider = ref.watch(questionListViewModelProvider.notifier);
+
+    switch (operation) {
+      case 'pagination':
+        getQuestionsMethod = provider.getViewQuestionsWithPagination(token, currentPage);
+        break;
+      case 'search':
+        getQuestionsMethod = provider.getSearch(token, selectedType, searchText, currentPage);
+        break;
+      case 'hashtag':
+        getQuestionsMethod = provider.getQuestionsByOneHashtag(token, hashtag);
+        break;
+      case 'myQuestions':
+        getQuestionsMethod = provider.getMyQuestions(token);
+        break;
+      case 'myAnswers':
+        getQuestionsMethod = provider.getQuestionsWithMyAnswers(token);
+        break;
+      case 'myComments':
+        getQuestionsMethod = provider.getQuestionsWithMyComments(token);
+        break;
+      case 'myHashtags':
+        getQuestionsMethod = provider.getQuestionsWithMyHashtags(token);
+        break;
+    }
   }
 
   @override
@@ -54,11 +81,7 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: FutureBuilder(
-              future: operation == 'pagination'
-                  ? provider.getViewQuestionsWithPagination(token, currentPage)
-                  : operation == 'search'
-                      ? provider.getSearch(token, selectedType, searchText, currentPage)
-                      : null,
+              future: getQuestionsMethod,
               builder: (BuildContext _, snapshot) {
                 if (snapshot.hasError) {
                   return Text('Error = ${snapshot.error}');
@@ -226,11 +249,12 @@ class _SearchFieldState extends ConsumerState<SearchField> {
                       '/question_list',
                       arguments: {
                         'token': widget.token,
-                        'titleText': "'${widget.provider.getSelectedType}'기준\n'${widget.provider.getSearchText}'으로\n검색한 결과를 보여드립니다.",
+                        'titleText': "'${widget.provider.getSelectedType}'기준\n'${widget.provider.getSearchText}'(으)로\n검색한 결과를 보여드립니다.",
                         'currentPage': 1,
                         'operation': "search",
                         'selectedType': widget.provider.getSelectedType,
                         'searchText': widget.provider.getSearchText,
+                        'hashtag': '',
                       },
                     );
                   },

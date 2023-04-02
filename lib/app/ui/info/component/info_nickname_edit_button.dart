@@ -3,8 +3,8 @@ import 'package:hashtag_qna_flutter/app/ui/info/info_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/info/info_viewmodel.dart';
 import 'package:hashtag_qna_flutter/app/util/utility.dart';
 
-class InfoEditButton extends StatefulWidget {
-  const InfoEditButton({
+class InfoNicknameEditButton extends StatefulWidget {
+  const InfoNicknameEditButton({
     super.key,
     required this.provider,
     required this.token,
@@ -16,10 +16,10 @@ class InfoEditButton extends StatefulWidget {
   final String? oldNickname;
 
   @override
-  State<InfoEditButton> createState() => _InfoEditButtonState();
+  State<InfoNicknameEditButton> createState() => _InfoNicknameEditButtonState();
 }
 
-class _InfoEditButtonState extends State<InfoEditButton> {
+class _InfoNicknameEditButtonState extends State<InfoNicknameEditButton> {
   late final GlobalKey<FormState> formKey;
   String _nickname = '';
 
@@ -112,7 +112,7 @@ class _InfoEditButtonState extends State<InfoEditButton> {
               });
         }
       },
-      child: const Text('닉네임 변경하실 수 있습니다.'),
+      child: const Text('닉네임을 변경하실 수 있습니다.'),
     );
   }
 }

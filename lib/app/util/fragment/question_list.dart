@@ -43,10 +43,20 @@ class _QuestionListState extends State<QuestionList> {
               children: [
                 // boards
                 ListTile(
-                  title: Text(
-                    widget.snapshot.data![jsonKey][index]['title'],
-                    style: Theme.of(context).textTheme.bodyLarge!,
-                    overflow: TextOverflow.ellipsis,
+                  title: Column(
+                    children: [
+                      Text(
+                        widget.snapshot.data![jsonKey][index]['title'],
+                        style: Theme.of(context).textTheme.bodyLarge!,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      // const Text(''),
+                      // Text(
+                      //   widget.snapshot.data![jsonKey][index]['title'],
+                      //   style: Theme.of(context).textTheme.bodyLarge!,
+                      //   overflow: TextOverflow.ellipsis,
+                      // ),
+                    ],
                   ),
                   subtitle: Text(
                     DateFormat('yy년 MM월 dd일 a:h시 mm분').format(DateTime.parse(widget.snapshot.data![jsonKey][index]['date'])),

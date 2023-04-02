@@ -41,6 +41,7 @@ class Hashtags extends StatelessWidget {
                     'operation': 'pagination',
                     'selectedType': '',
                     'searchText': '',
+                    'hashtag': '',
                   },
                 );
               }

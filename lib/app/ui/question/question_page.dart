@@ -56,6 +56,7 @@ class QuestionPageState extends ConsumerState<QuestionPage> {
                   'operation': 'pagination',
                   'selectedType': '',
                   'searchText': '',
+                  'hashtag': '',
                 },
               );
               break;

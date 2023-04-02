@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hashtag_qna_flutter/app/ui/info/component/inactive_button.dart';
-import 'package:hashtag_qna_flutter/app/ui/info/component/info_edit_button.dart';
 import 'package:hashtag_qna_flutter/app/ui/info/fragment/info_body.dart';
+import 'package:hashtag_qna_flutter/app/ui/info/fragment/info_bottom_buttons.dart';
 import 'package:hashtag_qna_flutter/app/ui/info/info_viewmodel.dart';
 import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:sizer/sizer.dart';
@@ -86,67 +85,11 @@ class InfoPageState extends ConsumerState<InfoPage> {
                         ),
                         Container(height: 10.w),
                         InfoBody(snapshot: snapshot),
-                        // 회원 비활성화 버튼
                         Container(height: 5.w),
-                        Column(
-                          children: [
-                            InfoEditButton(
-                              provider: provider,
-                              token: token,
-                              oldNickname: snapshot.data!['nickname'],
-                            ),
-                            ElevatedButton(
-                              onPressed: () => Navigator.pushNamed(
-                                context,
-                                '/my_hashtags',
-                                arguments: {'token': token},
-                              ),
-                              child: const Text('내가 작성한 해시태그 모아 보기'),
-                            ),
-                            Container(height: 15.w),
-                            // ElevatedButton(
-                            //   onPressed: ()
-                            //   => Navigator.pushNamed(
-                            //     context,
-                            //     '/my_questions',
-                            //     arguments: {'token': token},
-                            //   ),
-                            //   child: const Text('내가 작성한 질문글 모아 보기'),
-                            // ),
-                            // Container(height: 15.w),
-                            // ElevatedButton(
-                            //   onPressed: () => Navigator.pushNamed(
-                            //     context,
-                            //     '/my_answers',
-                            //     arguments: {'token': token},
-                            //   ),
-                            //   child: const Text('내가 작성한 답변글? 이 모여있는 질문글? 모아 보기'),
-                            // ),
-                            // Container(height: 15.w),
-                            // ElevatedButton(
-                            //   onPressed: () => Navigator.pushNamed(
-                            //     context,
-                            //     '/my_comments',
-                            //     arguments: {'token': token},
-                            //   ),
-                            //   child: const Text('내가 작성한 댓글이 담긴 질문글? 모아 보기'),
-                            // ),
-                            // Container(height: 15.w),
-                            // ElevatedButton(
-                            //   onPressed: () => Navigator.pushNamed(
-                            //     context,
-                            //     '/my_hashtags_questons',
-                            //     arguments: {'token': token},
-                            //   ),
-                            //   child: const Text('내가 작성한 해시태그가 있는? 질문글? 모아 보기'),
-                            // ),
-                            // Container(height: 15.w),
-
-                            InactiveButton(
-                              provider: provider,
-                              token: token,
-                            ),
-                          ],
+                        InfoBottomButtons(
+                          provider: provider,
+                          token: token,
+                          snapshot: snapshot,
                         ),
                       ],
                     );

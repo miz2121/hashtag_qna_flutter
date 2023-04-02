@@ -70,7 +70,7 @@ class MyHashtagsPageState extends ConsumerState<MyHashtagsPage> {
                     children: [
                       Container(height: 15.w),
                       Text(
-                        '작성하신 해시태그를\n모아서 보여드립니다.\n\n\n해시태그를 클릭하여\n해당 해시태그가 붙은 게시글을\n모아 볼 수 있습니다.\n',
+                        '작성하신 해시태그를\n모아서 보여드립니다.\n\n\n해시태그를 클릭하여\n해당 해시태그가 붙은 게시글을\n모아서 볼 수 있습니다.\n',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 100.w / 15,
@@ -81,6 +81,7 @@ class MyHashtagsPageState extends ConsumerState<MyHashtagsPage> {
                       Hashtags(
                         infoViewModelProvider: provider,
                         snapshot: snapshot,
+                        token: token,
                       )
                     ],
                   );

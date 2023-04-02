@@ -71,14 +71,19 @@ class _PaginationState extends State<Pagination> {
                   (widget.currentPage) > 10
                       ? TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/question_list', arguments: {
-                              'token': widget.token,
-                              'titleText': "전체 질문을 보여드립니다.",
-                              'currentPage': (currentMinPage - 1),
-                              'operation': widget.operation,
-                              'selectedType': widget.selectedType,
-                              'searchText': widget.searchText,
-                            });
+                            Navigator.pushNamed(
+                              context,
+                              '/question_list',
+                              arguments: {
+                                'token': widget.token,
+                                'titleText': "전체 질문을 보여드립니다.",
+                                'currentPage': (currentMinPage - 1),
+                                'operation': widget.operation,
+                                'selectedType': widget.selectedType,
+                                'searchText': widget.searchText,
+                                'hashtag': '',
+                              },
+                            );
                             // parent?.setState(() {});
                           },
                           style: TextButton.styleFrom(
@@ -103,15 +108,19 @@ class _PaginationState extends State<Pagination> {
                         if (p == (widget.currentPage)) {
                           null;
                         } else {
-                          Navigator.pushNamed(context, '/question_list', arguments: {
-                            'token': widget.token,
-                            'titleText': "전체 질문을 보여드립니다.",
-                            'currentPage': p,
-                            'operation': widget.operation,
-                            'selectedType': widget.selectedType,
-                            'searchText': widget.searchText,
-                          });
-                          // parent?.setState(() {});
+                          Navigator.pushNamed(
+                            context,
+                            '/question_list',
+                            arguments: {
+                              'token': widget.token,
+                              'titleText': "전체 질문을 보여드립니다.",
+                              'currentPage': p,
+                              'operation': widget.operation,
+                              'selectedType': widget.selectedType,
+                              'searchText': widget.searchText,
+                              'hashtag': '',
+                            },
+                          );
                         }
                       },
                       style: TextButton.styleFrom(
@@ -141,15 +150,19 @@ class _PaginationState extends State<Pagination> {
                         if (p == (widget.currentPage)) {
                           null;
                         } else {
-                          Navigator.pushNamed(context, '/question_list', arguments: {
-                            'token': widget.token,
-                            'titleText': "전체 질문을 보여드립니다.",
-                            'currentPage': p,
-                            'operation': widget.operation,
-                            'selectedType': widget.selectedType,
-                            'searchText': widget.searchText,
-                          });
-                          // parent?.setState(() {});
+                          Navigator.pushNamed(
+                            context,
+                            '/question_list',
+                            arguments: {
+                              'token': widget.token,
+                              'titleText': "전체 질문을 보여드립니다.",
+                              'currentPage': p,
+                              'operation': widget.operation,
+                              'selectedType': widget.selectedType,
+                              'searchText': widget.searchText,
+                              'hashtag': '',
+                            },
+                          );
                         }
                       },
                       style: TextButton.styleFrom(
@@ -170,15 +183,19 @@ class _PaginationState extends State<Pagination> {
                   ((currentMaxPage) != (widget.totalPages))
                       ? TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/question_list', arguments: {
-                              'token': widget.token,
-                              'titleText': "전체 질문을 보여드립니다.",
-                              'currentPage': (currentMaxPage + 1),
-                              'operation': widget.operation,
-                              'selectedType': widget.selectedType,
-                              'searchText': widget.searchText,
-                            });
-                            // parent?.setState(() {});
+                            Navigator.pushNamed(
+                              context,
+                              '/question_list',
+                              arguments: {
+                                'token': widget.token,
+                                'titleText': "전체 질문을 보여드립니다.",
+                                'currentPage': (currentMaxPage + 1),
+                                'operation': widget.operation,
+                                'selectedType': widget.selectedType,
+                                'searchText': widget.searchText,
+                                'hashtag': '',
+                              },
+                            );
                           },
                           style: TextButton.styleFrom(
                             minimumSize: Size.zero,
@@ -218,6 +235,7 @@ class _PaginationState extends State<Pagination> {
                             'operation': widget.operation,
                             'selectedType': widget.selectedType,
                             'searchText': widget.searchText,
+                            'hashtag': '',
                           },
                         ),
                 style: TextButton.styleFrom(
@@ -247,6 +265,7 @@ class _PaginationState extends State<Pagination> {
                             'operation': widget.operation,
                             'selectedType': widget.selectedType,
                             'searchText': widget.searchText,
+                            'hashtag': '',
                           },
                         ),
                 style: TextButton.styleFrom(

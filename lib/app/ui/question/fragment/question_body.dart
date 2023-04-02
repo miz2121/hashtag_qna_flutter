@@ -118,7 +118,7 @@ class _QuestionBodyState extends State<QuestionBody> {
                           ? // 질문 글을 수정할 수 있다면 본인의 질문 글이므로, 본인이 본인 질문 글에 답변 달 수 없도록.
                           const ElevatedButton(
                               onPressed: null,
-                              child: Text('답변 작성'),
+                              child: Text('자신의 질문에는 답변을 달 수 없습니다.'),
                             )
                           : ElevatedButton(
                               onPressed: () async {

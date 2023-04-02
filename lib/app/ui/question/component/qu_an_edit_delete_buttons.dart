@@ -149,6 +149,7 @@ class _QuAnEditDeleteButtonsState extends State<QuAnEditDeleteButtons> {
                                               'operation': 'pagination',
                                               'selectedType': '',
                                               'searchText': '',
+                                              'hashtag': '',
                                             },
                                           );
                                           break;

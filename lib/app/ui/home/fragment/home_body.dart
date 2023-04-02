@@ -89,6 +89,7 @@ class _HomeBodyState extends State<HomeBody> {
                             'operation': 'pagination',
                             'selectedType': '',
                             'searchText': '',
+                            'hashtag': '',
                           },
                         );
                       }
