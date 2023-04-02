@@ -74,11 +74,8 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
                     case "INVALID_PARAMETER":
                       exceptionShowDialog(context, "INVALID_PARAMETER");
                       break;
-                    case "NOT_MEMBER":
-                      exceptionShowDialog(context, "NOT_MEMBER");
-                      break;
-                    case "INACTIVE_MEMBER":
-                      exceptionShowDialog(context, "INACTIVE_MEMBER");
+                    case "NOT_MEMBER_OR_INACTIVE":
+                      exceptionShowDialog(context, "회원이 아니거나 비활성화된 회원입니다.");
                       break;
                     case "RESOURCE_NOT_FOUND":
                       exceptionShowDialog(context, "RESOURCE_NOT_FOUND");

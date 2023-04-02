@@ -21,10 +21,6 @@ class HomeViewModel extends StateNotifier<HomeRepository> {
     return await _homeRepository.loadUser();
   }
 
-  Future<Map<String, dynamic>> putMemberInactive(String token) async {
-    return await _homeRepository.putMemberInactive(token);
-  }
-
   Future<void> clearPref() async {
     await _homeRepository.clearPref();
   }

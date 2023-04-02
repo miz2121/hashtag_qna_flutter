@@ -42,8 +42,7 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE"
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -84,8 +83,7 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE"
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -106,8 +104,7 @@ class RemoteDatasource {
     switch (response.statusCode) {
       case 200:
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE"
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -126,8 +123,7 @@ class RemoteDatasource {
     switch (response.statusCode) {
       case 200:
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE"
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -178,8 +174,7 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE"
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -199,8 +194,7 @@ class RemoteDatasource {
     switch (response.statusCode) {
       case 200:
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE"
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -224,8 +218,8 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_COMMENT_AUTH"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE" || "EDIT_COMMENT_AUTH"
+
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -249,8 +243,8 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_COMMENT_AUTH"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE" || "EDIT_COMMENT_AUTH"
+
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -274,8 +268,8 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER" || "CLOSED_QUESTION_AUTH" || "ANSWER_AUTH"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE" || "CLOSED_QUESTION_AUTH" || "ANSWER_AUTH"
+
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -299,8 +293,8 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_COMMENT_AUTH"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE" || "EDIT_COMMENT_AUTH"
+
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -324,8 +318,8 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_COMMENT_AUTH"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE" || "EDIT_COMMENT_AUTH"
+
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -346,8 +340,8 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_COMMENT_AUTH"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE" || "EDIT_COMMENT_AUTH"
+
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -368,8 +362,8 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_COMMENT_AUTH"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE" || "EDIT_COMMENT_AUTH"
+
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -391,8 +385,8 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_QUESTION_AUTH" || "CLOSED_QUESTION_AUTH"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE" || "EDIT_QUESTION_AUTH" || "CLOSED_QUESTION_AUTH"
+
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -413,8 +407,8 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_QUESTION_AUTH" || "CLOSED_QUESTION_AUTH"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE" || "EDIT_QUESTION_AUTH" || "CLOSED_QUESTION_AUTH"
+
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -438,8 +432,8 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_ANSWER_AUTH" || "CLOSED_QUESTION_AUTH"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE" || "EDIT_ANSWER_AUTH" || "CLOSED_QUESTION_AUTH"
+
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -460,8 +454,8 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_ANSWER_AUTH" || "CLOSED_QUESTION_AUTH"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE" || "EDIT_ANSWER_AUTH" || "CLOSED_QUESTION_AUTH"
+
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -482,8 +476,8 @@ class RemoteDatasource {
       case 200:
         return response.headers;
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER" || "EDIT_QUESTION_AUTH" || "CLOSED_QUESTION_AUTH" || "SELECT_AUTH"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE" || "EDIT_QUESTION_AUTH" || "CLOSED_QUESTION_AUTH" || "SELECT_AUTH"
+
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -524,8 +518,7 @@ class RemoteDatasource {
     switch (response.statusCode) {
       case 200:
       case 400: // data['code'] == "INVALID_PARAMETER"
-      case 401: // data['code'] == "NOT_MEMBER"
-      case 403: // data['code'] == "INACTIVE_MEMBER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE"
       case 404: // data['code'] == "RESOURCE_NOT_FOUND"
       case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
         var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -534,6 +527,30 @@ class RemoteDatasource {
       default:
         logger.e('ERROR: ${response.statusCode}');
         throw Exception("Error");
+    }
+  }
+
+  Future<Map<String, dynamic>> patchUpdateNickname(String token, String nickname) async {
+    var uri = Uri.parse("$address/members");
+
+    var message = {"nickname": nickname};
+    var response = await http.patch(uri, headers: {"Connection": "Keep-Alive", "Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer $token"}, encoding: Encoding.getByName("utf-8"), body: jsonEncode(message));
+
+    logger.d('body: ${jsonEncode(message)}');
+
+    switch (response.statusCode) {
+      case 200:
+        return response.headers;
+      case 400: // data['code'] == "INVALID_PARAMETER"
+      case 401: // data['code'] == "NOT_MEMBER_OR_INACTIVE" || "EDIT_COMMENT_AUTH"
+      case 404: // data['code'] == "RESOURCE_NOT_FOUND"
+      case 500: // data['code'] == "INTERNAL_SERVER_ERROR"
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // logger.d("data is: ", data);
+        return data;
+      default:
+        logger.e('ERROR: ${response.statusCode}');
+        throw Exception("Error on server");
     }
   }
 }

@@ -108,11 +108,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       } else if (response['code'] != null) {
                         logger.d("response['code']: ${response['code']}");
                         switch (response['code']) {
-                          case "INACTIVE_MEMBER":
-                            exceptionShowDialog(context, '비활성화된 회원입니다.');
-                            break;
-                          case "NOT_MEMBER":
-                            exceptionShowDialog(context, '회원 정보가 없습니다.');
+                          case "NOT_MEMBER_OR_INACTIVE":
+                            exceptionShowDialog(context, "회원이 아니거나 비활성화된 회원입니다.");
                             break;
                         }
                       } else {

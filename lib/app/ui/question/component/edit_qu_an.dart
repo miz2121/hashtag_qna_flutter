@@ -86,17 +86,14 @@ class _EditQuAnState extends State<EditQuAn> {
                                         case "INVALID_PARAMETER":
                                           exceptionShowDialog(context, "INVALID_PARAMETER");
                                           break;
-                                        case "NOT_MEMBER":
-                                          exceptionShowDialog(context, '등록된 회원 정보가 없습니다.');
+                                        case "NOT_MEMBER_OR_INACTIVE":
+                                          exceptionShowDialog(context, "회원이 아니거나 비활성화된 회원입니다.");
                                           break;
                                         case "EDIT_QUESTION_AUTH":
                                           exceptionShowDialog(context, '작성자만이 질문을 수정 및 삭제할 수 있습니다.');
                                           break;
                                         case "CLOSED_QUESTION_AUTH":
                                           exceptionShowDialog(context, '닫힌 글은 더 이상 수정할 수 없습니다.');
-                                          break;
-                                        case "INACTIVE_MEMBER":
-                                          exceptionShowDialog(context, '비활성화된 회원입니다.');
                                           break;
                                         case "RESOURCE_NOT_FOUND":
                                           exceptionShowDialog(context, "RESOURCE_NOT_FOUND");

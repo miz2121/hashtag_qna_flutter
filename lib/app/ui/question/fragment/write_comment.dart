@@ -98,14 +98,11 @@ class _WriteCommentState extends State<WriteComment> {
                                                       case "INVALID_PARAMETER":
                                                         exceptionShowDialog(context, "INVALID_PARAMETER");
                                                         break;
-                                                      case "NOT_MEMBER":
-                                                        exceptionShowDialog(context, "회원 정보가 없습니다.");
-                                                        break;
                                                       case "EDIT_COMMENT_AUTH":
                                                         exceptionShowDialog(context, "작성자만이 수정 및 삭제가 가능합니다.");
                                                         break;
-                                                      case "INACTIVE_MEMBER":
-                                                        exceptionShowDialog(context, "비활성화된 회원입니다.");
+                                                      case "NOT_MEMBER_OR_INACTIVE":
+                                                        exceptionShowDialog(context, "회원이 아니거나 비활성화된 회원입니다.");
                                                         break;
                                                       case "RESOURCE_NOT_FOUND":
                                                         exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
@@ -129,14 +126,11 @@ class _WriteCommentState extends State<WriteComment> {
                                                       case "INVALID_PARAMETER":
                                                         exceptionShowDialog(context, "INVALID_PARAMETER");
                                                         break;
-                                                      case "NOT_MEMBER":
-                                                        exceptionShowDialog(context, "회원 정보가 없습니다.");
-                                                        break;
                                                       case "EDIT_COMMENT_AUTH":
                                                         exceptionShowDialog(context, "작성자만이 수정 및 삭제가 가능합니다.");
                                                         break;
-                                                      case "INACTIVE_MEMBER":
-                                                        exceptionShowDialog(context, "비활성화된 회원입니다.");
+                                                      case "NOT_MEMBER_OR_INACTIVE":
+                                                        exceptionShowDialog(context, "회원이 아니거나 비활성화된 회원입니다.");
                                                         break;
                                                       case "RESOURCE_NOT_FOUND":
                                                         exceptionShowDialog(context, "RESOURCE_NOT_FOUND");

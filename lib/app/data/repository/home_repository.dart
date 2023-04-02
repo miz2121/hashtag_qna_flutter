@@ -17,10 +17,6 @@ class HomeRepository {
     return info;
   }
 
-  Future<Map<String, dynamic>> putMemberInactive(String token) async {
-    return await _remoteDatasource.putMemberInactive(token);
-  }
-
   Future<MemberInfo> loadUser() async {
     return await _localDataSource.loadUser();
   }

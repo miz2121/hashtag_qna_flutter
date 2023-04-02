@@ -27,6 +27,7 @@ class HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver 
     await _getToken(provider).then((value) {
       token = value;
     });
+    logger.d("token is loaded: $token");
     return token;
   }
 

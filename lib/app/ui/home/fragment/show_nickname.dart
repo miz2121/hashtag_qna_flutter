@@ -48,9 +48,11 @@ class _ShowNicknameState extends ConsumerState<ShowNickname> {
                 )
               : // 토큰이 있다면 닉네임을 띄울거임.
               InkWell(
-                  onTap: () {
-                    // 해야 할 것. 회원 정보 관련된 페이지로 보내야 함.
-                  },
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    '/info',
+                    arguments: {'token': widget.token},
+                  ),
                   child: FutureBuilder<Map<String, dynamic>>(
                       future: _getMemberInfoMaps(widget.provider),
                       builder: (_, snapshot) {

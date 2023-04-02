@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/create/create_second/create_second_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/create/create_third/create_third_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/info/info_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/join/join_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/create_answer.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
@@ -104,6 +105,13 @@ class MyApp extends StatelessWidget {
               builder: (context) => const JoinPage(),
             );
             return const JoinPage();
+          },
+          '/info': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/info'),
+              builder: (context) => const InfoPage(),
+            );
+            return const InfoPage();
           },
         },
         theme: ThemeData(

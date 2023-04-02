@@ -65,11 +65,8 @@ class _CreateAnswerState extends ConsumerState<CreateAnswer> {
                   case "INVALID_PARAMETER":
                     exceptionShowDialog(context, "INVALID_PARAMETER");
                     break;
-                  case "NOT_MEMBER":
-                    exceptionShowDialog(context, "NOT_MEMBER");
-                    break;
-                  case "INACTIVE_MEMBER":
-                    exceptionShowDialog(context, "INACTIVE_MEMBER");
+                  case "NOT_MEMBER_OR_INACTIVE":
+                    exceptionShowDialog(context, "회원이 아니거나 비활성화된 회원입니다.");
                     break;
                   case "RESOURCE_NOT_FOUND":
                     exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
@@ -178,8 +175,8 @@ class _CreateAnswerState extends ConsumerState<CreateAnswer> {
                                                                 case "INVALID_PARAMETER":
                                                                   exceptionShowDialog(context, "INVALID_PARAMETER");
                                                                   break;
-                                                                case "NOT_MEMBER":
-                                                                  exceptionShowDialog(context, '등록된 회원 정보가 없습니다.');
+                                                                case "NOT_MEMBER_OR_INACTIVE":
+                                                                  exceptionShowDialog(context, "회원이 아니거나 비활성화된 회원입니다.");
                                                                   break;
                                                                 case "CLOSED_QUESTION_AUTH":
                                                                   exceptionShowDialog(context, '닫힌 글에는 더 이상 답변을 달거나 수정 및 삭제할 수 없습니다.');
@@ -187,9 +184,7 @@ class _CreateAnswerState extends ConsumerState<CreateAnswer> {
                                                                 case "ANSWER_AUTH":
                                                                   exceptionShowDialog(context, '질문 작성자는 답변을 달 수 없습니다.');
                                                                   break;
-                                                                case "INACTIVE_MEMBER":
-                                                                  exceptionShowDialog(context, '비활성화 된 회원입니다.');
-                                                                  break;
+
                                                                 case "RESOURCE_NOT_FOUND":
                                                                   exceptionShowDialog(context, "RESOURCE_NOT_FOUND");
                                                                   break;
