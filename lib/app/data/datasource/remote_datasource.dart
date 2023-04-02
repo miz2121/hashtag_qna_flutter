@@ -574,8 +574,8 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, dynamic>> getQuestionsByOneHashtag(String? token, String hashtag) async {
-    Uri uri = Uri.parse("$address/questions/hashtag?text=$hashtag");
+  Future<Map<String, dynamic>> getQuestionsByOneHashtag(String? token, String hashtag, int page) async {
+    Uri uri = Uri.parse("$address/questions/hashtag?page=$page&text=$hashtag");
     var headers = {"Connection": "Keep-Alive", "Authorization": "Bearer $token"};
     final response = await (http.get(uri, headers: headers));
 
@@ -594,8 +594,8 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, dynamic>> getMyQuestions(String? token) async {
-    Uri uri = Uri.parse("$address/questions/myQuestions");
+  Future<Map<String, dynamic>> getMyQuestions(String? token, int page) async {
+    Uri uri = Uri.parse("$address/questions/myQuestions?page=$page");
     var headers = {"Connection": "Keep-Alive", "Authorization": "Bearer $token"};
     final response = await (http.get(uri, headers: headers));
 
@@ -614,8 +614,8 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, dynamic>> getQuestionsWithMyAnswers(String? token) async {
-    Uri uri = Uri.parse("$address/questions/myAnswers");
+  Future<Map<String, dynamic>> getQuestionsWithMyAnswers(String? token, int page) async {
+    Uri uri = Uri.parse("$address/questions/myAnswers?page=$page");
     var headers = {"Connection": "Keep-Alive", "Authorization": "Bearer $token"};
     final response = await (http.get(uri, headers: headers));
 
@@ -634,8 +634,8 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, dynamic>> getQuestionsWithMyComments(String? token) async {
-    Uri uri = Uri.parse("$address/questions/myComments");
+  Future<Map<String, dynamic>> getQuestionsWithMyComments(String? token, int page) async {
+    Uri uri = Uri.parse("$address/questions/myComments?page=$page");
     var headers = {"Connection": "Keep-Alive", "Authorization": "Bearer $token"};
     final response = await (http.get(uri, headers: headers));
 
@@ -654,8 +654,8 @@ class RemoteDatasource {
     }
   }
 
-  Future<Map<String, dynamic>> getQuestionsWithMyHashtags(String? token) async {
-    Uri uri = Uri.parse("$address/questions/myHashtags");
+  Future<Map<String, dynamic>> getQuestionsWithMyHashtags(String? token, int page) async {
+    Uri uri = Uri.parse("$address/questions/myHashtags?page=$page");
     var headers = {"Connection": "Keep-Alive", "Authorization": "Bearer $token"};
     final response = await (http.get(uri, headers: headers));
 

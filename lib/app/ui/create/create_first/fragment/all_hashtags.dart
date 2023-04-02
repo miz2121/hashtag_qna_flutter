@@ -105,7 +105,7 @@ class _AllHashtagsState extends State<AllHashtags> {
                       logger.d("index: $index, hashtagNames: ${widget.hashtagNames}");
 
                       if (widget.provider.isHashtagChecked.isEmpty) {
-                        widget.provider.isHashtagChecked = List.filled(snapshot.data!.length, false);
+                        widget.provider.isHashtagChecked = List.filled((snapshot.data!.length) + 1, false);
                       }
                       widget.provider.isHashtagChecked[index] = !widget.provider.isHashtagChecked[index];
                     });

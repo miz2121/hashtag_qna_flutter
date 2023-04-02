@@ -73,7 +73,7 @@ class _HomeBodyState extends State<HomeBody> {
               previous: '/home',
             ),
 
-            ((snapshot.data!["questionListDtos"].length) != 0)
+            ((snapshot.data!["homeQuestionWithHashtagsListDto"]["questionListDtoList"].length) != 0)
                 ? TextButton(
                     onPressed: () async {
                       if (widget.token == null) {
@@ -104,7 +104,21 @@ class _HomeBodyState extends State<HomeBody> {
                   )
                 : Container(),
 
-            Container(height: 10.w),
+            Container(height: 5.w),
+
+            widget.token == null
+                ? BottomButtons(
+                    parent: parent,
+                    provider: widget.provider,
+                  )
+                : BottomButtons(
+                    parent: parent,
+                    token: widget.token,
+                    provider: widget.provider,
+                  ),
+
+            Container(height: 5.w),
+
             // hashtags
             widget.token == null
                 ? Hashtags(
@@ -118,16 +132,6 @@ class _HomeBodyState extends State<HomeBody> {
                   ),
 
             Container(height: 10.w),
-            widget.token == null
-                ? BottomButtons(
-                    parent: parent,
-                    provider: widget.provider,
-                  )
-                : BottomButtons(
-                    parent: parent,
-                    token: widget.token,
-                    provider: widget.provider,
-                  ),
           ],
         );
       },

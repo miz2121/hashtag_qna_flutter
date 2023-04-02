@@ -53,19 +53,19 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
         getQuestionsMethod = provider.getSearch(token, selectedType, searchText, currentPage);
         break;
       case 'hashtag':
-        getQuestionsMethod = provider.getQuestionsByOneHashtag(token, hashtag);
+        getQuestionsMethod = provider.getQuestionsByOneHashtag(token, hashtag, currentPage);
         break;
       case 'myQuestions':
-        getQuestionsMethod = provider.getMyQuestions(token);
+        getQuestionsMethod = provider.getMyQuestions(token, currentPage);
         break;
       case 'myAnswers':
-        getQuestionsMethod = provider.getQuestionsWithMyAnswers(token);
+        getQuestionsMethod = provider.getQuestionsWithMyAnswers(token, currentPage);
         break;
       case 'myComments':
-        getQuestionsMethod = provider.getQuestionsWithMyComments(token);
+        getQuestionsMethod = provider.getQuestionsWithMyComments(token, currentPage);
         break;
       case 'myHashtags':
-        getQuestionsMethod = provider.getQuestionsWithMyHashtags(token);
+        getQuestionsMethod = provider.getQuestionsWithMyHashtags(token, currentPage);
         break;
     }
   }
@@ -116,7 +116,7 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
                   children: [
                     Container(height: 10.w),
                     Text(
-                      titleText, // "전체 질문을 보여드립니다."
+                      titleText,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 100.w / 15,
@@ -136,7 +136,7 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
                     ),
                     Pagination(
                       operation: operation,
-                      totalPages: snapshot.data!["totalPages"] ?? 1,
+                      totalPages: snapshot.data!["questionListDtoPage"]["totalPages"] ?? 1,
                       currentPage: currentPage,
                       token: token,
                       searchText: searchText,

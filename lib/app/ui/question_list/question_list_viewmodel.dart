@@ -16,24 +16,24 @@ class QuestionListViewModel extends StateNotifier<QuestionListRepository> {
     return await _questionListRepository.getSearch(token, searchType, searchText, page);
   }
 
-  Future<Map<String, dynamic>> getQuestionsByOneHashtag(String? token, String hashtag) async {
-    return _questionListRepository.getQuestionsByOneHashtag(token, hashtag);
+  Future<Map<String, dynamic>> getQuestionsByOneHashtag(String? token, String hashtag, int page) async {
+    return _questionListRepository.getQuestionsByOneHashtag(token, hashtag, page);
   }
 
-  Future<Map<String, dynamic>> getMyQuestions(String? token) async {
-    return _questionListRepository.getMyQuestions(token);
+  Future<Map<String, dynamic>> getMyQuestions(String? token, int page) async {
+    return _questionListRepository.getMyQuestions(token, page);
   }
 
-  Future<Map<String, dynamic>> getQuestionsWithMyAnswers(String? token) async {
-    return _questionListRepository.getQuestionsWithMyAnswers(token);
+  Future<Map<String, dynamic>> getQuestionsWithMyAnswers(String? token, int page) async {
+    return _questionListRepository.getQuestionsWithMyAnswers(token, page);
   }
 
-  Future<Map<String, dynamic>> getQuestionsWithMyComments(String? token) async {
-    return _questionListRepository.getQuestionsWithMyComments(token);
+  Future<Map<String, dynamic>> getQuestionsWithMyComments(String? token, int page) async {
+    return _questionListRepository.getQuestionsWithMyComments(token, page);
   }
 
-  Future<Map<String, dynamic>> getQuestionsWithMyHashtags(String? token) async {
-    return _questionListRepository.getQuestionsWithMyHashtags(token);
+  Future<Map<String, dynamic>> getQuestionsWithMyHashtags(String? token, int page) async {
+    return _questionListRepository.getQuestionsWithMyHashtags(token, page);
   }
 
   final List<String> _searchType = [

@@ -22,29 +22,46 @@ class HashtagSnapshot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color? hashtagColor;
+    if (homeViewModelProvider != null) {
+      hashtagColor = Colors.cyan[homeViewModelProvider!.hashtagColorList[index % 3]];
+    } else if (questionListViewModelProvider != null) {
+      hashtagColor = Colors.cyan[questionListViewModelProvider!.hashtagColorList[index % 3]];
+    } else if (infoViewModelProvider != null) {
+      hashtagColor = Colors.cyan[infoViewModelProvider!.hashtagColorList[index % 3]];
+    } else {
+      hashtagColor = Colors.cyan;
+    }
     return Container(
       margin: EdgeInsets.all(1.w),
       padding: EdgeInsets.fromLTRB(2.w, 1.w, 2.w, 1.w),
       decoration: BoxDecoration(
-        color: homeViewModelProvider != null
-            ? Colors.cyan[homeViewModelProvider!.hashtagColorList[index % 3]]
-            : questionListViewModelProvider != null
-                ? Colors.cyan[questionListViewModelProvider!.hashtagColorList[index % 3]]
-                : infoViewModelProvider != null
-                    ? Colors.cyan[infoViewModelProvider!.hashtagColorList[index % 3]]
-                    : Colors.cyan,
-        // homeViewModelProvider == null ? Colors.cyan[questionListViewModelProvider!.hashtagColorList[index % 3]] : Colors.cyan[homeViewModelProvider!.hashtagColorList[index % 3]],
+        color: hashtagColor,
         borderRadius: BorderRadius.circular(80),
         border: Border.all(
           color: Colors.cyan,
           width: 0.5.w,
         ),
       ),
-      child: Text(
-        "# ${snapshot.data!['hashtagDtos'][index]['hashtagName']}",
-        style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.blueGrey[700]),
-        overflow: TextOverflow.ellipsis,
-      ),
+      child: homeViewModelProvider != null
+          ? Text(
+              "# ${snapshot.data!['homeHashtagListDto']['hashtagListDtoList'][index]['hashtagName']}",
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.blueGrey[700]),
+              overflow: TextOverflow.ellipsis,
+            )
+          : questionListViewModelProvider != null
+              ? Text(
+                  "# ${snapshot.data!['hashtagDtos'][index]['hashtagName']}",
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.blueGrey[700]),
+                  overflow: TextOverflow.ellipsis,
+                )
+              : infoViewModelProvider != null
+                  ? Text(
+                      "# ${snapshot.data!['hashtagDtoList'][index]['hashtagName']}",
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.blueGrey[700]),
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  : Container(),
     );
   }
 }
