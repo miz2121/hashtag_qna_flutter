@@ -14,7 +14,7 @@ class NoData extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
       ),
       width: 60.w,
-      height: 60.w,
+      height: 40.w,
       child: Center(
         child: Text(
           '데이터가 없습니다.\n새로운 데이터를\n추가해 주세요.',
