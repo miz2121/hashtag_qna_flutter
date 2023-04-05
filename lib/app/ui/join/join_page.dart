@@ -50,12 +50,15 @@ class _JoinPageState extends ConsumerState<JoinPage> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Center(
-            child: Form(
-                key: formKey,
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          child: Form(
+            key: formKey,
+            child: Padding(
+              padding: EdgeInsets.all(5.w),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(height: 20.w),
                     Text(
                       '회원가입 도와드리겠습니다.\n입력해 주세요.',
                       style: TextStyle(
@@ -122,8 +125,10 @@ class _JoinPageState extends ConsumerState<JoinPage> {
                       },
                       child: const Text('회원가입 합니다.'),
                     ),
-                  ]),
-                )),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),

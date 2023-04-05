@@ -34,8 +34,8 @@ class _AddHashtagButtonState extends State<AddHashtagButton> {
     CreateSecondPageState? parent = context.findAncestorStateOfType<CreateSecondPageState>();
     return InkWell(
       child: Container(
-        margin: const EdgeInsets.all(5),
-        padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+        margin: EdgeInsets.all(1.w),
+        padding: EdgeInsets.fromLTRB(2.w, 1.w, 2.w, 1.w),
         decoration: BoxDecoration(
           color: Colors.cyan[100],
           borderRadius: BorderRadius.circular(80),
@@ -57,7 +57,7 @@ class _AddHashtagButtonState extends State<AddHashtagButton> {
       ),
       onTap: () {
         logger.d("_createdFormLists: ${widget.createdFormLists}");
-        widget.provider.isHashtagChecked.add(true);
+        widget.provider.isHashtagChecked.toList().add(true);
         if (!mounted) return;
         parent?.setState(() {
           widget.createdFormLists.add(

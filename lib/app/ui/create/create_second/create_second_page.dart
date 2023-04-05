@@ -104,35 +104,37 @@ class CreateSecondPageState extends ConsumerState<CreateSecondPage> {
                   Container(height: 5.w),
                   ElevatedButton(
                     onPressed: () {
-                      formKey.currentState?.save();
-                      logger.d("(hashtagNamesList.length) + (createdHashtagNameList.length): ${(hashtagNamesList.length) + (createdHashtagNameList.length)}");
-                      if ((hashtagNamesList.length) + (createdHashtagNameList.length) == 0) {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('확인해 주세요.'),
-                                content: const Text('해시태그를 하나 이상 지정해 주세요'),
-                                actions: [
-                                  Center(
-                                    child: TextButton(
-                                      onPressed: () => Navigator.of(context).pop(),
-                                      child: const Text('확인'),
+                      if (formKey.currentState!.validate()) {
+                        formKey.currentState?.save();
+                        logger.d("(hashtagNamesList.length) + (createdHashtagNameList.length): ${(hashtagNamesList.length) + (createdHashtagNameList.length)}");
+                        if ((hashtagNamesList.length) + (createdHashtagNameList.length) == 0) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('확인해 주세요.'),
+                                  content: const Text('해시태그를 하나 이상 지정해 주세요'),
+                                  actions: [
+                                    Center(
+                                      child: TextButton(
+                                        onPressed: () => Navigator.of(context).pop(),
+                                        child: const Text('확인'),
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            });
-                      } else {
-                        Navigator.pushNamed(
-                          context,
-                          '/create_third',
-                          arguments: {
-                            "existHashtag": hashtagNamesList,
-                            "newHashtag": createdHashtagNameList,
-                            'token': token,
-                          },
-                        );
+                                  ],
+                                );
+                              });
+                        } else {
+                          Navigator.pushNamed(
+                            context,
+                            '/create_third',
+                            arguments: {
+                              "existHashtag": hashtagNamesList,
+                              "newHashtag": createdHashtagNameList,
+                              'token': token,
+                            },
+                          );
+                        }
                       }
                     },
                     child: const Text("다음"),

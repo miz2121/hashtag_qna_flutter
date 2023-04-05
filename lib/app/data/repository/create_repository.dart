@@ -5,7 +5,7 @@ class CreateRepository {
   final RemoteDatasource _remoteDatasource = RemoteDatasource();
   final LocalDataSource _localDataSource = LocalDataSource();
 
-  Future<List<dynamic>> getHashtags() {
+  Future<Map<String, dynamic>> getHashtags() {
     return _remoteDatasource.getHashtags();
   }
 

@@ -23,7 +23,6 @@ class HomeBody extends StatefulWidget {
 
 class _HomeBodyState extends State<HomeBody> {
   HomePageState? parent;
-  Future<Map<String, dynamic>> _getHomeQuestions(HomeViewModel provider) => provider.getHomeQuestions();
 
   @override
   void didChangeDependencies() {
@@ -34,7 +33,7 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
-      future: _getHomeQuestions(widget.provider),
+      future: widget.provider.getHomeQuestions(),
       builder: (_, snapshot) {
         if (snapshot.hasError) {
           return Text('Error = ${snapshot.error}');

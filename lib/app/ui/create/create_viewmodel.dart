@@ -8,11 +8,11 @@ class CreateViewModel extends StateNotifier<CreateRepository> {
 
   final CreateRepository _createRepository = CreateRepository();
 
-  Future<List<dynamic>> getHashtags() {
+  Future<Map<String, dynamic>> getHashtags() {
     return _createRepository.getHashtags();
   }
 
-  List<bool> isHashtagChecked = [];
+  List<bool> isHashtagChecked = List.empty(growable: true);
 
   Future<Map<String, dynamic>> postWriteQuestion(String title, String content, List<String> existHashtags, List<String> newHashtags) async {
     return _createRepository.postWriteQuestion(title, content, existHashtags, newHashtags);

@@ -71,9 +71,9 @@ class _CreateFirstPageState extends ConsumerState<CreateFirstPage> {
                 // 해야 할 것. 해시태그 접어서 간략하게 보기
                 // 가운데에 선택 가능한 모든 해시태그 보여줌
                 AllHashtags(provider: provider, hashtagNames: hashtagNames),
-                Container(height: 15.w),
+                Container(height: 10.w),
                 Text(
-                  '등록할 해시태그가 없거나\n선택을 완료하셨으면\n"다음" 버튼을 눌러주세요',
+                  '선택을 완료했거나\n새로운 해시태그를\n등록하고 싶다면\n아래 "다음" 버튼을 눌러주세요',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 100.w / 15,
