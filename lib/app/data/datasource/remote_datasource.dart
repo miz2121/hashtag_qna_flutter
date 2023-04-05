@@ -5,7 +5,7 @@ import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteDatasource {
-  String address = "http://192.168.0.8:8080";
+  String address = "http://:8080";
 
   Future<Map<String, dynamic>> getHomeQuestions() async {
     Uri uri = Uri.parse("$address/home");
