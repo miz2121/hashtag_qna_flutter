@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hashtag_qna_flutter/app/ui/question_list/component/insertTestData.dart';
 import 'package:hashtag_qna_flutter/app/ui/question_list/component/pagination.dart';
 import 'package:hashtag_qna_flutter/app/ui/question_list/question_list_viewmodel.dart';
 import 'package:hashtag_qna_flutter/app/util/fragment/question_list.dart';
@@ -155,10 +154,10 @@ class QuestionListPageState extends ConsumerState<QuestionListPage> {
                       token: token,
                     ),
                     Container(height: 10.w),
-                    InsertTestData(
-                      snapshot: snapshot,
-                    ),
-                    Container(height: 10.w),
+                    // InsertTestData(
+                    //   snapshot: snapshot,
+                    // ),
+                    // Container(height: 10.w),
                   ],
                 );
               },
