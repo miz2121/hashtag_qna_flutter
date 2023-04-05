@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hashtag_qna_flutter/app/ui/create/create_second_page.dart';
-import 'package:hashtag_qna_flutter/app/ui/create/create_third_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/create/create_second/create_second_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/create/create_third/create_third_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/home/home_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/info/info_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/info/my_hashtags_page.dart';
 import 'package:hashtag_qna_flutter/app/ui/join/join_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/question/create_answer.dart';
 import 'package:hashtag_qna_flutter/app/ui/question/question_page.dart';
-import 'package:hashtag_qna_flutter/app/ui/question/questions_by_hashtag_page.dart';
+import 'package:hashtag_qna_flutter/app/ui/question_list/question_list_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:sizer/sizer.dart';
 
-import 'app/ui/create/create_first_page.dart';
+import 'app/ui/create/create_first/create_first_page.dart';
 import 'app/ui/login/login_page.dart';
 
 void main() {
@@ -25,34 +30,111 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     initializeDateFormatting('ko_KR', null);
-    double displayWidth = MediaQuery.of(context).size.width;
 
-    return MaterialApp(
-      initialRoute: '/',
-      routes: {
-        '/': (BuildContext context) => const StartPage(),
-        '/home': (BuildContext context) => const  HomePage(),
-        '/create_first': (BuildContext context) => const CreateFirstPage(),
-        '/create_second': (BuildContext context) => const CreateSecondPage(),
-        '/create_third': (BuildContext context) => const CreateThirdPage(),
-        '/login': (BuildContext context) => const LoginPage(),
-        '/question': (BuildContext context) => const QuestionPage(),
-        '/questions_by_hashtag' : (BuildContext context) => const QuestionsByHashtag(),
-        '/join': (BuildContext context) => const JoinPage(),
-      },
-      theme: ThemeData(
-        primaryColor: Colors.cyan[900],
-        scaffoldBackgroundColor: Colors.lightBlue[50],
-        buttonTheme: ButtonThemeData(
-          buttonColor: Colors.cyan[100],
+    return Sizer(builder: (context, orientation, deviceType) {
+      return MaterialApp(
+        initialRoute: '/',
+        routes: {
+          '/': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/'),
+              builder: (context) => const StartPage(),
+            );
+            return const StartPage();
+          },
+          '/home': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/home'),
+              builder: (context) => const HomePage(),
+            );
+            return const HomePage();
+          },
+          '/create_first': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/create_first'),
+              builder: (context) => const CreateFirstPage(),
+            );
+            return const CreateFirstPage();
+          },
+          '/create_second': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/create_second'),
+              builder: (context) => const CreateSecondPage(),
+            );
+            return const CreateSecondPage();
+          },
+          '/create_third': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/create_third'),
+              builder: (context) => const CreateThirdPage(),
+            );
+            return const CreateThirdPage();
+          },
+          '/login': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/login'),
+              builder: (context) => const LoginPage(),
+            );
+            return const LoginPage();
+          },
+          '/question': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/question'),
+              builder: (context) => const QuestionPage(),
+            );
+            return const QuestionPage();
+          },
+          '/create_answer': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/create_answer'),
+              builder: (context) => const CreateAnswer(),
+            );
+            return const CreateAnswer();
+          },
+          '/question_list': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/question_list'),
+              builder: (context) => const QuestionListPage(),
+            );
+            return const QuestionListPage();
+          },
+          '/join': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/join'),
+              builder: (context) => const JoinPage(),
+            );
+            return const JoinPage();
+          },
+          '/info': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/info'),
+              builder: (context) => const InfoPage(),
+            );
+            return const InfoPage();
+          },
+          '/my_hashtags': (BuildContext context) {
+            MaterialPageRoute(
+              settings: const RouteSettings(name: '/my_hashtags'),
+              builder: (context) => const MyHashtagsPage(),
+            );
+            return const MyHashtagsPage();
+          },
+        },
+        theme: ThemeData(
+          primaryColor: Colors.cyan[700],
+          scaffoldBackgroundColor: Colors.lightBlue[50],
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.cyan[100],
+          ),
+          textTheme: TextTheme(
+            bodyLarge: TextStyle(fontSize: 100.w / 23),
+            bodyMedium: TextStyle(fontSize: 100.w / 29),
+          ),
         ),
-        textTheme: TextTheme(
-          bodyLarge: TextStyle(fontSize: displayWidth / 23),
-          bodyMedium: TextStyle(fontSize: displayWidth / 29),
-        )
-      ),
-    );
+      );
+    });
   }
 }
 
@@ -61,19 +143,25 @@ class StartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double displayWidth = MediaQuery.of(context).size.width;
-    double buttonFontSize = displayWidth / 15;
+    // MainViewModel vm = MainViewModel();
+
     return Scaffold(
       body: SafeArea(
         child: Center(
           child: TextButton(
-            onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                context, '/home', (route) => false),
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/home',
+                (route) => false,
+              );
+            },
             child: Text(
               '해시태그 QnA 게시판\n서비스를 시작합니다.',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: buttonFontSize,
+                fontSize: 100.w / 15,
+                color: Theme.of(context).primaryColor,
               ),
             ),
           ),

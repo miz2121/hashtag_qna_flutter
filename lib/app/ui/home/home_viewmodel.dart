@@ -1,10 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hashtag_qna_flutter/app/data/model/memberInfo.dart';
+import 'package:hashtag_qna_flutter/app/data/model/member_info.dart';
 import 'package:hashtag_qna_flutter/app/data/repository/home_repository.dart';
 
-final homeViewModelProvider =
-    StateNotifierProvider<HomeViewModel, HomeRepository>(
-        (ref) => HomeViewModel(HomeRepository()));
+final homeViewModelProvider = StateNotifierProvider<HomeViewModel, HomeRepository>((ref) => HomeViewModel(HomeRepository()));
 
 class HomeViewModel extends StateNotifier<HomeRepository> {
   HomeViewModel(super.state);
@@ -15,24 +13,19 @@ class HomeViewModel extends StateNotifier<HomeRepository> {
     return _homeRepository.getHomeQuestions();
   }
 
-  Future<Map<String, dynamic>> getMemberInfoMaps() {
-    return _homeRepository.getMemberInfoMaps();
+  Future<Map<String, dynamic>> getMemberInfoMaps(String token) async {
+    return await _homeRepository.getMemberInfoMaps(token);
   }
 
-  void loadUser() {
-    _homeRepository.loadUser();
+  Future<MemberInfo> loadUser() async {
+    return await _homeRepository.loadUser();
   }
 
-  void clearPref() {
-    _homeRepository.clearPref();
+  Future<void> clearPref() async {
+    await _homeRepository.clearPref();
   }
 
   get token => _homeRepository.token;
 
-  getMemberInfo() => _homeRepository.getMemberInfo();
-
-  MemberInfo clearMemberInfo() {
-    _homeRepository.saveMemberInfo('', '', 0, 0, 0, 0);
-    return getMemberInfo();
-  }
+  get hashtagColorList => _homeRepository.hashtagColorList;
 }

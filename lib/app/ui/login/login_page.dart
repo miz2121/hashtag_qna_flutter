@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hashtag_qna_flutter/app/ui/login/login_viewmodel.dart';
-import 'package:logger/logger.dart';
+import 'package:hashtag_qna_flutter/app/util/utility.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-var logger = Logger(
-  printer: PrettyPrinter(methodCount: 0),
-);
+import 'package:sizer/sizer.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -21,20 +18,21 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   String _password = '';
   SharedPreferences? prefs;
   String? token;
+  late LoginViewModel provider;
 
-  Future<Map<String, String>?> _postRequestLogin(LoginViewModel provider) async {
+  Future<Map<String, dynamic>?> _postRequestLogin(LoginViewModel provider) async {
     final form = formKey.currentState;
-    Map<String, String> map = {};
+    Map<String, dynamic> map = {};
     if (form!.validate()) {
       form.save();
-      map = await provider.postRequestLogin(_email, _password);
+      map = await provider.postLogin(_email, _password);
       token = map['authorization']?.replaceAll("Bearer ", "");
       _saveToken(provider, token);
     }
     return map;
   }
 
-  void _loadUser(LoginViewModel provider){
+  void _loadUser(LoginViewModel provider) {
     provider.loadUser();
   }
 
@@ -43,11 +41,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    double displayWidth = MediaQuery.of(context).size.width;
-    double buttonFontSize = displayWidth / 15;
-    final provider = ref.watch(loginViewModelProvider.notifier);
+  void initState() {
+    super.initState();
+    provider = ref.read(loginViewModelProvider.notifier);
+  }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    provider = ref.watch(loginViewModelProvider.notifier);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -62,31 +68,29 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     '로그인 페이지 입니다.\n입력해 주세요.',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: buttonFontSize,
+                      fontSize: 100.w / 15,
                       color: Colors.cyan[700],
                     ),
                   ),
-                  Container(height: 30),
+                  Container(height: 30.w),
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Email'),
-                    validator: (value) =>
-                        value!.isEmpty ? 'Email can not be empty' : null,
+                    validator: (value) => value!.isEmpty ? 'Email can not be empty' : null,
                     onSaved: (value) => _email = value!,
                   ),
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Password'),
                     obscureText: true,
-                    validator: (value) =>
-                        value!.isEmpty ? 'Password can not be empty' : null,
+                    validator: (value) => value!.isEmpty ? 'Password can not be empty' : null,
                     onSaved: (value) => _password = value!,
                   ),
-                  Container(height: 30),
+                  Container(height: 30.w),
                   ElevatedButton(
                     onPressed: () async {
-                      var headers = await _postRequestLogin(provider);
+                      var response = await _postRequestLogin(provider);
                       if (!mounted) return;
                       _loadUser(provider);
-                      if (headers == null) {
+                      if (response == null) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -95,13 +99,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 content: const Text("로그인 정보가 정확하지 않습니다."),
                                 actions: [
                                   TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
+                                    onPressed: () => Navigator.of(context).pop(),
                                     child: const Text("확인"),
                                   )
                                 ],
                               );
                             });
+                      } else if (response['code'] != null) {
+                        logger.d("response['code']: ${response['code']}");
+                        switch (response['code']) {
+                          case "NOT_MEMBER_OR_INACTIVE":
+                            exceptionShowDialog(context, "회원이 아니거나 비활성화된 회원입니다.");
+                            break;
+                        }
                       } else {
                         showDialog(
                             context: context,
@@ -110,11 +120,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 title: const Text("로그인 성공"),
                                 content: const Text("홈 화면으로 이동합니다."),
                                 actions: [
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pushNamedAndRemoveUntil(
-                                            context, '/home', (route) => false),
-                                    child: const Text("확인"),
+                                  Center(
+                                    child: TextButton(
+                                      onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false),
+                                      child: const Text("확인"),
+                                    ),
                                   )
                                 ],
                               );

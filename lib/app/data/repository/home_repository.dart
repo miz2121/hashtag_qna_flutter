@@ -1,10 +1,6 @@
 import 'package:hashtag_qna_flutter/app/data/datasource/local_datasource.dart';
 import 'package:hashtag_qna_flutter/app/data/datasource/remote_datasource.dart';
-import 'package:logger/logger.dart';
-
-var logger = Logger(
-  printer: PrettyPrinter(methodCount: 0),
-);
+import 'package:hashtag_qna_flutter/app/data/model/member_info.dart';
 
 class HomeRepository {
   final LocalDataSource _localDataSource = LocalDataSource();
@@ -14,35 +10,32 @@ class HomeRepository {
     return _remoteDatasource.getHomeQuestions();
   }
 
-  Future<Map<String, dynamic>> getMemberInfoMaps() async {
-    loadUser();
-    Map<String, dynamic> info =
-        await _remoteDatasource.getMemberInfoMaps(token);
+  Future<Map<String, dynamic>> getMemberInfoMaps(String token) async {
+    Map<String, dynamic> info = await _remoteDatasource.getMemberInfoMaps(token);
 
-    saveMemberInfo(info['nickname'], info['email'], info['questionCount'],
-        info['answerCount'], info['commentCount'], info['hashtagCount']);
+    await saveMemberInfo(info['nickname'] ?? '', info['email'] ?? '', info['questionCount'] ?? 0, info['answerCount'] ?? 0, info['commentCount'] ?? 0, info['hashtagCount'] ?? 0);
     return info;
   }
 
-  void loadUser() {
-    _localDataSource.loadUser();
+  Future<MemberInfo> loadUser() async {
+    return await _localDataSource.loadUser();
   }
 
-  void clearPref() {
-    _localDataSource.clearPref();
+  Future<void> clearPref() async {
+    await _localDataSource.clearPref();
   }
 
   get token => _localDataSource.token;
 
-  void saveMemberInfo(
+  Future<void> saveMemberInfo(
     String nickname,
     String email,
     int questionCount,
     int answerCount,
     int commentCount,
     int hashtagCount,
-  ) {
-    _localDataSource.saveMemberInfo(
+  ) async {
+    await _localDataSource.saveMemberInfo(
       nickname,
       email,
       questionCount,
@@ -52,5 +45,5 @@ class HomeRepository {
     );
   }
 
-  getMemberInfo() => _localDataSource.memberInfo;
+  get hashtagColorList => _localDataSource.hashtagColorList;
 }
